@@ -1,0 +1,31 @@
+{
+  "name": "young-ladys-primer",
+  "version": "1.0.0",
+  "description": "An interactive educational primer inspired by Neal Stephenson's Diamond Age",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "lucide-react": "^0.294.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.8"
+  },
+  "keywords": [
+    "react",
+    "interactive",
+    "education",
+    "primer",
+    "storytelling"
+  ],
+  "author": "",
+  "license": "ISC"
+}
