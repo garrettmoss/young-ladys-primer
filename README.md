@@ -24,3 +24,15 @@ Our implementation aims to capture that vision of adaptive, personalized educati
 ## Vision
 
 Just as Stephenson envisioned a book that could serve as both entertainment and education, adapting to guide its reader through life's complexities, this project explores how we might create similar adaptive learning experiences using contemporary tools and technologies.
+
+## Licensing
+
+This project uses a dual licensing approach to balance educational openness with sustainable development:
+
+### Educational Content
+All stories, lessons, and educational materials are released under **Creative Commons Attribution-NonCommercial-ShareAlike 3.0** (CC BY-NC-SA 3.0) - see `LICENSE-CONTENT`. This follows Khan Academy's approach, ensuring educational accessibility while protecting against commercial exploitation and requiring attribution.
+
+### Platform Code
+The software platform, algorithms, and technical implementation are licensed under **GPL v3.0** - see `LICENSE-CODE`. This protects the open source nature of the project while ensuring that improvements and modifications benefit the entire community.
+
+This approach follows the model of successful educational technology organizations, providing both educational freedom and sustainable development practices.
