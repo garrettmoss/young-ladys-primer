@@ -254,65 +254,33 @@ The mechanical dragon's scales, for instance, are made of carbon atoms holding h
   const currentContent = stories[currentStory] || stories.welcome;
 
   return (
-    <div className="min-h-screen relative" style={{
-      background: `linear-gradient(180deg, #f9f6f0 0%, #f5f1e6 50%, #ede8db 100%)`,
-      backgroundAttachment: 'fixed'
-    }}>
-      {/* Vintage paper texture overlay */}
-      <div className="absolute inset-0 opacity-20" style={{
-        backgroundImage: `repeating-linear-gradient(
-          90deg,
-          transparent,
-          transparent 2px,
-          rgba(139, 115, 85, 0.05) 2px,
-          rgba(139, 115, 85, 0.05) 4px
-        )`,
-        mixBlendMode: 'multiply'
-      }}></div>
-
-      <div className="max-w-4xl mx-auto relative z-10 p-4">
+    <div className="primer-container">
+      <div className="primer-content">
         {/* Ornate Header */}
-        <div className="text-center mb-8 pt-8">
+        <div className="primer-header">
           {/* Decorative line */}
           <div className="flex items-center justify-center mb-6">
-            <div className="h-px bg-gradient-to-r from-transparent via-amber-700 to-transparent w-32"></div>
-            <div className="mx-4 relative">
-              <div className="absolute inset-0 animate-pulse">
-                <Sparkles className="w-6 h-6 text-yellow-400" 
-                         style={{ 
-                           filter: 'drop-shadow(0 0 3px rgba(250, 204, 21, 0.5))' 
-                         }} />
+            <div className="decorative-line"></div>
+            <div className="header-icon-container">
+              <div className="sparkle-animation">
+                <Sparkles className="w-6 h-6 text-yellow-400" />
               </div>
-              <BookOpen className="w-12 h-12 text-amber-700 relative z-10" />
+              <BookOpen className="book-icon" />
             </div>
-            <div className="h-px bg-gradient-to-r from-transparent via-amber-700 to-transparent w-32"></div>
+            <div className="decorative-line"></div>
           </div>
           
-          <h1 className="mb-3 relative">
-            <span className="text-5xl font-serif text-amber-800"
-                  style={{
-                    fontFamily: 'Baskerville, "Palatino Linotype", Palatino, "Century Schoolbook", serif',
-                    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.1)',
-                    letterSpacing: '0.05em'
-                  }}>
+          <h1 className="main-title">
+            <span className="title-line-1">
               A Young Lady's
             </span>
             <br />
-            <span className="text-6xl font-serif text-amber-900"
-                  style={{
-                    fontFamily: 'Baskerville, "Palatino Linotype", Palatino, "Century Schoolbook", serif',
-                    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.1)',
-                    letterSpacing: '0.1em',
-                    fontWeight: 'bold'
-                  }}>
+            <span className="title-line-2">
               Illustrated Primer
             </span>
           </h1>
           
-          <p className="text-amber-700/80 text-lg italic mt-4" style={{
-            fontFamily: 'Baskerville, "Palatino Linotype", serif',
-            letterSpacing: '0.02em'
-          }}>
+          <p className="subtitle">
             "A book that adapts itself to the mind of its reader"
           </p>
           
@@ -324,29 +292,21 @@ The mechanical dragon's scales, for instance, are made of carbon atoms holding h
 
         {/* Name Input Modal */}
         {showNameInput && (
-          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="relative max-w-md mx-4">
+          <div className="modal-overlay">
+            <div className="modal-container">
               {/* Ornate border frame */}
-              <div className="absolute -inset-4 border-2 border-amber-700/20 rounded-lg"></div>
-              <div className="absolute -inset-2 border border-amber-600/20 rounded-lg"></div>
+              <div className="modal-border-outer"></div>
+              <div className="modal-border-inner"></div>
               
-              <div className="relative bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-50 rounded-lg p-8 
-                          shadow-2xl border border-amber-600/30">
-                <div className="text-center mb-6">
-                  <div className="mb-4 relative inline-block">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <div className="modal-icon">
                     <Feather className="w-16 h-16 text-amber-700" />
                   </div>
-                  <h2 className="text-3xl font-serif text-amber-900 mb-3"
-                      style={{
-                        fontFamily: 'Baskerville, "Palatino Linotype", serif',
-                        letterSpacing: '0.05em',
-                        textShadow: '1px 1px 2px rgba(0,0,0,0.1)'
-                      }}>
+                  <h2 className="modal-title">
                     Welcome, Young Reader
                   </h2>
-                  <p className="text-amber-700/90 leading-relaxed" style={{
-                    fontFamily: 'Baskerville, serif'
-                  }}>
+                  <p className="modal-subtitle">
                     By what name shall the Primer know you?
                   </p>
                 </div>
@@ -356,26 +316,12 @@ The mechanical dragon's scales, for instance, are made of carbon atoms holding h
                     value={readerName}
                     onChange={(e) => setReaderName(e.target.value)}
                     placeholder="Enter your name..."
-                    className="w-full p-3 bg-white/70 border border-amber-600/30 rounded text-amber-900 
-                             placeholder-amber-600/40 focus:outline-none focus:border-amber-600/50 
-                             focus:shadow-[0_0_10px_rgba(217,119,6,0.1)]"
-                    style={{
-                      fontFamily: 'Baskerville, serif',
-                      letterSpacing: '0.02em'
-                    }}
-                    onKeyPress={(e) => e.key === 'Enter' && handleNameSubmit()}
+                    className="name-input"
+                    onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
                   />
                   <button
                     onClick={handleNameSubmit}
-                    className="w-full bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 
-                             text-amber-50 py-3 px-4 rounded transition-all font-semibold
-                             hover:from-amber-600 hover:to-amber-600 hover:shadow-lg
-                             border border-amber-700/50"
-                    style={{
-                      fontFamily: 'Baskerville, serif',
-                      letterSpacing: '0.05em',
-                      textShadow: '1px 1px 2px rgba(0,0,0,0.2)'
-                    }}
+                    className="submit-button"
                   >
                     Begin Your Journey
                   </button>
@@ -388,36 +334,17 @@ The mechanical dragon's scales, for instance, are made of carbon atoms holding h
         {/* Main Content - Manuscript Page */}
         <div className="relative">
           {/* Page corners decoration */}
-          <div className="absolute -top-3 -left-3 w-12 h-12 border-t-2 border-l-2 border-amber-700/20 rounded-tl-lg"></div>
-          <div className="absolute -top-3 -right-3 w-12 h-12 border-t-2 border-r-2 border-amber-700/20 rounded-tr-lg"></div>
-          <div className="absolute -bottom-3 -left-3 w-12 h-12 border-b-2 border-l-2 border-amber-700/20 rounded-bl-lg"></div>
-          <div className="absolute -bottom-3 -right-3 w-12 h-12 border-b-2 border-r-2 border-amber-700/20 rounded-br-lg"></div>
+          <div className="page-corner page-corner-tl"></div>
+          <div className="page-corner page-corner-tr"></div>
+          <div className="page-corner page-corner-bl"></div>
+          <div className="page-corner page-corner-br"></div>
           
-          <div className="bg-gradient-to-br from-amber-50 via-yellow-50/95 to-amber-50/90 rounded-lg p-10 
-                        shadow-xl border border-amber-600/20 relative overflow-hidden"
-               style={{
-                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E")`,
-                 boxShadow: 'inset 0 0 20px rgba(217, 119, 6, 0.05), 0 10px 40px rgba(0,0,0,0.1)'
-               }}>
+          <div className="manuscript-page p-10">
             
             {/* Title with illuminated first letter */}
-            <h2 className="text-4xl font-serif text-amber-900 mb-8 text-center relative"
-                style={{
-                  fontFamily: 'Baskerville, "Palatino Linotype", serif',
-                  letterSpacing: '0.05em',
-                  textShadow: '1px 1px 2px rgba(0,0,0,0.1)'
-                }}>
+            <h2 className="primer-title text-4xl font-serif text-amber-900 mb-8 text-center relative">
               <span className="inline-block">
-                <span className="text-6xl text-amber-800 align-top"
-                      style={{
-                        fontFamily: 'Baskerville, serif',
-                        textShadow: '2px 2px 3px rgba(0,0,0,0.1)',
-                        fontWeight: 'bold',
-                        lineHeight: '0.7',
-                        verticalAlign: 'bottom',
-                        display: 'inline-block',
-                        marginRight: '2px'
-                      }}>
+                <span className="illuminated-letter">
                   {currentContent.title[0]}
                 </span>
                 {currentContent.title.slice(1)}
@@ -426,33 +353,22 @@ The mechanical dragon's scales, for instance, are made of carbon atoms holding h
             
             {/* Story content with vintage typography */}
             <div className="mb-8">
-              <div className="text-amber-900/90 leading-loose text-lg whitespace-pre-line"
-                   style={{
-                     fontFamily: 'Baskerville, "Book Antiqua", "Palatino Linotype", serif',
-                     textAlign: 'justify',
-                     textIndent: '2em',
-                     letterSpacing: '0.01em',
-                     lineHeight: '1.8'
-                   }}>
+              <div className="story-text whitespace-pre-line">
                 {currentContent.content}
               </div>
             </div>
 
             {/* Decorative separator */}
-            <div className="flex items-center justify-center my-6">
-              <div className="h-px bg-gradient-to-r from-transparent via-amber-700/20 to-transparent w-full"></div>
-              <span className="text-amber-600/50 mx-4 text-xl">✦</span>
-              <div className="h-px bg-gradient-to-r from-transparent via-amber-700/20 to-transparent w-full"></div>
+            <div className="decorative-separator">
+              <div className="separator-line"></div>
+              <span className="separator-symbol">✦</span>
+              <div className="separator-line"></div>
             </div>
 
             {/* Choices with manuscript style */}
             {currentContent.choices && (
               <div className="space-y-3 mt-6">
-                <p className="text-amber-800/80 text-center mb-4 italic text-lg"
-                   style={{
-                     fontFamily: 'Baskerville, serif',
-                     letterSpacing: '0.02em'
-                   }}>
+                <p className="choice-prompt">
                   Choose your path, dear reader...
                 </p>
                 {currentContent.choices.map((choice, index) => (
@@ -460,15 +376,7 @@ The mechanical dragon's scales, for instance, are made of carbon atoms holding h
                     key={index}
                     onClick={() => stories[choice.action] ? handleChoice(choice.action) : null}
                     disabled={!stories[choice.action]}
-                    className={`w-full text-left p-4 rounded transition-all duration-300 
-                             border flex items-center justify-between group relative overflow-hidden
-                             ${stories[choice.action] 
-                               ? 'bg-gradient-to-r from-amber-100/40 to-yellow-100/40 hover:from-amber-100/60 hover:to-yellow-100/60 text-amber-900 border-amber-600/20 hover:border-amber-600/30 cursor-pointer' 
-                               : 'bg-gray-100/20 text-gray-400 border-gray-300/20 cursor-not-allowed'}`}
-                    style={{
-                      boxShadow: stories[choice.action] ? '1px 1px 4px rgba(0,0,0,0.05)' : 'none',
-                      fontFamily: 'Baskerville, serif'
-                    }}
+                    className={`choice-button group ${stories[choice.action] ? '' : 'disabled'}`}
                   >
                     <span className="font-medium relative z-10" style={{ letterSpacing: '0.02em' }}>
                       {choice.text}
@@ -494,22 +402,13 @@ The mechanical dragon's scales, for instance, are made of carbon atoms holding h
                     </div>
                     <button
                       onClick={() => setCurrentStory('welcome')}
-                      className="w-full text-center p-4 bg-gradient-to-r from-amber-50/40 to-yellow-50/40 
-                               hover:from-amber-100/50 hover:to-yellow-100/50 
-                               text-amber-800 rounded transition-all duration-300 
-                               border border-amber-600/15 hover:border-amber-600/25 
-                               flex items-center justify-center gap-2 group relative overflow-hidden"
-                      style={{
-                        boxShadow: '1px 1px 3px rgba(0,0,0,0.03)',
-                        fontFamily: 'Baskerville, serif'
-                      }}
+                      className="home-button group"
                     >
-                      <Home className="w-4 h-4 text-amber-700" />
-                      <span className="font-medium relative z-10" style={{ letterSpacing: '0.02em' }}>
+                      <Home className="home-button-icon" />
+                      <span className="home-button-text">
                         Return to the Beginning
                       </span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-200/15 to-transparent 
-                                    translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                      <div className="home-button-shimmer"></div>
                     </button>
                   </>
                 )}
@@ -519,21 +418,18 @@ The mechanical dragon's scales, for instance, are made of carbon atoms holding h
         </div>
 
         {/* Footer with Victorian flourish */}
-        <div className="text-center text-amber-700/70 text-sm mt-8 mb-4">
-          <div className="flex items-center justify-center mb-2">
-            <span className="text-xl">❦</span>
-            <div className="h-px bg-gradient-to-r from-transparent via-amber-700/30 to-transparent w-20 mx-2"></div>
-            <span className="text-xl">❦</span>
+        <div className="primer-footer">
+          <div className="footer-decoration">
+            <span className="footer-flourish">❦</span>
+            <div className="footer-line"></div>
+            <span className="footer-flourish">❦</span>
           </div>
-          <p className="mb-2" style={{
-            fontFamily: 'Baskerville, serif',
-            letterSpacing: '0.05em'
-          }}>
+          <p className="footer-text">
             {readerName && `Crafted for ${readerName} • `}
             Anno Domini MMXXV
           </p>
-          <div className="flex items-center justify-center space-x-4">
-            <span style={{ fontFamily: 'Baskerville, serif' }}>
+          <div className="footer-stats">
+            <span className="footer-stat">
               {Object.keys(storyProgress).length} passages explored
             </span>
           </div>

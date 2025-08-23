@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom font imports for the primer */
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
-
 @layer base {
   * {
     font-synthesis: none;
@@ -14,7 +11,7 @@
   }
   
   html {
-    font-family: 'Libre Baskerville', Baskerville, 'Palatino Linotype', Palatino, 'Century Schoolbook', serif;
+    font-family: Baskerville, 'Palatino Linotype', Palatino, 'Century Schoolbook', serif;
   }
   
   body {
@@ -31,12 +28,13 @@
 }
 
 @layer components {
-  /* Vintage paper texture utility */
-  .paper-texture {
+  /* Main container */
+  .primer-container {
+    min-height: 100vh;
     position: relative;
   }
   
-  .paper-texture::before {
+  .primer-container::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -52,6 +50,66 @@
     pointer-events: none;
   }
   
+  /* Content wrapper */
+  .primer-content {
+    @apply max-w-4xl mx-auto relative z-10 p-4;
+  }
+  
+  /* Header section */
+  .primer-header {
+    @apply text-center mb-8 pt-8;
+  }
+  
+  .decorative-line {
+    @apply h-px bg-gradient-to-r from-transparent via-amber-700 to-transparent w-32;
+  }
+  
+  .header-icon-container {
+    @apply mx-4 relative;
+  }
+  
+  .sparkle-animation {
+    @apply absolute inset-0 animate-pulse;
+    filter: drop-shadow(0 0 3px rgba(250, 204, 21, 0.5));
+  }
+  
+  .book-icon {
+    @apply w-12 h-12 text-amber-700 relative z-10;
+  }
+  
+  .main-title {
+    @apply mb-3 relative;
+  }
+  
+  .title-line-1 {
+    @apply text-5xl font-serif text-amber-800;
+    font-family: Baskerville, 'Palatino Linotype', Palatino, 'Century Schoolbook', serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.05em;
+  }
+  
+  .title-line-2 {
+    @apply text-6xl font-serif text-amber-900;
+    font-family: Baskerville, 'Palatino Linotype', Palatino, 'Century Schoolbook', serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.1em;
+    font-weight: bold;
+  }
+  
+  .subtitle {
+    @apply text-amber-700/80 text-lg italic mt-4;
+    font-family: Baskerville, 'Palatino Linotype', serif;
+    letter-spacing: 0.02em;
+  }
+  
+  .decorative-flourish {
+    @apply flex items-center justify-center mt-4;
+  }
+  
+  .flourish-symbol {
+    @apply text-amber-600/60 text-2xl;
+  }
+  
   /* Ornate manuscript page styling */
   .manuscript-page {
     @apply bg-gradient-to-br from-amber-50 via-yellow-50/95 to-amber-50/90 rounded-lg shadow-xl border border-amber-600/20 relative overflow-hidden;
@@ -62,31 +120,32 @@
   /* Typography styles */
   .illuminated-letter {
     @apply text-6xl text-amber-800 align-top font-bold inline-block mr-0.5;
-    font-family: 'Libre Baskerville', Baskerville, serif;
+    font-family: Baskerville, serif;
     text-shadow: 2px 2px 3px rgba(0,0,0,0.1);
     line-height: 0.7;
     vertical-align: bottom;
   }
   
   .primer-title {
-    font-family: 'Libre Baskerville', Baskerville, 'Palatino Linotype', Palatino, 'Century Schoolbook', serif;
+    font-family: Baskerville, 'Palatino Linotype', Palatino, 'Century Schoolbook', serif;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
     letter-spacing: 0.05em;
   }
   
   .story-text {
     @apply text-amber-900/90 leading-loose text-lg;
-    font-family: 'Libre Baskerville', 'Book Antiqua', 'Palatino Linotype', serif;
+    font-family: Baskerville, 'Book Antiqua', 'Palatino Linotype', serif;
     text-align: justify;
     text-indent: 2em;
     letter-spacing: 0.01em;
     line-height: 1.8;
+    font-weight: 500;
   }
   
   /* Choice button styling */
   .choice-button {
-    @apply w-full text-left p-4 rounded transition-all duration-300 border flex items-center justify-between group relative overflow-hidden;
-    font-family: 'Libre Baskerville', serif;
+    @apply w-full text-left p-4 rounded transition-all duration-300 border flex items-center justify-between relative overflow-hidden;
+    font-family: Baskerville, serif;
     box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
   }
   
@@ -101,5 +160,159 @@
   
   .choice-shimmer {
     @apply absolute inset-0 bg-gradient-to-r from-transparent via-amber-200/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700;
+  }
+  
+  /* Name input modal */
+  .modal-overlay {
+    @apply fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50;
+  }
+  
+  .modal-container {
+    @apply relative max-w-md mx-4;
+  }
+  
+  .modal-border-outer {
+    @apply absolute -inset-4 border-2 border-amber-700/20 rounded-lg;
+  }
+  
+  .modal-border-inner {
+    @apply absolute -inset-2 border border-amber-600/20 rounded-lg;
+  }
+  
+  .modal-content {
+    @apply relative bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-50 rounded-lg p-8 shadow-2xl border border-amber-600/30;
+  }
+  
+  .modal-header {
+    @apply text-center mb-6;
+  }
+  
+  .modal-icon {
+    @apply mb-4 relative inline-block w-16 h-16 text-amber-700;
+  }
+  
+  .modal-title {
+    @apply text-3xl font-serif text-amber-900 mb-3;
+    font-family: Baskerville, 'Palatino Linotype', serif;
+    letter-spacing: 0.05em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  }
+  
+  .modal-subtitle {
+    @apply text-amber-700/90 leading-relaxed;
+    font-family: Baskerville, serif;
+  }
+  
+  .name-input {
+    @apply w-full p-3 bg-white/70 border border-amber-600/30 rounded text-amber-900 placeholder-amber-600/40 focus:outline-none focus:border-amber-600/50;
+    font-family: Baskerville, serif;
+    letter-spacing: 0.02em;
+    box-shadow: 0 0 10px rgba(217,119,6,0.1);
+  }
+  
+  .name-input:focus {
+    box-shadow: 0 0 10px rgba(217,119,6,0.1);
+  }
+  
+  .submit-button {
+    @apply w-full bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 text-amber-50 py-3 px-4 rounded transition-all font-semibold border border-amber-700/50;
+    font-family: Baskerville, serif;
+    letter-spacing: 0.05em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  }
+  
+  .submit-button:hover {
+    @apply from-amber-600 to-amber-600 shadow-lg;
+  }
+  
+  /* Page corners */
+  .page-corner {
+    @apply absolute w-12 h-12 border-amber-700/20;
+  }
+  
+  .page-corner-tl {
+    @apply -top-3 -left-3 border-t-2 border-l-2 rounded-tl-lg;
+  }
+  
+  .page-corner-tr {
+    @apply -top-3 -right-3 border-t-2 border-r-2 rounded-tr-lg;
+  }
+  
+  .page-corner-bl {
+    @apply -bottom-3 -left-3 border-b-2 border-l-2 rounded-bl-lg;
+  }
+  
+  .page-corner-br {
+    @apply -bottom-3 -right-3 border-b-2 border-r-2 rounded-br-lg;
+  }
+  
+  /* Separators and decorative elements */
+  .decorative-separator {
+    @apply flex items-center justify-center my-6;
+  }
+  
+  .separator-line {
+    @apply h-px bg-gradient-to-r from-transparent via-amber-700/20 to-transparent w-full;
+  }
+  
+  .separator-symbol {
+    @apply text-amber-600/50 mx-4 text-xl;
+  }
+  
+  .choice-prompt {
+    @apply text-amber-800/80 text-center mb-4 italic text-lg;
+    font-family: Baskerville, serif;
+    letter-spacing: 0.02em;
+  }
+  
+  /* Home button */
+  .home-button {
+    @apply w-full text-center p-4 bg-gradient-to-r from-amber-50/40 to-yellow-50/40 hover:from-amber-100/50 hover:to-yellow-100/50 text-amber-800 rounded transition-all duration-300 border border-amber-600/15 hover:border-amber-600/25 flex items-center justify-center gap-2 relative overflow-hidden;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.03);
+    font-family: Baskerville, serif;
+  }
+  
+  .home-button-icon {
+    @apply w-4 h-4 text-amber-700;
+  }
+  
+  .home-button-text {
+    @apply font-medium relative z-10;
+    letter-spacing: 0.02em;
+  }
+  
+  .home-button-shimmer {
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-amber-200/15 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700;
+  }
+  
+  /* Footer */
+  .primer-footer {
+    @apply text-center text-amber-700/70 text-sm mt-8 mb-4;
+  }
+  
+  .footer-decoration {
+    @apply flex items-center justify-center mb-2;
+  }
+  
+  .footer-flourish {
+    @apply text-xl;
+  }
+  
+  .footer-line {
+    @apply h-px bg-gradient-to-r from-transparent via-amber-700/30 to-transparent w-20 mx-2;
+  }
+  
+  .footer-text {
+    @apply mb-2;
+    font-family: Baskerville, serif;
+    letter-spacing: 0.05em;
+  }
+  
+  .footer-stats {
+    @apply flex items-center justify-center space-x-4;
+  }
+  
+  .footer-stat {
+    font-family: Baskerville, serif;
   }
 }
