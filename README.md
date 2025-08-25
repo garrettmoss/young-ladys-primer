@@ -4,6 +4,8 @@ An interactive book that adapts its stories, lessons, and challenges to each ind
 
 ## About
 
+This isn't just a tech demo or story app - it's specifically designed to empower young women through interactive choice-driven narratives that teach both knowledge and confidence. Every feature should serve these goals:
+
 ### Goals
 - To instill young girls with a sense of agency 
 - To encourage them to go out into the world and live their knowledge through experience

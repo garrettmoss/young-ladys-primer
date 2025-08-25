@@ -4,6 +4,9 @@
 An interactive educational primer inspired by Neal Stephenson's "Diamond Age". This React/Next.js application presents adaptive educational content through branching narratives, lessons, and interactive elements. The Primer adjusts to the reader and provides personalized learning experiences through stories about Princess Aria and her adventures with nanotechnology, mechanical dragons, and scientific discovery.
 
 See `README.md` for more detailed goals and intentions. For example:
+
+## Vision
+This isn't just a tech demo or story app - it's specifically designed to empower young women through interactive choice-driven narratives that teach both knowledge and confidence. Every feature should serve these goals:
 ### Goals
 - To instill young girls with a sense of agency 
 - To encourage them to go out into the world and live their knowledge through experience
