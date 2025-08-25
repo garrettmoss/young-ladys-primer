@@ -66,6 +66,23 @@ See `ARCHITECTURE.md` for detailed file structure and development guidelines.
 - Add story completion tracking and achievements
 - Explore audio narration for accessibility
 
+## Versioning
+This project follows **semantic versioning (semver)**: MAJOR.MINOR.PATCH
+
+- **MAJOR** (1.x.x): Breaking changes or major feature overhauls
+  - Complete UI redesign, fundamental architecture changes, new target age groups
+- **MINOR** (x.1.x): New features that don't break existing functionality  
+  - New story arcs, new educational topics, major new features (save/load, audio)
+- **PATCH** (x.x.1): Bug fixes, small improvements, content additions
+  - New story branches within existing arcs, ESLint setup, minor fixes
+
+**Current version:** 1.0.0 (check `package.json`)
+
+**When to bump versions:**
+- Adding story branches = patch (1.0.1)
+- Adding puzzles system = minor (1.1.0) 
+- Major UI overhaul = major (2.0.0)
+
 ## Technical Stack
 - React 18 with Next.js 14
 - Tailwind CSS for styling
