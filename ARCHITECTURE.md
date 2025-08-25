@@ -7,7 +7,7 @@ This project follows a content-driven architecture that separates presentation l
 
 ```
 young-ladys-primer/
-├── ARCHITECTURE.md                     # This file
+├── ARCHITECTURE.md                     # Project structure & development guide
 ├── README.md                          # Project overview and setup
 ├── package.json                       # Dependencies and scripts
 ├── next.config.js                     # Next.js configuration
@@ -27,15 +27,12 @@ young-ladys-primer/
 │   │   ├── stories/                  # Interactive story content
 │   │   │   └── dragon-story/         # Mechanical dragon story arc
 │   │   │       ├── index.js          # Story collection export
-│   │   │       ├── princess-meeting.js    # Initial dragon encounter
-│   │   │       ├── dragon-pattern.js      # Pattern analysis branch
-│   │   │       ├── dragon-approach.js     # Direct approach branch  
-│   │   │       └── dragon-engineers.js    # Engineering consultation branch
+│   │   │       └── *.js              # Individual story branches & scenes
 │   │   │
 │   │   ├── lessons/                  # Educational content modules
 │   │   │   └── nanotechnology/       # Molecular science lessons
 │   │   │       ├── index.js          # Lesson collection export
-│   │   │       └── molecular-communication.js  # How to talk to molecules
+│   │   │       └── *.js              # Individual lesson modules
 │   │   │
 │   │   └── puzzles/                  # Interactive puzzles & challenges
 │   │       └── index.js              # (Future: logic puzzles, etc.)
