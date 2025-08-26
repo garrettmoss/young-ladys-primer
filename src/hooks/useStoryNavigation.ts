@@ -9,14 +9,63 @@
  * of separation of concerns. The main component focuses purely on presentation
  * while this hook manages all stateful navigation behavior.
  * 
- * Future enhancements could include:
+ * Features:
  * - localStorage persistence for progress across sessions
+ * - Navigation history tracking for analytics
+ * - Progress indicators for completed stories
+ * 
+ * Future enhancements could include:
  * - Achievement tracking based on story completion
  * - Analytics for understanding reader behavior patterns
  * - Branching path recommendations
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+// === CONSTANTS ===
+
+/**
+ * localStorage keys for persisting navigation state
+ */
+const STORAGE_KEYS = {
+  CURRENT_STORY: 'young-ladys-primer-current-story',
+  STORY_PROGRESS: 'young-ladys-primer-progress',
+  CONVERSATION_HISTORY: 'young-ladys-primer-history'
+} as const;
+
+// === STORAGE HELPERS ===
+
+/**
+ * Safely load data from localStorage with fallback
+ * @param key - localStorage key
+ * @param fallback - default value if not found or error
+ */
+const loadFromStorage = <T>(key: string, fallback: T): T => {
+  if (typeof window === 'undefined') return fallback; // SSR safety
+  
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : fallback;
+  } catch (error) {
+    console.warn(`Failed to load ${key} from localStorage:`, error);
+    return fallback;
+  }
+};
+
+/**
+ * Safely save data to localStorage
+ * @param key - localStorage key
+ * @param value - value to store
+ */
+const saveToStorage = <T>(key: string, value: T): void => {
+  if (typeof window === 'undefined') return; // SSR safety
+  
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.warn(`Failed to save ${key} to localStorage:`, error);
+  }
+};
 
 // === TYPE DEFINITIONS ===
 
@@ -47,10 +96,29 @@ interface StoryProgress {
  * @returns Navigation state and control functions
  */
 export const useStoryNavigation = (initialStory: string = 'welcome') => {
-  // Navigation State
-  const [currentStory, setCurrentStory] = useState<string>(initialStory);
-  const [storyProgress, setStoryProgress] = useState<StoryProgress>({});
-  const [conversationHistory, setConversationHistory] = useState<NavigationHistoryItem[]>([]);
+  // Navigation State - initialized from localStorage or defaults
+  const [currentStory, setCurrentStory] = useState<string>(() => 
+    loadFromStorage(STORAGE_KEYS.CURRENT_STORY, initialStory)
+  );
+  const [storyProgress, setStoryProgress] = useState<StoryProgress>(() =>
+    loadFromStorage(STORAGE_KEYS.STORY_PROGRESS, {})
+  );
+  const [conversationHistory, setConversationHistory] = useState<NavigationHistoryItem[]>(() =>
+    loadFromStorage(STORAGE_KEYS.CONVERSATION_HISTORY, [])
+  );
+
+  // Persist state changes to localStorage
+  useEffect(() => {
+    saveToStorage(STORAGE_KEYS.CURRENT_STORY, currentStory);
+  }, [currentStory]);
+
+  useEffect(() => {
+    saveToStorage(STORAGE_KEYS.STORY_PROGRESS, storyProgress);
+  }, [storyProgress]);
+
+  useEffect(() => {
+    saveToStorage(STORAGE_KEYS.CONVERSATION_HISTORY, conversationHistory);
+  }, [conversationHistory]);
 
   /**
    * Navigate to a new story/page
@@ -85,12 +153,67 @@ export const useStoryNavigation = (initialStory: string = 'welcome') => {
     setCurrentStory('welcome');
   };
 
+  /**
+   * Navigate back to the previous story
+   * 
+   * Uses conversation history to return to the last visited story.
+   * Does nothing if there's no previous story to return to.
+   */
+  const goBack = (): boolean => {
+    if (conversationHistory.length === 0) return false;
+
+    // Get the last navigation event and go back to where we came from
+    const lastNavigation = conversationHistory[conversationHistory.length - 1];
+    const previousStory = lastNavigation.from;
+
+    // Remove the last navigation from history to prevent infinite back loops
+    setConversationHistory(prev => prev.slice(0, -1));
+    
+    // Navigate to previous story without adding to history again
+    setCurrentStory(previousStory);
+
+    return true; // Successfully went back
+  };
+
+  /**
+   * Check if back navigation is available
+   * @returns true if there are previous stories to navigate back to
+   */
+  const canGoBack = (): boolean => {
+    return conversationHistory.length > 0;
+  };
+
+  /**
+   * Clear all progress and start fresh
+   * 
+   * Removes all localStorage data and resets to initial state.
+   * Use sparingly - this will lose all reader progress permanently.
+   */
+  const clearAllProgress = (): void => {
+    // Clear localStorage
+    Object.values(STORAGE_KEYS).forEach(key => {
+      try {
+        localStorage.removeItem(key);
+      } catch (error) {
+        console.warn(`Failed to clear ${key} from localStorage:`, error);
+      }
+    });
+
+    // Reset state
+    setCurrentStory(initialStory);
+    setStoryProgress({});
+    setConversationHistory([]);
+  };
+
   // Return navigation state and control functions
   return {
     currentStory,        // Current story/page identifier
     storyProgress,       // Object tracking visited stories  
     conversationHistory, // Array of all navigation events
     navigateToStory,     // Function to move to new story
-    resetToWelcome       // Function to return to start
+    resetToWelcome,      // Function to return to start
+    goBack,              // Function to navigate back to previous story
+    canGoBack,           // Function to check if back navigation is available
+    clearAllProgress     // Function to clear all saved progress
   };
 };

@@ -20,7 +20,7 @@
  */
 
 import React, { useState } from 'react';
-import { BookOpen, Sparkles, ArrowRight, Feather, Home } from 'lucide-react';
+import { BookOpen, Sparkles, ArrowRight, Feather, Home, ChevronLeft } from 'lucide-react';
 import { getStoryContent, Choice } from './content/index';
 import { useStoryNavigation } from './hooks/useStoryNavigation';
 
@@ -34,7 +34,9 @@ const YoungLadysPrimer: React.FC = () => {
     currentStory,     // Current story/page identifier (string)
     storyProgress,    // Object tracking which stories have been visited
     navigateToStory,  // Function to move to a new story
-    resetToWelcome    // Function to return to the welcome screen
+    resetToWelcome,   // Function to return to the welcome screen
+    goBack,           // Function to navigate back to previous story
+    canGoBack         // Boolean indicating if back navigation is possible
   } = useStoryNavigation();
 
   // Content Resolution: Fetch story content with personalization
@@ -202,7 +204,7 @@ const YoungLadysPrimer: React.FC = () => {
                   </button>
                 ))}
                 
-                {/* Home button - only show when not on welcome page */}
+                {/* Navigation buttons - only show when not on welcome page */}
                 {currentStory !== 'welcome' && (
                   <>
                     <div className="flex items-center justify-center my-4">
@@ -210,6 +212,22 @@ const YoungLadysPrimer: React.FC = () => {
                       <span className="text-amber-600/40 mx-3 text-sm">or</span>
                       <div className="h-px bg-gradient-to-r from-transparent via-amber-700/20 to-transparent w-24"></div>
                     </div>
+                    
+                    {/* Back button - only show when back navigation is possible */}
+                    {canGoBack() && (
+                      <button
+                        onClick={goBack}
+                        className="home-button group mb-3"
+                      >
+                        <ChevronLeft className="home-button-icon" />
+                        <span className="home-button-text">
+                          Go Back
+                        </span>
+                        <div className="home-button-shimmer"></div>
+                      </button>
+                    )}
+                    
+                    {/* Home button */}
                     <button
                       onClick={resetToWelcome}
                       className="home-button group"

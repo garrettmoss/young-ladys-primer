@@ -30,7 +30,8 @@ See `ARCHITECTURE.md` for detailed file structure and development guidelines.
 - Branching interactive narratives
 - Personalized content using reader's name
 - Modular content system for easy expansion
-- Story progress tracking and navigation history
+- Story progress tracking with localStorage persistence
+- Navigation history across browser sessions
 - Responsive Victorian manuscript-style design
 
 ## Important Notes
