@@ -1,28 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { BookOpen, Sparkles, ArrowRight, User, Settings, Feather, Moon, Sun, Home } from 'lucide-react';
-import { getStoryContent, getAllStoryKeys } from './content/index.js';
-import { useStoryNavigation } from './hooks/useStoryNavigation.js';
+import React, { useState } from 'react';
+import { BookOpen, Sparkles, ArrowRight, Feather, Home } from 'lucide-react';
+import { getStoryContent, Choice } from './content/index';
+import { useStoryNavigation } from './hooks/useStoryNavigation';
 
-const YoungLadysPrimer = () => {
-  const [readerName, setReaderName] = useState('Aria');
-  const [showNameInput, setShowNameInput] = useState(false);
+const YoungLadysPrimer: React.FC = () => {
+  const [readerName, setReaderName] = useState<string>('Aria');
+  const [showNameInput, setShowNameInput] = useState<boolean>(false);
   
   const {
     currentStory,
     storyProgress,
-    conversationHistory,
     navigateToStory,
     resetToWelcome
   } = useStoryNavigation();
 
   // Get current content using the new content system
-  const currentContent = getStoryContent(currentStory, readerName) || getStoryContent('welcome', readerName);
+  const currentContent = getStoryContent(currentStory, readerName) || getStoryContent('welcome', readerName)!;
 
-  const handleChoice = (action) => {
+  const handleChoice = (action: string) => {
     navigateToStory(action);
   };
 
-  const handleNameSubmit = () => {
+  const handleNameSubmit = (): void => {
     if (readerName.trim()) {
       setShowNameInput(false);
     }
@@ -148,7 +147,7 @@ const YoungLadysPrimer = () => {
                 <p className="choice-prompt">
                   Choose your path, dear reader...
                 </p>
-                {currentContent.choices.map((choice, index) => (
+                {currentContent.choices.map((choice: Choice, index: number) => (
                   <button
                     key={index}
                     onClick={() => getStoryContent(choice.action) ? handleChoice(choice.action) : null}
