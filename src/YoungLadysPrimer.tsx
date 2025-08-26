@@ -1,33 +1,67 @@
+/**
+ * Young Lady's Primer - Main Application Component
+ * 
+ * An interactive educational primer inspired by Neal Stephenson's "Diamond Age".
+ * This React component presents adaptive educational content through branching 
+ * narratives designed to empower young women with agency, knowledge, and confidence.
+ * 
+ * Key Features:
+ * - Victorian manuscript-style UI with ornate decorations
+ * - Personalized content using reader's name
+ * - Branching interactive narratives with choice-driven progression
+ * - Story progress tracking and navigation history
+ * - Responsive design with elegant animations
+ * 
+ * Architecture:
+ * - Pure UI rendering component (no business logic)
+ * - Content fetched from modular content system
+ * - State management handled by custom navigation hook
+ * - TypeScript for compile-time safety and better developer experience
+ */
+
 import React, { useState } from 'react';
 import { BookOpen, Sparkles, ArrowRight, Feather, Home } from 'lucide-react';
 import { getStoryContent, Choice } from './content/index';
 import { useStoryNavigation } from './hooks/useStoryNavigation';
 
 const YoungLadysPrimer: React.FC = () => {
-  const [readerName, setReaderName] = useState<string>('Aria');
-  const [showNameInput, setShowNameInput] = useState<boolean>(false);
+  // UI State: Reader's name and name input modal visibility
+  const [readerName, setReaderName] = useState<string>('Aria'); // Default name, can be customized
+  const [showNameInput, setShowNameInput] = useState<boolean>(false); // Controls name input modal
   
+  // Navigation State: Managed by custom hook for separation of concerns
   const {
-    currentStory,
-    storyProgress,
-    navigateToStory,
-    resetToWelcome
+    currentStory,     // Current story/page identifier (string)
+    storyProgress,    // Object tracking which stories have been visited
+    navigateToStory,  // Function to move to a new story
+    resetToWelcome    // Function to return to the welcome screen
   } = useStoryNavigation();
 
-  // Get current content using the new content system
+  // Content Resolution: Fetch story content with personalization
+  // Falls back to welcome screen if current story not found
+  // The '!' asserts that welcome content will always exist
   const currentContent = getStoryContent(currentStory, readerName) || getStoryContent('welcome', readerName)!;
 
+  // Event Handlers: User interaction callbacks
+  
+  /**
+   * Handle story choice selection - navigates to new story branch
+   * @param action - The story identifier to navigate to
+   */
   const handleChoice = (action: string) => {
     navigateToStory(action);
   };
 
+  /**
+   * Handle name input submission - closes modal if name is valid
+   */
   const handleNameSubmit = (): void => {
     if (readerName.trim()) {
       setShowNameInput(false);
     }
   };
 
-  // This line is now handled above with the new content system
+  // === RENDER: Victorian Manuscript-Style UI ===
 
   return (
     <div className="primer-container">

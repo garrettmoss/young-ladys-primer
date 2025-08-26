@@ -83,6 +83,11 @@ This project follows **semantic versioning (semver)**: MAJOR.MINOR.PATCH
 - Adding puzzles system = minor (1.1.0) 
 - Major UI overhaul = major (2.0.0)
 
+## Code Documentation Standards
+This project maintains high documentation standards to ensure readability and maintainability. All code should be self-documenting through comprehensive comments and clear naming.
+
+See `src/YoungLadysPrimer.tsx` for an example of proper file-level documentation, function comments, and inline explanations.
+
 ## Technical Stack
 - React 18 with Next.js 14
 - Tailwind CSS for styling

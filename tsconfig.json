@@ -1,42 +1,70 @@
 {
+  /*
+   * TypeScript Configuration - Young Lady's Primer
+   * 
+   * Configures TypeScript compilation for Next.js with strict type checking
+   * and modern JavaScript features. Optimized for development experience
+   * while maintaining production-ready build output.
+   */
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+    // Compilation Target & Environment
+    "target": "es5",              // Target older browsers for wide compatibility
+    "lib": [                      // Include modern DOM and ES features
+      "dom",                      // Browser DOM APIs
+      "dom.iterable",            // Modern DOM iteration methods
+      "esnext"                   // Latest ECMAScript features
     ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
+    
+    // JavaScript Integration
+    "allowJs": true,              // Allow .js files alongside .ts files (for gradual migration)
+    "skipLibCheck": true,         // Skip type checking of declaration files (faster builds)
+    
+    // Type Checking Strictness
+    "strict": true,               // Enable all strict type checking options
+    "forceConsistentCasingInFileNames": true, // Enforce consistent file naming
+    
+    // Build Output
+    "noEmit": true,              // Don't emit JS files (Next.js handles compilation)
+    
+    // Module System
+    "esModuleInterop": true,     // Enable ES module interop with CommonJS
+    "module": "esnext",          // Use modern ES modules
+    "moduleResolution": "bundler", // Use bundler-specific module resolution
+    "resolveJsonModule": true,   // Allow importing JSON files as modules
+    "isolatedModules": true,     // Ensure each file can be safely transpiled alone
+    
+    // JSX Configuration
+    "jsx": "preserve",           // Preserve JSX for Next.js to handle
+    
+    // Performance
+    "incremental": true,         // Enable incremental compilation for faster rebuilds
+    
+    // Next.js Integration
     "plugins": [
       {
-        "name": "next"
+        "name": "next"           // Enable Next.js TypeScript plugin
       }
     ],
+    
+    // Path Mapping (for cleaner imports)
     "paths": {
-      "@/*": [
+      "@/*": [                   // Allow @/ imports to reference src/ directory
         "./src/*"
       ]
     }
   },
+  
+  // Files to Include in Compilation
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
+    "next-env.d.ts",            // Next.js type definitions
+    "**/*.ts",                  // All TypeScript files
+    "**/*.tsx",                 // All TypeScript React files
+    ".next/types/**/*.ts"       // Generated Next.js types
   ],
+  
+  // Files to Exclude from Compilation
   "exclude": [
-    "node_modules",
-    "ARCHIVE"
+    "node_modules",             // Third-party dependencies
+    "ARCHIVE"                   // Archived development prototypes
   ]
 }
