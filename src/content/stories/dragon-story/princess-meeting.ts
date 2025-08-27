@@ -1,7 +1,7 @@
 export const storyPrincessMeeting = {
   story_princess: {
     title: "The Princess and the Mechanical Dragon",
-    content: (readerName) => `In a land where great machines hummed beneath crystal spires, there lived a princess named ${readerName} who was unlike any other.
+    content: (readerName: string) => `In a land where great machines hummed beneath crystal spires, there lived a princess named ${readerName} who was unlike any other.
 
 While other royals studied etiquette and embroidery, she spent her days in the palace workshop, learning the secret languages that commanded the tiny machines - the mites and assemblers that built their world.
 

@@ -18,9 +18,10 @@
  * 4. Content will automatically be available throughout the app
  */
 
-import { welcomeContent } from './core/welcome.js';
-import { dragonStoryCollection } from './stories/dragon-story/index.js';
-import { nanotechnologyLessons } from './lessons/nanotechnology/index.js';
+import { welcomeContent } from './core/welcome';
+import { dragonStoryCollection } from './stories/dragon-story/index';
+import { lessonNavigation } from './lessons/index';
+import { nanotechnologyLessons } from './lessons/nanotechnology/index';
 
 // === TYPE DEFINITIONS ===
 
@@ -69,6 +70,7 @@ interface ContentRegistry {
  */
 export const allContent: ContentRegistry = {
   ...welcomeContent,        // Core navigation and welcome screens
+  ...lessonNavigation,      // Lesson category selection screen
   ...dragonStoryCollection, // Main dragon story arc with multiple branches  
   ...nanotechnologyLessons  // Educational content about molecular science
 };

@@ -1,7 +1,7 @@
 export const dragonEngineersStories = {
   dragon_engineers: {
     title: "The Council of Makers",
-    content: (readerName) => `Princess ${readerName} summoned the palace's finest engineers and artificers to the great hall. Master Cogsworth, ancient and wise, examined her sketches through his many-lensed spectacles.
+    content: (readerName: string) => `Princess ${readerName} summoned the palace's finest engineers and artificers to the great hall. Master Cogsworth, ancient and wise, examined her sketches through his many-lensed spectacles.
 
 "Your Highness," he wheezed, his voice like rustling parchment, "this is no ordinary mechanical beast. These patterns you've recorded - they match the work of the legendary Artificer Queen, who vanished a hundred years ago."
 

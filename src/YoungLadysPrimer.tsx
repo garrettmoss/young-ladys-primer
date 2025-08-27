@@ -19,7 +19,7 @@
  * - TypeScript for compile-time safety and better developer experience
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BookOpen, Sparkles, ArrowRight, Feather, Home, ChevronLeft } from 'lucide-react';
 import { getStoryContent, Choice } from './content/index';
 import { useStoryNavigation } from './hooks/useStoryNavigation';
@@ -28,6 +28,7 @@ const YoungLadysPrimer: React.FC = () => {
   // UI State: Reader's name and name input modal visibility
   const [readerName, setReaderName] = useState<string>('Aria'); // Default name, can be customized
   const [showNameInput, setShowNameInput] = useState<boolean>(false); // Controls name input modal
+  const [isHydrated, setIsHydrated] = useState<boolean>(false); // Track hydration status for SSR compatibility
   
   // Navigation State: Managed by custom hook for separation of concerns
   const {
@@ -39,10 +40,16 @@ const YoungLadysPrimer: React.FC = () => {
     canGoBack         // Boolean indicating if back navigation is possible
   } = useStoryNavigation();
 
+  // Hydration Effect: Ensure consistent rendering between server and client
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
   // Content Resolution: Fetch story content with personalization
-  // Falls back to welcome screen if current story not found
-  // The '!' asserts that welcome content will always exist
-  const currentContent = getStoryContent(currentStory, readerName) || getStoryContent('welcome', readerName)!;
+  // During SSR, always use 'welcome' to prevent hydration mismatch
+  // After hydration, use the actual currentStory from localStorage
+  const storyKey = isHydrated ? currentStory : 'welcome';
+  const currentContent = getStoryContent(storyKey, readerName) || getStoryContent('welcome', readerName)!;
 
   // Event Handlers: User interaction callbacks
   
@@ -204,8 +211,8 @@ const YoungLadysPrimer: React.FC = () => {
                   </button>
                 ))}
                 
-                {/* Navigation buttons - only show when not on welcome page */}
-                {currentStory !== 'welcome' && (
+                {/* Navigation buttons - only show when not on welcome page and after hydration */}
+                {isHydrated && currentStory !== 'welcome' && (
                   <>
                     <div className="flex items-center justify-center my-4">
                       <div className="h-px bg-gradient-to-r from-transparent via-amber-700/20 to-transparent w-24"></div>
@@ -258,7 +265,7 @@ const YoungLadysPrimer: React.FC = () => {
           </p>
           <div className="footer-stats">
             <span className="footer-stat">
-              {Object.keys(storyProgress).length} passages explored
+              {isHydrated ? Object.keys(storyProgress).length : 0} passages explored
             </span>
           </div>
         </div>

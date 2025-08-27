@@ -1,7 +1,7 @@
 export const dragonPatternStories = {
   dragon_pattern: {
     title: "The Code in the Dance",
-    content: (readerName) => `Princess ${readerName} watched from the palace tower with her father's finest telescope, sketching the dragon's movements in her journal.
+    content: (readerName: string) => `Princess ${readerName} watched from the palace tower with her father's finest telescope, sketching the dragon's movements in her journal.
 
 Three steps forward, two to the left, pause, then a graceful turn... She began to see it wasn't random at all. It was binary! The dragon was trying to communicate.
 
@@ -20,7 +20,7 @@ But how does one free someone from such a prison?`,
 
   dragon_tech: {
     title: "The Anatomy of Wonder",
-    content: (readerName) => `In the palace library's restricted section, ${readerName} found the ancient text she sought: "The Mechanical Mysteries of Living Steel."
+    content: (readerName: string) => `In the palace library's restricted section, ${readerName} found the ancient text she sought: "The Mechanical Mysteries of Living Steel."
 
 The dragon, she learned, was not built but grown - assembled by millions of tiny machines called assemblers, each no larger than a grain of sand. These assemblers could rearrange matter at the smallest level, turning carbon into diamond-hard scales, and spinning copper into neural pathways that could hold a consciousness.
 
@@ -37,7 +37,7 @@ Yet the book mentioned one exception - they could be unmade by the same frequenc
 
   binary_talk: {
     title: "A Digital Dialogue",
-    content: (readerName) => `${readerName} had an idea. She ordered the palace guards to light torches on the battlements - on for 1, off for 0. Slowly, carefully, she spelled out her message to the dragon: "01001001 00100000 01101000 01100101 01100001 01110010" - "I hear."
+    content: (readerName: string) => `${readerName} had an idea. She ordered the palace guards to light torches on the battlements - on for 1, off for 0. Slowly, carefully, she spelled out her message to the dragon: "01001001 00100000 01101000 01100101 01100001 01110010" - "I hear."
 
 The dragon stopped its pacing. Its eyes flashed brighter, and it began a new dance, more complex than before. This time, it wasn't just speaking in binary - it was writing equations in the air with its movements, mathematical proofs that described the nature of its imprisonment.
 
@@ -54,7 +54,7 @@ The dragon - Elara - had found a way to hide her identity within the very curse 
 
   curse_research: {
     title: "Tales of Transformation",
-    content: (readerName) => `In the dustiest corner of the library, ${readerName} found a book bound in scales that shimmered like oil on water: "The Chronicle of Changed Ones."
+    content: (readerName: string) => `In the dustiest corner of the library, ${readerName} found a book bound in scales that shimmered like oil on water: "The Chronicle of Changed Ones."
 
 The book told of an age when the boundary between flesh and metal was thin, when artificers could weave consciousness into clockwork. But with this power came a terrible price - those who delved too deep into the mechanical mysteries risked losing their humanity entirely.
 
@@ -73,7 +73,7 @@ At the bottom of the page, in different ink, someone had written: "She still wai
 
   reader_choice: {
     title: "The Primer Listens",
-    content: (readerName) => `The story pauses, the words on the page shimmering like morning dew. 
+    content: (readerName: string) => `The story pauses, the words on the page shimmering like morning dew. 
 
 "Dear reader," the Primer speaks directly to you, "${readerName}, you have observed much. Princess ${readerName} stands at a crossroads, and perhaps your wisdom can guide her path.
 
@@ -89,6 +89,27 @@ The Primer awaits your insight...`,
       { text: "She should unite technology and magic", action: "unite_forces" },
       { text: "She should trust in the power of story and song", action: "power_story" },
       { text: "She should seek to understand before acting", action: "seek_understanding" }
+    ]
+  },
+
+  tech_lesson: {
+    title: "The Primer's Teaching",
+    content: (readerName: string) => `"Ah," says the Primer, its pages glowing softly, "you wish to understand the mechanical dragon's nature. Let me teach you, dear ${readerName}, about the marriage of consciousness and clockwork.
+
+In Princess ${readerName}'s world, every machine has three aspects:
+
+First, the FORM - the physical structure, be it gears and springs or circuits of light. The dragon's form is magnificent: joints that move with impossible grace, scales that can feel the slightest change in air pressure, eyes that see in spectrums beyond human perception.
+
+Second, the FUNCTION - the purpose it serves, the problems it solves. But what function does a dragon serve? Perhaps it is not what it does, but what it preserves that matters.
+
+Third, and most mysterious, the FLOW - the animating force that gives it life. In crude machines, this is mere electricity or steam. But in the dragon, the flow is something more... it is consciousness itself, encoded in quantum states, existing in the spaces between the gears.
+
+Understanding these three aspects, one might begin to see how to help a consciousness flow back from metal to flesh..."`,
+    choices: [
+      { text: "Learn more about the FORM", action: "learn_form" },
+      { text: "Understand the FUNCTION deeply", action: "learn_function" },
+      { text: "Master the mysteries of FLOW", action: "learn_flow" },
+      { text: "Return to help the dragon", action: "dragon_pattern" }
     ]
   }
 };

@@ -1,7 +1,7 @@
 export const molecularCommunication = {
   molecular_talk: {
     title: "The Language of Atoms",
-    content: (readerName) => `"To speak to molecules," the Primer explains, "one must first understand that they are always listening, always dancing, always responding to the world around them.
+    content: (readerName: string) => `"To speak to molecules," the Primer explains, "one must first understand that they are always listening, always dancing, always responding to the world around them.
 
 In ${readerName}'s kingdom, the artificers discovered that molecules respond to three kinds of messages:
 
@@ -13,7 +13,7 @@ ELECTRICITY - the most precise language of all. With tiny electrical whispers, o
 
 But here's the secret the ancients discovered: molecules don't just listen - they also speak. Every chemical reaction is a conversation, every crystal that forms tells a story of how its atoms prefer to arrange themselves.
 
-The mechanical dragon's scales, for instance, are made of carbon atoms holding hands in perfect hexagons, whispering strength to each other in bonds harder than diamond."`,
+The mechanical dragon's scales, for instance, are made of carbon atoms holding hands in perfect hexagons, whispering strength to each other in bonds harder than diamond.`,
     choices: [
       { text: "Learn to read molecular messages", action: "read_molecules" },
       { text: "Practice the three languages", action: "practice_languages" },
