@@ -22,6 +22,7 @@ import { welcomeContent } from './core/welcome';
 import { dragonStoryCollection } from './stories/dragon-story/index';
 import { lessonNavigation } from './lessons/index';
 import { nanotechnologyLessons } from './lessons/nanotechnology/index';
+import { puzzleCollection } from './puzzles/index';
 
 // === TYPE DEFINITIONS ===
 
@@ -72,7 +73,8 @@ export const allContent: ContentRegistry = {
   ...welcomeContent,        // Core navigation and welcome screens
   ...lessonNavigation,      // Lesson category selection screen
   ...dragonStoryCollection, // Main dragon story arc with multiple branches  
-  ...nanotechnologyLessons  // Educational content about molecular science
+  ...nanotechnologyLessons, // Educational content about molecular science
+  ...puzzleCollection       // Interactive logic puzzles and challenges
 };
 
 // === CONTENT ACCESS FUNCTIONS ===
