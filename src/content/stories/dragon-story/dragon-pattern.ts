@@ -111,5 +111,91 @@ Understanding these three aspects, one might begin to see how to help a consciou
       { text: "Master the mysteries of FLOW", action: "learn_flow" },
       { text: "Return to help the dragon", action: "dragon_pattern" }
     ]
+  },
+
+  show_compassion: {
+    title: "The Heart's Answer",
+    content: (readerName: string) => `Following the reader's wisdom, Princess ${readerName} chose the path of compassion. She approached the dragon not as a problem to be solved, but as a being in pain who needed understanding.
+
+"Elara," she said softly, using the name she had learned, "you are not alone anymore. For a century you have carried this burden by yourself, but I am here now. You don't have to be strong for everyone. You don't have to solve everything alone."
+
+The dragon's great form shuddered, and for the first time in a hundred years, Elara wept. Not tears of water, but tears of liquid light that fell like stars to the courtyard stones.
+
+"I tried to save him," Elara whispered, her voice breaking with mechanical sobs. "I became this monster thinking I could be strong enough to change the world. But I only trapped myself in a cage of my own making."
+
+${readerName} placed her hand on the dragon's snout. "Sometimes the bravest thing isn't transforming yourself to fight the world. Sometimes it's letting yourself be vulnerable enough to let the world change you. And sometimes... sometimes it's accepting help."
+
+In that moment of shared humanity, something magical happened. The dragon's scales began to shimmer with new light, not the harsh gleam of metal, but the warm glow of hope rekindled.`,
+    choices: [
+      { text: "Help Elara find peace with her past", action: "find_peace" },
+      { text: "Show Elara she can still do good as she is", action: "dragon_purpose" },
+      { text: "Work together to help others", action: "partnership" },
+      { text: "Explore what transformation means now", action: "true_transformation" }
+    ]
+  },
+
+  unite_forces: {
+    title: "Science and Magic as One",
+    content: (readerName: string) => `Inspired by the reader's insight, Princess ${readerName} realized that the answer lay not in choosing between technology and magic, but in uniting them as they were meant to be united.
+
+She returned to Elara with both the ancient tools of transformation and the modern understanding of consciousness transfer. But more than that, she brought the recognition that the dragon's dilemma was not a problem of either science or magic - it was a problem that required both.
+
+"Elara," she said, her voice filled with certainty, "your transformation wasn't a failure of magic or a triumph of technology. It was what happens when science and wonder work together - but without wisdom to guide them."
+
+She began to weave together the old ways and the new: using the Resonance Tuner to harmonize with the dragon's quantum consciousness patterns, while speaking the ancient words of change that honored the magical aspects of transformation.
+
+As technology and magic flowed together in harmony, something unprecedented happened. The dragon began to change - not back to human form, but into something new. A being that was both mechanical and magical, both dragon and woman, embodying the best of all possibilities.
+
+"I feel... whole," Elara whispered in wonder. "For the first time in a century, I feel whole."`,
+    choices: [
+      { text: "Explore Elara's new hybrid nature", action: "hybrid_being" },
+      { text: "Learn from this unity of science and magic", action: "learn_unity" },
+      { text: "Help others who are caught between worlds", action: "help_others_transform" },
+      { text: "Discover what this means for the kingdom", action: "kingdom_implications" }
+    ]
+  },
+
+  power_story: {
+    title: "The Song of Becoming",
+    content: (readerName: string) => `Trusting in the reader's wisdom about the power of story and song, Princess ${readerName} approached Elara with neither tools nor spells, but with the most powerful force of all: narrative.
+
+"Elara," she said, sitting beside the great dragon, "tell me your story. Not the facts, not the history - tell me the story of your heart."
+
+And so the dragon began to speak, and as she spoke, her words became music, and her music became magic. She told of a young woman who loved too fiercely, who dreamed too boldly, who dared too much. She sang of transformation not as trap, but as choice. She wove words about love that transcends form, about identity that goes deeper than flesh or scale.
+
+As the story unfolded, something remarkable happened. The dragon's form began to shift, not according to any spell or mechanism, but according to the story she was telling. Because stories, ${readerName} realized, were the most fundamental technology of all - the technology of meaning itself.
+
+And in that telling, in that singing, in that weaving of narrative, Elara found what she had lost: the ability to choose who she wanted to be, moment by moment, story by story.
+
+"I am not trapped," she sang, her voice now fully her own. "I am the author of my own becoming."`,
+    choices: [
+      { text: "Learn the art of story-transformation", action: "learn_story_magic" },
+      { text: "Help Elara write her next chapter", action: "next_chapter" },
+      { text: "Discover how stories can heal others", action: "healing_stories" },
+      { text: "Understand the deep magic of narrative", action: "narrative_magic" }
+    ]
+  },
+
+  seek_understanding: {
+    title: "The Wisdom of Patience",
+    content: (readerName: string) => `Following the reader's counsel to seek understanding before action, Princess ${readerName} chose the path of deep listening. Instead of rushing to solve or fix or change, she simply... stayed. She sat with Elara day after day, learning her rhythms, understanding her moods, discovering the person within the dragon.
+
+Through patient observation, ${readerName} began to understand something profound: Elara's transformation had not been a mistake or a tragedy. It had been exactly what she needed to become - not forever, but for this time, for this purpose.
+
+"You became the dragon," ${readerName} said one morning as they watched the sunrise together, "because you needed to learn something that could only be learned in this form. You needed to understand power, and loneliness, and what it means to be truly other."
+
+Elara's great head nodded slowly. "Yes. I have learned that strength without connection is hollow. That power without purpose is meaningless. That transformation without wisdom is just... change for its own sake."
+
+"And now?" ${readerName} asked gently.
+
+"Now," Elara said with growing clarity, "I understand what I truly want. Not to go back to who I was, not to stay as I am, but to become who I am meant to be - someone who uses what I have learned to help others navigate their own transformations."
+
+Understanding, it turned out, was the key to every lock.`,
+    choices: [
+      { text: "Help Elara become a guide for others", action: "become_guide" },
+      { text: "Explore the wisdom Elara has gained", action: "dragon_wisdom" },
+      { text: "Find others who need transformation guidance", action: "find_seekers" },
+      { text: "Learn the art of deep listening", action: "learn_listening" }
+    ]
   }
 };
