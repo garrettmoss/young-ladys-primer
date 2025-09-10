@@ -1,17 +1,23 @@
 export const molecularLockPuzzle = {
   molecular_lock: {
     title: "The Molecular Lock",
-    content: (readerName: string) => `${readerName} discovers an ancient vault in the dragon's lair, sealed by a peculiar lock made of shifting molecular patterns. The lock displays three chambers, each requiring a specific molecular arrangement to open.
+    content: (readerName: string) => `${readerName} discovers an ancient vault deep within the dragon's lair, its entrance sealed by a peculiar lock that shimmers with shifting molecular patterns.
 
-The Primer whispers: "This lock was crafted by the first nanotechnologists. Each chamber tests a different principle of molecular behavior. Observe carefully..."
+The lock displays three ornate chambers, each requiring a specific molecular arrangement to open.
 
-**CHAMBER ONE - The Temperature Challenge**
-The first chamber shows three identical water molecules, but they behave differently:
-- Molecule A vibrates slowly and stays close to its neighbors
-- Molecule B bounces around at medium speed  
-- Molecule C zips around wildly and bounces far from others
+<div class="separator-line"></div>
 
-Which state unlocks this chamber?`,
+The Primer's voice whispers softly: <em>"This lock was crafted by the first nanotechnologists. Each chamber tests a different principle of molecular behavior. Observe carefully..."</em>
+
+<strong>CHAMBER ONE - The Temperature Challenge</strong>
+
+The first chamber reveals three identical water molecules, yet each behaves quite differently:
+
+• Molecule A - vibrates slowly, staying close to its neighbors
+• Molecule B - bounces around at medium speed
+• Molecule C - zips around wildly, bouncing far from others
+
+Which molecular state holds the key to unlocking this chamber?`,
     choices: [
       { text: "Choose Molecule A (slow vibration)", action: "chamber_one_ice" },
       { text: "Choose Molecule B (medium speed)", action: "chamber_one_liquid" },
@@ -24,14 +30,20 @@ Which state unlocks this chamber?`,
     title: "The First Key Turns",
     content: (readerName: string) => `Excellent reasoning, ${readerName}! The slow-moving molecules form ice - the most structured state of water. The chamber recognizes this principle of molecular order and clicks open with a crystalline chime.
 
-**CHAMBER TWO - The Bond Puzzle**
-The second chamber displays four different atomic arrangements:
-- Pattern A: Atoms linked in long, flexible chains
-- Pattern B: Atoms arranged in flat, hexagonal sheets  
-- Pattern C: Atoms bonded in three-dimensional pyramids
-- Pattern D: Individual atoms floating separately
+<div class="separator-line"></div>
 
-The inscription reads: "Choose the pattern that gives the dragon's scales their legendary strength."`,
+<strong>CHAMBER TWO - The Bond Puzzle</strong>
+
+The second chamber displays four different atomic arrangements, each glowing with ethereal light:
+
+• Pattern A - Atoms linked in long, flexible chains
+• Pattern B - Atoms arranged in flat, hexagonal sheets  
+• Pattern C - Atoms bonded in three-dimensional pyramids
+• Pattern D - Individual atoms floating separately
+
+<em>An ancient inscription appears in flowing script:</em>
+
+<em>"Choose the pattern that gives the dragon's scales their legendary strength."</em>`,
     choices: [
       { text: "Pattern A - Flexible chains", action: "chamber_two_polymer" },
       { text: "Pattern B - Hexagonal sheets", action: "chamber_two_graphene" },
@@ -75,14 +87,20 @@ The inscription reads: "Choose the pattern that gives the dragon's scales their 
     title: "Strength Through Structure",
     content: (readerName: string) => `Brilliant deduction, ${readerName}! The hexagonal sheets represent graphene - carbon atoms arranged in perfect hexagons, creating material stronger than steel yet flexible like fabric. The second chamber opens with a harmonic resonance.
 
-**CHAMBER THREE - The Communication Challenge**  
-The final chamber presents a molecular mystery. Four molecules pulse with different colors:
-- Red Molecule: Absorbs all colors except red
-- Blue Molecule: Absorbs red and green light  
-- Green Molecule: Absorbs red and blue light
-- Clear Molecule: Absorbs ultraviolet light
+<div class="separator-line"></div>
 
-The question appears: "Which molecule would plants choose to capture energy from sunlight?"`,
+<strong>CHAMBER THREE - The Communication Challenge</strong>
+
+The final chamber presents a molecular mystery. Four molecules pulse with different colors:
+
+• Red Molecule - Absorbs all colors except red
+• Blue Molecule - Absorbs red and green light
+• Green Molecule - Absorbs red and blue light  
+• Clear Molecule - Absorbs ultraviolet light
+
+<em>The question appears in shimmering letters:</em>
+
+<em>"Which molecule would plants choose to capture energy from sunlight?"</em>`,
     choices: [
       { text: "Red Molecule", action: "chamber_three_red" },
       { text: "Blue Molecule", action: "chamber_three_blue" },
@@ -136,9 +154,15 @@ The question appears: "Which molecule would plants choose to capture energy from
     title: "The Vault Opens",
     content: (readerName: string) => `Perfect! ${readerName} understands that plants appear green because chlorophyll absorbs red and blue light for energy, reflecting only green light back to our eyes. The molecular lock recognizes this wisdom about how molecules communicate with light.
 
+<div class="separator-line"></div>
+
+<strong>The Vault Opens</strong>
+
 With a deep, resonant hum, all three chambers align and the vault door swings open. Inside, ${readerName} discovers not gold or jewels, but something far more valuable: a collection of crystalline memory devices containing the accumulated knowledge of generations of molecular engineers.
 
-The Primer glows warmly: "You have demonstrated understanding of molecular behavior, structural engineering, and the language of light. These are the foundations upon which all nanotechnology is built."`,
+The Primer glows warmly:
+
+<em>"You have demonstrated understanding of molecular behavior, structural engineering, and the language of light. These are the foundations upon which all nanotechnology is built."</em>`,
     choices: [
       { text: "Study the molecular engineering knowledge", action: "nano_lesson" },
       { text: "Return to explore the dragon's lair", action: "dragon_pattern" },

@@ -172,8 +172,7 @@ const YoungLadysPrimer: React.FC = () => {
             
             {/* Story content with vintage typography */}
             <div className="mb-8">
-              <div className="story-text whitespace-pre-line">
-                {currentContent.content}
+              <div className="story-text whitespace-pre-line" dangerouslySetInnerHTML={{ __html: currentContent.content }}>
               </div>
             </div>
 
