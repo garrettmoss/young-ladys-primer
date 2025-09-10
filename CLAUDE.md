@@ -77,7 +77,7 @@ This project follows **semantic versioning (semver)**: MAJOR.MINOR.PATCH
 - **PATCH** (x.x.1): Bug fixes, small improvements, content additions
   - New story branches within existing arcs, ESLint setup, minor fixes
 
-**Current version:** 1.0.0 (check `package.json`)
+**Current version:** 1.0.2 (check `package.json`)
 
 **When to bump versions:**
 - Adding story branches = patch (1.0.1)

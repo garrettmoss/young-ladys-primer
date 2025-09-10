@@ -1,6 +1,6 @@
 {
   "name": "young-ladys-primer",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "An interactive educational primer inspired by Neal Stephenson's Diamond Age",
   "scripts": {
     "dev": "next dev",
