@@ -15,7 +15,7 @@ young-ladys-primer/
 ├── postcss.config.js                  # PostCSS configuration
 ├── 
 ├── src/
-│   ├── YoungLadysPrimer.js           # Main UI component (rendering only)
+│   ├── YoungLadysPrimer.tsx          # Main UI component (rendering only)
 │   ├── index.css                     # Global styles
 │   │
 │   ├── content/                      # All educational content
@@ -35,7 +35,7 @@ young-ladys-primer/
 │   │   │       └── *.js              # Individual lesson modules
 │   │   │
 │   │   └── puzzles/                  # Interactive puzzles & challenges
-│   │       └── index.js              # (Future: logic puzzles, etc.)
+│   │       └── molecular-lock.js     # Molecular lock puzzle implementation
 │   │
 │   ├── hooks/                        # React hooks for shared logic
 │   │   └── useStoryNavigation.js     # Story progression & history tracking
@@ -50,8 +50,8 @@ young-ladys-primer/
 ## Architecture Principles
 
 ### 1. Separation of Concerns
-- **UI Layer** (`YoungLadysPrimer.js`): Handles rendering, styling, user interactions
-- **Content Layer** (`content/`): Contains all stories, lessons, dialogue
+- **UI Layer** (`YoungLadysPrimer.tsx`): Handles rendering, styling, user interactions
+- **Content Layer** (`content/`): Contains all stories, lessons, puzzles, dialogue
 - **Logic Layer** (`hooks/`): Manages navigation, state, and business logic
 
 ### 2. Content Organization
@@ -107,8 +107,8 @@ export const allContent = { ...storyCollection, ... };
 
 ## Key Files Explained
 
-### `src/YoungLadysPrimer.js`
-- Main React component
+### `src/YoungLadysPrimer.tsx`
+- Main React component with TypeScript
 - Handles UI rendering and user interactions
 - Uses content system through `getStoryContent()`
 - Delegates navigation to `useStoryNavigation` hook
@@ -121,8 +121,9 @@ export const allContent = { ...storyCollection, ... };
 
 ### `src/hooks/useStoryNavigation.js`
 - Manages current story state
-- Tracks reading progress and history
-- Provides navigation functions (`navigateToStory`, `resetToWelcome`)
+- Tracks reading progress and navigation history
+- Provides navigation functions (`navigateToStory`, `resetToWelcome`, `goBack`)
+- Supports back navigation with localStorage persistence
 
 ## Benefits of This Architecture
 

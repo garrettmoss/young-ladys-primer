@@ -20,51 +20,44 @@ This isn't just a tech demo or story app - it's specifically designed to empower
 
 ## Current Architecture
 Content-driven architecture with clear separation of concerns:
-- **UI Layer**: `src/YoungLadysPrimer.js` handles rendering and user interactions only
+- **UI Layer**: `src/YoungLadysPrimer.tsx` handles rendering and user interactions only
 - **Content Layer**: `src/content/` contains all stories, lessons, and educational material
 - **Logic Layer**: `src/hooks/` manages navigation, state, and business logic
 
 See `ARCHITECTURE.md` for detailed file structure and development guidelines.
 
 ## Key Features
-- Branching interactive narratives
+- Branching interactive narratives with choice-driven progression
 - Personalized content using reader's name
-- Modular content system for easy expansion
 - Story progress tracking with localStorage persistence
-- Navigation history across browser sessions
+- Back navigation and navigation history
 - Responsive Victorian manuscript-style design
-
-## Important Notes
-- Default reader name is 'Aria' (changed from 'Nell')
-- Content uses function-based templates for personalization: `content: (readerName) => template`
-- All story branches organized by theme in separate folders
-- Main component focuses purely on UI rendering
-- Navigation handled by `useStoryNavigation` custom hook
+- TypeScript for type safety and better developer experience
 
 ## Content Organization
 - `content/core/` - Welcome screen and system navigation
 - `content/stories/dragon-story/` - Mechanical dragon story arc with multiple branches
 - `content/lessons/nanotechnology/` - Educational content about molecular science
-- `content/puzzles/` - Interactive challenges (future expansion)
-
-## Recent Changes
-- Refactored monolithic component to separate content from rendering
-- Created organized content system with stories/lessons/puzzles structure
-- Added useStoryNavigation hook for state management
-- Simplified name handling by using 'Aria' as default
-- Added comprehensive ARCHITECTURE.md documentation
+- `content/puzzles/` - Interactive molecular lock puzzle system
 
 ## Adding New Content
 1. **New Story Arc**: Create folder in `src/content/stories/new-story/`, add story files, create index.js, register in main content index
 2. **New Lesson Series**: Create folder in `src/content/lessons/topic/`, follow same pattern
 3. **Story Format**: Each story exports object with `title`, `content` function, and `choices` array
 
+## Maintaining This File
+Periodically review and clean up this CLAUDE.md file when:
+- Several major features have been completed (check git history)
+- "Next Steps/TODO" items are mostly done
+- "Key Features" no longer reflects current capabilities
+- Implementation details in any section become outdated
+
+Keep it focused on what's actively relevant for ongoing development, not project history.
+
 ## Next Steps / TODO
-- Add more dragon story branches (engineering paths, curse research, etc.)
-- Implement puzzle system with logic challenges
-- Add lesson content for other scientific topics
+- Add more dragon story branches and lesson content
+- Expand puzzle system with additional challenges
 - Consider adding save/load functionality for longer reading sessions
-- Add story completion tracking and achievements
 - Explore audio narration for accessibility
 
 ## Versioning
@@ -88,6 +81,40 @@ This project follows **semantic versioning (semver)**: MAJOR.MINOR.PATCH
 This project maintains high documentation standards to ensure readability and maintainability. All code should be self-documenting through comprehensive comments and clear naming.
 
 See `src/YoungLadysPrimer.tsx` for an example of proper file-level documentation, function comments, and inline explanations.
+
+## Commit Message Standards
+Use conventional commit format with detailed body for clear, scannable git history:
+
+**Format**:
+```
+<type>: <concise title>
+
+- Detailed explanation point 1
+- Detailed explanation point 2
+- More context as needed
+```
+
+**Types**:
+- `feat:` - New features or capabilities
+- `fix:` - Bug fixes
+- `docs:` - Documentation updates
+- `style:` - UI/styling changes
+- `refactor:` - Code improvements without changing functionality
+- `test:` - Adding or updating tests
+
+**Example**:
+```
+docs: clean up project documentation
+
+- Remove outdated TODOs and completed items from CLAUDE.md
+- Update ARCHITECTURE.md file extensions and features
+- Move implemented features from "coming soon" to main README
+- Streamline README features to highlight compelling capabilities
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
 
 ## Technical Stack
 - React 18 with Next.js 14

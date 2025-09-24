@@ -24,13 +24,11 @@ Powered by Claude AI.
 
 - **Interactive Storytelling**: Engaging narratives with branching paths that respond to reader choices.
 - **Reader Personalization**: The Primer adapts to know you by name and remembers your journey.
-- **Progress Tracking**: Keep track of passages explored and paths taken.
+- **Interactive Puzzles**: Hands-on challenges like molecular lock puzzles that teach through interaction.
 - **Educational Content**: Stories weave in lessons about science, technology, problem-solving, and wisdom.
-- **Web Application**: Built with Next.js and React for modern, responsive storytelling across devices.
 
 ### *(coming soon)*
 - **Personalized Learning**: Customized challenges and educational paths for individual users.
-- **Progress Navigation**: Paths can be walked forward and backward, branches traversed.
 - **Adaptive Content**: Stories and lessons that evolve based on reader interaction and progress.
 - **Progressive Complexity**: Content sophistication that grows alongside the reader's abilities.
 
