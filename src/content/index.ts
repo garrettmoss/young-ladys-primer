@@ -19,6 +19,7 @@
  */
 
 import { welcomeContent } from './core/welcome';
+import { getSettingsContent } from './core/settings';
 import { dragonStoryCollection } from './stories/dragon-story/index';
 import { lessonNavigation } from './lessons/index';
 import { nanotechnologyLessons } from './lessons/nanotechnology/index';
@@ -38,7 +39,7 @@ export interface Choice {
  * Raw story content as stored in content files
  * Content can be static string or personalized function
  */
-interface StoryContent {
+export interface StoryContent {
   title: string;
   content: string | ((readerName: string) => string);
   choices?: Choice[]; // Optional - some content may have no choices (endings, lessons)
@@ -81,23 +82,28 @@ export const allContent: ContentRegistry = {
 
 /**
  * Retrieve and process story content for display
- * 
+ *
  * Handles personalization by calling content functions with reader's name
  * and returns ready-to-render content with consistent interface.
- * 
+ *
  * @param storyKey - Unique identifier for the story/content
  * @param readerName - Reader's name for personalization (defaults to 'Aria')
  * @returns Processed content ready for UI, or null if not found
  */
 export const getStoryContent = (storyKey: string, readerName: string = 'Aria'): ProcessedStoryContent | null => {
+  // Handle special dynamic content like settings
+  if (storyKey === 'settings') {
+    return getSettingsContent(readerName);
+  }
+
   const story = allContent[storyKey];
   if (!story) return null;
-  
+
   return {
     ...story,
     // Process personalization: convert functions to strings using reader's name
-    content: typeof story.content === 'function' 
-      ? story.content(readerName) 
+    content: typeof story.content === 'function'
+      ? story.content(readerName)
       : story.content
   };
 };

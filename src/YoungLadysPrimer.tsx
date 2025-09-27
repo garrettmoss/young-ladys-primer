@@ -20,13 +20,13 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Sparkles, ArrowRight, Feather, Home, ChevronLeft } from 'lucide-react';
+import { BookOpen, Sparkles, ArrowRight, Feather, Home, ChevronLeft, Settings } from 'lucide-react';
 import { getStoryContent, Choice } from './content/index';
 import { useStoryNavigation } from './hooks/useStoryNavigation';
 
 const YoungLadysPrimer: React.FC = () => {
   // UI State: Reader's name and name input modal visibility
-  const [readerName, setReaderName] = useState<string>('Aria'); // Default name, can be customized
+  const [readerName, setReaderName] = useState<string>(''); // Will be loaded from localStorage
   const [showNameInput, setShowNameInput] = useState<boolean>(false); // Controls name input modal
   const [isHydrated, setIsHydrated] = useState<boolean>(false); // Track hydration status for SSR compatibility
   
@@ -43,13 +43,29 @@ const YoungLadysPrimer: React.FC = () => {
   // Hydration Effect: Ensure consistent rendering between server and client
   useEffect(() => {
     setIsHydrated(true);
+
+    // Load reader name from localStorage or show name input for first-time users
+    try {
+      const storedName = localStorage.getItem('young-ladys-primer-reader-name');
+      if (storedName) {
+        setReaderName(storedName);
+      } else {
+        // No stored name - this is a first-time user, show name input
+        setShowNameInput(true);
+      }
+    } catch (error) {
+      console.warn('Failed to load reader name from localStorage:', error);
+      // If localStorage fails, show name input as fallback
+      setShowNameInput(true);
+    }
   }, []);
 
   // Content Resolution: Fetch story content with personalization
   // During SSR, always use 'welcome' to prevent hydration mismatch
   // After hydration, use the actual currentStory from localStorage
   const storyKey = isHydrated ? currentStory : 'welcome';
-  const currentContent = getStoryContent(storyKey, readerName) || getStoryContent('welcome', readerName)!;
+  const effectiveReaderName = readerName || 'Aria'; // Fallback to default name
+  const currentContent = getStoryContent(storyKey, effectiveReaderName) || getStoryContent('welcome', effectiveReaderName)!;
 
   // Event Handlers: User interaction callbacks
   
@@ -58,16 +74,48 @@ const YoungLadysPrimer: React.FC = () => {
    * @param action - The story identifier to navigate to
    */
   const handleChoice = (action: string) => {
-    navigateToStory(action);
+    if (action === 'change-name') {
+      setShowNameInput(true);
+    } else {
+      navigateToStory(action);
+    }
   };
 
   /**
-   * Handle name input submission - closes modal if name is valid
+   * Handle name input submission - saves name to localStorage and closes modal
    */
   const handleNameSubmit = (): void => {
-    if (readerName.trim()) {
+    const trimmedName = readerName.trim();
+    if (trimmedName) {
+      try {
+        localStorage.setItem('young-ladys-primer-reader-name', trimmedName);
+      } catch (error) {
+        console.warn('Failed to save reader name to localStorage:', error);
+      }
       setShowNameInput(false);
     }
+  };
+
+  /**
+   * Handle "choose later" - closes modal and clears any stored name
+   */
+  const handleChooseLater = (): void => {
+    setShowNameInput(false);
+    setReaderName(''); // Clear the current name state
+
+    // Clear localStorage so they get the fresh first-time experience on next visit
+    try {
+      localStorage.removeItem('young-ladys-primer-reader-name');
+    } catch (error) {
+      console.warn('Failed to clear reader name from localStorage:', error);
+    }
+  };
+
+  /**
+   * Handle settings button click - navigate to settings page
+   */
+  const handleSettingsClick = (): void => {
+    navigateToStory('settings');
   };
 
   // === RENDER: Victorian Manuscript-Style UI ===
@@ -138,12 +186,21 @@ const YoungLadysPrimer: React.FC = () => {
                     className="name-input"
                     onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
                   />
-                  <button
-                    onClick={handleNameSubmit}
-                    className="submit-button"
-                  >
-                    Begin Your Journey
-                  </button>
+                  <div className="space-y-3">
+                    <button
+                      onClick={handleNameSubmit}
+                      className="submit-button"
+                    >
+                      Begin Your Journey
+                    </button>
+                    <button
+                      onClick={handleChooseLater}
+                      className="w-full py-2 px-4 border border-amber-300/40 text-amber-700 bg-transparent hover:bg-amber-50/20
+                               transition-all duration-200 rounded-md font-serif text-sm italic"
+                    >
+                      I shall choose later
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -189,26 +246,32 @@ const YoungLadysPrimer: React.FC = () => {
                 <p className="choice-prompt">
                   Choose your path, dear reader...
                 </p>
-                {currentContent.choices.map((choice: Choice, index: number) => (
-                  <button
-                    key={index}
-                    onClick={() => getStoryContent(choice.action) ? handleChoice(choice.action) : null}
-                    disabled={!getStoryContent(choice.action)}
-                    className={`choice-button group ${getStoryContent(choice.action) ? '' : 'disabled'}`}
-                  >
-                    <span className="font-medium relative z-10" style={{ letterSpacing: '0.02em' }}>
-                      {choice.text}
-                      {!getStoryContent(choice.action) && <span className="text-sm italic ml-2">(Coming soon)</span>}
-                    </span>
-                    {getStoryContent(choice.action) && (
-                      <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-amber-700" />
-                    )}
-                    {getStoryContent(choice.action) && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-200/20 to-transparent 
-                                    translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                    )}
-                  </button>
-                ))}
+                {currentContent.choices.map((choice: Choice, index: number) => {
+                  // Special actions that don't need story content
+                  const isSpecialAction = choice.action === 'change-name';
+                  const isActionAvailable = isSpecialAction || getStoryContent(choice.action);
+
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => isActionAvailable ? handleChoice(choice.action) : null}
+                      disabled={!isActionAvailable}
+                      className={`choice-button group ${isActionAvailable ? '' : 'disabled'}`}
+                    >
+                      <span className="font-medium relative z-10" style={{ letterSpacing: '0.02em' }}>
+                        {choice.text}
+                        {!isActionAvailable && <span className="text-sm italic ml-2">(Coming soon)</span>}
+                      </span>
+                      {isActionAvailable && (
+                        <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-amber-700" />
+                      )}
+                      {isActionAvailable && (
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-200/20 to-transparent
+                                      translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                      )}
+                    </button>
+                  );
+                })}
                 
                 {/* Navigation buttons - only show when not on welcome page and after hydration */}
                 {isHydrated && currentStory !== 'welcome' && (
@@ -259,13 +322,19 @@ const YoungLadysPrimer: React.FC = () => {
             <span className="footer-flourish">❦</span>
           </div>
           <p className="footer-text">
-            {readerName && `Crafted for ${readerName} • `}
+            {effectiveReaderName && `Crafted for ${effectiveReaderName} • `}
             Anno Domini MMXXV
           </p>
           <div className="footer-stats">
             <span className="footer-stat">
               {isHydrated ? Object.keys(storyProgress).length : 0} passages explored
             </span>
+            <button
+              onClick={handleSettingsClick}
+              className="footer-stat hover:text-amber-600 transition-colors cursor-pointer"
+            >
+              <Settings className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>
