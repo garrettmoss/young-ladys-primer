@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- BookOpen icon from Lucide -->
+  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+  <!-- Small sparkle -->
+  <path d="M18 2l1 2 2 1-2 1-1 2-1-2-2-1 2-1z" fill="#facc15" stroke="#facc15" stroke-width="0.5"/>
+</svg>
