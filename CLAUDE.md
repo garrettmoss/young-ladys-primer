@@ -13,10 +13,20 @@ This isn't just a tech demo or story app - it's specifically designed to empower
 - To express their power through their own choices
 
 ## Development Commands
-- `npm run dev` - Start development server
-- `npm run build` - Build for production  
+- `npm run dev` - Start development server (localhost:3000)
+- `npm run build` - Build for production
+- `npm run export` - Build static export with .nojekyll
+- `npm run deploy` - Build and deploy to GitHub Pages
 - `npm run start` - Start production server
-- `npm run lint` - Run linting (needs ESLint setup)
+- `npm run lint` - Run linting
+
+## Deployment
+Live site: https://garrettmoss.github.io/young-ladys-primer/
+
+To deploy updates:
+1. Test locally with `npm run dev`
+2. When ready: `npm run deploy`
+3. Changes go live in ~1 minute
 
 ## Current Architecture
 Content-driven architecture with clear separation of concerns:
