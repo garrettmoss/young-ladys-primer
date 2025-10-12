@@ -13,7 +13,7 @@ This isn't just a tech demo or story app - it's specifically designed to empower
 - To express their power through their own choices
 
 ## Development Commands
-- `npm run dev` - Start development server (localhost:3000)
+- `npm run dev` - Start development server (http://localhost:3000/young-ladys-primer)
 - `npm run build` - Build for production
 - `npm run export` - Build static export with .nojekyll
 - `npm run deploy` - Build and deploy to GitHub Pages

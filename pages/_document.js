@@ -4,7 +4,8 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <title>A Young Lady's Illustrated Primer</title>
+        <link rel="icon" type="image/svg+xml" href="/young-ladys-primer/favicon.svg" />
         <meta name="description" content="An interactive educational primer inspired by Neal Stephenson's Diamond Age" />
         <meta name="theme-color" content="#f9f6f0" />
       </Head>
