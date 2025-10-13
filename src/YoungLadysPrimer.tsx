@@ -29,6 +29,8 @@ const YoungLadysPrimer: React.FC = () => {
   const [readerName, setReaderName] = useState<string>(''); // Will be loaded from localStorage
   const [showNameInput, setShowNameInput] = useState<boolean>(false); // Controls name input modal
   const [isHydrated, setIsHydrated] = useState<boolean>(false); // Track hydration status for SSR compatibility
+  const [settingsNameInput, setSettingsNameInput] = useState<string>(''); // Temporary state for settings name editor
+  const [isEditingName, setIsEditingName] = useState<boolean>(false); // Controls whether name is being edited in settings
   
   // Navigation State: Managed by custom hook for separation of concerns
   const {
@@ -97,17 +99,18 @@ const YoungLadysPrimer: React.FC = () => {
   };
 
   /**
-   * Handle "choose later" - closes modal and clears any stored name
+   * Handle "choose later" - closes modal and saves default name 'Aria'
    */
   const handleChooseLater = (): void => {
+    const defaultName = 'Aria';
+    setReaderName(defaultName);
     setShowNameInput(false);
-    setReaderName(''); // Clear the current name state
 
-    // Clear localStorage so they get the fresh first-time experience on next visit
+    // Save default name to localStorage so user isn't prompted again
     try {
-      localStorage.removeItem('young-ladys-primer-reader-name');
+      localStorage.setItem('young-ladys-primer-reader-name', defaultName);
     } catch (error) {
-      console.warn('Failed to clear reader name from localStorage:', error);
+      console.warn('Failed to save default reader name to localStorage:', error);
     }
   };
 
@@ -115,7 +118,40 @@ const YoungLadysPrimer: React.FC = () => {
    * Handle settings button click - navigate to settings page
    */
   const handleSettingsClick = (): void => {
+    setIsEditingName(false); // Reset edit mode when entering settings
     navigateToStory('settings');
+  };
+
+  /**
+   * Handle edit button click - enter edit mode for name
+   */
+  const handleEditNameClick = (): void => {
+    setSettingsNameInput(readerName); // Initialize input with current name
+    setIsEditingName(true);
+  };
+
+  /**
+   * Handle saving name from settings page inline editor
+   */
+  const handleSettingsNameSave = (): void => {
+    const trimmedName = settingsNameInput.trim();
+    if (trimmedName) {
+      setReaderName(trimmedName);
+      try {
+        localStorage.setItem('young-ladys-primer-reader-name', trimmedName);
+      } catch (error) {
+        console.warn('Failed to save reader name to localStorage:', error);
+      }
+      setIsEditingName(false); // Exit edit mode after saving
+    }
+  };
+
+  /**
+   * Handle cancel button click - exit edit mode without saving
+   */
+  const handleCancelNameEdit = (): void => {
+    setIsEditingName(false);
+    setSettingsNameInput(''); // Clear the input
   };
 
   // === RENDER: Victorian Manuscript-Style UI ===
@@ -233,6 +269,52 @@ const YoungLadysPrimer: React.FC = () => {
               </div>
             </div>
 
+            {/* Settings page name display/editor */}
+            {isHydrated && currentStory === 'settings' && (
+              <div className="mt-6 p-4 border border-amber-200 bg-amber-50/30 rounded">
+                {!isEditingName ? (
+                  // Static display mode
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <strong className="text-amber-900">Reader Name:</strong>
+                      <span className="ml-2 text-amber-800">{readerName}</span>
+                    </div>
+                    <button
+                      onClick={handleEditNameClick}
+                      className="py-1 px-4 text-sm bg-amber-600 text-amber-50 rounded hover:bg-amber-700 transition-colors font-serif"
+                    >
+                      Edit
+                    </button>
+                  </div>
+                ) : (
+                  // Edit mode
+                  <div className="flex items-center gap-3">
+                    <strong className="text-amber-900 whitespace-nowrap">Reader Name:</strong>
+                    <input
+                      type="text"
+                      value={settingsNameInput}
+                      onChange={(e) => setSettingsNameInput(e.target.value)}
+                      placeholder="Enter your name..."
+                      className="name-input flex-1"
+                      onKeyDown={(e) => e.key === 'Enter' && handleSettingsNameSave()}
+                    />
+                    <button
+                      onClick={handleSettingsNameSave}
+                      className="py-2 px-4 bg-amber-700 text-amber-50 rounded hover:bg-amber-800 transition-colors font-serif whitespace-nowrap"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={handleCancelNameEdit}
+                      className="py-2 px-4 border border-amber-300 text-amber-700 bg-transparent rounded hover:bg-amber-50/20 transition-colors font-serif whitespace-nowrap"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Decorative separator */}
             <div className="decorative-separator">
               <div className="separator-line"></div>
@@ -241,7 +323,7 @@ const YoungLadysPrimer: React.FC = () => {
             </div>
 
             {/* Choices with manuscript style */}
-            {currentContent.choices && (
+            {currentContent.choices && currentContent.choices.length > 0 && (
               <div className="space-y-3 mt-6">
                 <p className="choice-prompt">
                   Choose your path, dear reader...
@@ -272,43 +354,45 @@ const YoungLadysPrimer: React.FC = () => {
                     </button>
                   );
                 })}
-                
-                {/* Navigation buttons - only show when not on welcome page and after hydration */}
-                {isHydrated && currentStory !== 'welcome' && (
-                  <>
-                    <div className="flex items-center justify-center my-4">
-                      <div className="h-px bg-gradient-to-r from-transparent via-amber-700/20 to-transparent w-24"></div>
-                      <span className="text-amber-600/40 mx-3 text-sm">or</span>
-                      <div className="h-px bg-gradient-to-r from-transparent via-amber-700/20 to-transparent w-24"></div>
-                    </div>
-                    
-                    {/* Back button - only show when back navigation is possible */}
-                    {canGoBack() && (
-                      <button
-                        onClick={goBack}
-                        className="home-button group mb-3"
-                      >
-                        <ChevronLeft className="home-button-icon" />
-                        <span className="home-button-text">
-                          Go Back
-                        </span>
-                        <div className="home-button-shimmer"></div>
-                      </button>
-                    )}
-                    
-                    {/* Home button */}
-                    <button
-                      onClick={resetToWelcome}
-                      className="home-button group"
-                    >
-                      <Home className="home-button-icon" />
-                      <span className="home-button-text">
-                        Return to the Beginning
-                      </span>
-                      <div className="home-button-shimmer"></div>
-                    </button>
-                  </>
+              </div>
+            )}
+
+            {/* Navigation buttons - only show when not on welcome page and after hydration */}
+            {isHydrated && currentStory !== 'welcome' && (
+              <div className="space-y-3 mt-6">
+                {currentContent.choices && currentContent.choices.length > 0 && (
+                  <div className="flex items-center justify-center my-4">
+                    <div className="h-px bg-gradient-to-r from-transparent via-amber-700/20 to-transparent w-24"></div>
+                    <span className="text-amber-600/40 mx-3 text-sm">or</span>
+                    <div className="h-px bg-gradient-to-r from-transparent via-amber-700/20 to-transparent w-24"></div>
+                  </div>
                 )}
+
+                {/* Back button - only show when back navigation is possible */}
+                {canGoBack() && (
+                  <button
+                    onClick={goBack}
+                    className="home-button group mb-3"
+                  >
+                    <ChevronLeft className="home-button-icon" />
+                    <span className="home-button-text">
+                      Go Back
+                    </span>
+                    <div className="home-button-shimmer"></div>
+                  </button>
+                )}
+
+                {/* Home button */}
+                <button
+                  onClick={resetToWelcome}
+                  className="home-button group"
+                >
+                  <Home className="home-button-icon" />
+                  <span className="home-button-text">
+                    Return to the Beginning
+                  </span>
+                  <div className="home-button-shimmer"></div>
+                </button>
               </div>
             )}
           </div>
