@@ -20,7 +20,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Sparkles, ArrowRight, Feather, Home, ChevronLeft, Settings } from 'lucide-react';
+import { BookOpen, Sparkles, ArrowRight, Feather, Home, ChevronLeft, Settings, Eclipse, SunMoon } from 'lucide-react';
 import { getStoryContent, Choice } from './content/index';
 import { useStoryNavigation } from './hooks/useStoryNavigation';
 
@@ -31,6 +31,7 @@ const YoungLadysPrimer: React.FC = () => {
   const [isHydrated, setIsHydrated] = useState<boolean>(false); // Track hydration status for SSR compatibility
   const [settingsNameInput, setSettingsNameInput] = useState<string>(''); // Temporary state for settings name editor
   const [isEditingName, setIsEditingName] = useState<boolean>(false); // Controls whether name is being edited in settings
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false); // Dark mode state
   
   // Navigation State: Managed by custom hook for separation of concerns
   const {
@@ -59,6 +60,16 @@ const YoungLadysPrimer: React.FC = () => {
       console.warn('Failed to load reader name from localStorage:', error);
       // If localStorage fails, show name input as fallback
       setShowNameInput(true);
+    }
+
+    // Load dark mode preference from localStorage
+    try {
+      const storedDarkMode = localStorage.getItem('young-ladys-primer-dark-mode');
+      if (storedDarkMode === 'true') {
+        setIsDarkMode(true);
+      }
+    } catch (error) {
+      console.warn('Failed to load dark mode preference from localStorage:', error);
     }
   }, []);
 
@@ -154,10 +165,23 @@ const YoungLadysPrimer: React.FC = () => {
     setSettingsNameInput(''); // Clear the input
   };
 
+  /**
+   * Handle dark mode toggle - saves preference to localStorage
+   */
+  const handleDarkModeToggle = (): void => {
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    try {
+      localStorage.setItem('young-ladys-primer-dark-mode', String(newDarkMode));
+    } catch (error) {
+      console.warn('Failed to save dark mode preference to localStorage:', error);
+    }
+  };
+
   // === RENDER: Victorian Manuscript-Style UI ===
 
   return (
-    <div className="primer-container">
+    <div className={`primer-container ${isDarkMode ? 'dark-mode' : ''}`}>
       <div className="primer-content">
         {/* Ornate Header */}
         <div className="primer-header">
@@ -271,47 +295,70 @@ const YoungLadysPrimer: React.FC = () => {
 
             {/* Settings page name display/editor */}
             {isHydrated && currentStory === 'settings' && (
-              <div className="mt-6 p-4 border border-amber-200 bg-amber-50/30 rounded">
-                {!isEditingName ? (
-                  // Static display mode
+              <div className="space-y-4 mt-6">
+                {/* Reader Name Setting */}
+                <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
+                  {!isEditingName ? (
+                    // Static display mode
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <strong className="text-amber-900">Reader Name:</strong>
+                        <span className="ml-2 text-amber-800">{readerName}</span>
+                      </div>
+                      <button
+                        onClick={handleEditNameClick}
+                        className="p-2 bg-amber-600 text-amber-50 rounded-full hover:bg-amber-700 transition-colors font-serif"
+                        aria-label="Edit reader name"
+                      >
+                        <Feather className="w-5 h-5" />
+                      </button>
+                    </div>
+                  ) : (
+                    // Edit mode
+                    <div className="flex items-center gap-3">
+                      <strong className="text-amber-900 whitespace-nowrap">Reader Name:</strong>
+                      <input
+                        type="text"
+                        value={settingsNameInput}
+                        onChange={(e) => setSettingsNameInput(e.target.value)}
+                        placeholder="Enter your name..."
+                        className="name-input flex-1"
+                        onKeyDown={(e) => e.key === 'Enter' && handleSettingsNameSave()}
+                      />
+                      <button
+                        onClick={handleSettingsNameSave}
+                        className="py-2 px-4 bg-amber-700 text-amber-50 rounded hover:bg-amber-800 transition-colors font-serif whitespace-nowrap"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={handleCancelNameEdit}
+                        className="py-2 px-4 border border-amber-300 text-amber-700 bg-transparent rounded hover:bg-amber-50/20 transition-colors font-serif whitespace-nowrap"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Illumination Setting */}
+                <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
                   <div className="flex items-center justify-between">
-                    <div>
-                      <strong className="text-amber-900">Reader Name:</strong>
-                      <span className="ml-2 text-amber-800">{readerName}</span>
+                    <div className="flex items-center gap-3">
+                      <div>
+                        <strong className="text-amber-900">Illumination:</strong>
+                        <span className="ml-2 text-amber-800">{isDarkMode ? 'Dark Mode' : 'Light Mode'}</span>
+                      </div>
                     </div>
                     <button
-                      onClick={handleEditNameClick}
-                      className="py-1 px-4 text-sm bg-amber-600 text-amber-50 rounded hover:bg-amber-700 transition-colors font-serif"
+                      onClick={handleDarkModeToggle}
+                      className="p-2 bg-amber-600 text-amber-50 rounded-full hover:bg-amber-700 transition-colors font-serif"
+                      aria-label="Toggle illumination mode"
                     >
-                      Edit
+                      <Eclipse className="w-5 h-5" />
                     </button>
                   </div>
-                ) : (
-                  // Edit mode
-                  <div className="flex items-center gap-3">
-                    <strong className="text-amber-900 whitespace-nowrap">Reader Name:</strong>
-                    <input
-                      type="text"
-                      value={settingsNameInput}
-                      onChange={(e) => setSettingsNameInput(e.target.value)}
-                      placeholder="Enter your name..."
-                      className="name-input flex-1"
-                      onKeyDown={(e) => e.key === 'Enter' && handleSettingsNameSave()}
-                    />
-                    <button
-                      onClick={handleSettingsNameSave}
-                      className="py-2 px-4 bg-amber-700 text-amber-50 rounded hover:bg-amber-800 transition-colors font-serif whitespace-nowrap"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={handleCancelNameEdit}
-                      className="py-2 px-4 border border-amber-300 text-amber-700 bg-transparent rounded hover:bg-amber-50/20 transition-colors font-serif whitespace-nowrap"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                )}
+                </div>
               </div>
             )}
 
