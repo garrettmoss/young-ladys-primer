@@ -20,7 +20,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Sparkles, ArrowRight, Feather, Home, ChevronLeft, Settings, Eclipse, SunMoon } from 'lucide-react';
+import { BookOpen, Sparkles, ArrowRight, Feather, Home, ChevronLeft, Settings, Eclipse, BookMarked } from 'lucide-react';
 import { getStoryContent, Choice } from './content/index';
 import { useStoryNavigation } from './hooks/useStoryNavigation';
 
@@ -301,16 +301,18 @@ const YoungLadysPrimer: React.FC = () => {
                   {!isEditingName ? (
                     // Static display mode
                     <div className="flex items-center justify-between">
-                      <div>
-                        <strong className="text-amber-900">Reader Name:</strong>
-                        <span className="ml-2 text-amber-800">{readerName}</span>
+                      <div className="flex items-center gap-3">
+                        <Feather className="w-5 h-5 text-amber-700" />
+                        <div>
+                          <strong className="text-amber-900">Reader Name:</strong>
+                          <span className="ml-2 text-amber-800">{readerName}</span>
+                        </div>
                       </div>
                       <button
                         onClick={handleEditNameClick}
-                        className="p-2 bg-amber-600 text-amber-50 rounded-full hover:bg-amber-700 transition-colors font-serif"
-                        aria-label="Edit reader name"
+                        className="py-1 px-4 text-sm bg-amber-600 text-amber-50 rounded hover:bg-amber-700 transition-colors font-serif"
                       >
-                        <Feather className="w-5 h-5" />
+                        Edit
                       </button>
                     </div>
                   ) : (
@@ -345,6 +347,7 @@ const YoungLadysPrimer: React.FC = () => {
                 <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
+                      <Eclipse className="w-5 h-5 text-amber-700" />
                       <div>
                         <strong className="text-amber-900">Illumination:</strong>
                         <span className="ml-2 text-amber-800">{isDarkMode ? 'Dark Mode' : 'Light Mode'}</span>
@@ -352,11 +355,21 @@ const YoungLadysPrimer: React.FC = () => {
                     </div>
                     <button
                       onClick={handleDarkModeToggle}
-                      className="p-2 bg-amber-600 text-amber-50 rounded-full hover:bg-amber-700 transition-colors font-serif"
-                      aria-label="Toggle illumination mode"
+                      className="py-1 px-4 text-sm bg-amber-600 text-amber-50 rounded hover:bg-amber-700 transition-colors font-serif"
                     >
-                      <Eclipse className="w-5 h-5" />
+                      Toggle
                     </button>
+                  </div>
+                </div>
+
+                {/* Reading Progress */}
+                <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
+                  <div className="flex items-center gap-3">
+                    <BookMarked className="w-5 h-5 text-amber-700" />
+                    <div>
+                      <strong className="text-amber-900">Reading Progress:</strong>
+                      <span className="ml-2 text-amber-800">{Object.keys(storyProgress).length} passages explored</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -394,10 +407,6 @@ const YoungLadysPrimer: React.FC = () => {
                       {isActionAvailable && (
                         <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-amber-700" />
                       )}
-                      {isActionAvailable && (
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-200/20 to-transparent
-                                      translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                      )}
                     </button>
                   );
                 })}
@@ -425,7 +434,6 @@ const YoungLadysPrimer: React.FC = () => {
                     <span className="home-button-text">
                       Go Back
                     </span>
-                    <div className="home-button-shimmer"></div>
                   </button>
                 )}
 
@@ -438,7 +446,6 @@ const YoungLadysPrimer: React.FC = () => {
                   <span className="home-button-text">
                     Return to the Beginning
                   </span>
-                  <div className="home-button-shimmer"></div>
                 </button>
               </div>
             )}
@@ -457,14 +464,12 @@ const YoungLadysPrimer: React.FC = () => {
             Anno Domini MMXXV
           </p>
           <div className="footer-stats">
-            <span className="footer-stat">
-              {isHydrated ? Object.keys(storyProgress).length : 0} passages explored
-            </span>
             <button
               onClick={handleSettingsClick}
-              className="footer-stat hover:text-amber-600 transition-colors cursor-pointer"
+              className="footer-stat hover:text-amber-600 transition-colors cursor-pointer flex items-center gap-1"
+              aria-label="Open settings"
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-5 h-5" />
             </button>
           </div>
         </div>

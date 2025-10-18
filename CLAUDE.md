@@ -20,6 +20,11 @@ This isn't just a tech demo or story app - it's specifically designed to empower
 - `npm run start` - Start production server
 - `npm run lint` - Run linting
 
+**Development Workflow:**
+- Keep the dev server running during active development (don't kill it between tasks)
+- The dev server auto-reloads on file changes
+- Only stop it when explicitly finishing a development session
+
 ## Deployment
 Live site: https://garrettmoss.github.io/young-ladys-primer/
 
@@ -91,6 +96,23 @@ This project follows **semantic versioning (semver)**: MAJOR.MINOR.PATCH
 This project maintains high documentation standards to ensure readability and maintainability. All code should be self-documenting through comprehensive comments and clear naming.
 
 See `src/YoungLadysPrimer.tsx` for an example of proper file-level documentation, function comments, and inline explanations.
+
+## UI/UX Design Principles
+
+### Visual-First Hierarchy
+Follow the developmental progression from concrete to abstract thinking:
+
+**Pattern:** **Icon → Label → Action** (left to right)
+
+**Examples:**
+- Settings panels: `[Icon] Label: Value [Button]`
+- Navigation items: `[Icon] Text Label`
+- Buttons: `[Icon] Button Text`
+
+**Rationale:**
+This mirrors how young readers develop from visual to linguistic cognition - starting with concrete symbols before progressing to abstract text. Icons provide universal understanding across reading levels.
+
+**See `docs/DESIGN.md` for complete design system documentation.**
 
 ## Commit Message Standards
 Use conventional commit format with detailed body for clear, scannable git history:

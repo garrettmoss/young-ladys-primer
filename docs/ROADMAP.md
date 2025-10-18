@@ -16,13 +16,23 @@
 - [x] Victorian manuscript-style UI design
 - [x] Settings system with name customization
 - [x] First-run experience with optional name entry
-- [ ] Responsive design and elegant animations
+- [x] Dark mode with Victorian "candlelit manuscript" aesthetic
+- [x] Reading progress tracking in settings
+- [x] Visual-first UI principle (icon → label → action pattern)
+- [ ] Responsive design and elegant animations (partially complete)
 - [ ] Table of contents that fills out as reader progresses
 - [ ] 3D navigation map visualization (inspired by Treasure Planet)
 
+### Design System
+- [x] Visual-First Cognition design principle documented
+- [x] Comprehensive design documentation (DESIGN.md)
+- [x] Color palette for light and dark modes
+- [ ] Accessibility improvements (WCAG AA compliance)
+- [ ] Animation system refinement
+
 ### Deployment & Access
-- [ ] Deploy to GitHub Pages for free public access
-- [ ] Configure Next.js static export for GitHub Pages
+- [x] Deploy to GitHub Pages for free public access
+- [x] Configure Next.js static export for GitHub Pages
 - [ ] Mobile responsiveness testing on real devices
 - [ ] Consider Vercel/Netlify migration for custom domain & performance
 - [ ] Custom domain setup (youngladysprimer.com?)
@@ -134,8 +144,8 @@
 ---
 
 ## Current Status
-**Phase 1**: 70% complete - Core systems working, content expansion needed
-**Active Development**: Dragon story completion and lesson integration
+**Phase 1**: 75% complete - Core systems working, dark mode implemented, design system documented
+**Active Development**: Settings enhancements, dragon story completion, and lesson integration
 
 ## Next Sprint Goals
 1. Complete dragon story arc with all resolution paths
