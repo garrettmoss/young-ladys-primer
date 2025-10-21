@@ -1,13 +1,13 @@
 export const molecularLockPuzzle = {
   molecular_lock: {
     title: "The Molecular Lock",
-    content: (readerName: string) => `${readerName} discovers an ancient vault deep within the dragon's lair, its entrance sealed by a peculiar lock that shimmers with shifting molecular patterns.
+    content: (readerName: string) => `${readerName} discovers a sealed vault within the Artificer Queen's workshop, its entrance protected by an intricate lock that shimmers with shifting molecular patterns.
 
 The lock displays three ornate chambers, each requiring a specific molecular arrangement to open.
 
 <div class="separator-line"></div>
 
-The Primer's voice whispers softly: <em>"This lock was crafted by the first nanotechnologists. Each chamber tests a different principle of molecular behavior. Observe carefully..."</em>
+The Primer's voice whispers softly: <em>"This lock guards the Queen's most precious knowledge. Each chamber tests understanding of molecular principles she used in her transformations. Observe carefully..."</em>
 
 <strong>CHAMBER ONE - The Temperature Challenge</strong>
 
@@ -162,12 +162,12 @@ With a deep, resonant hum, all three chambers align and the vault door swings op
 
 The Primer glows warmly:
 
-<em>"You have demonstrated understanding of molecular behavior, structural engineering, and the language of light. These are the foundations upon which all nanotechnology is built."</em>`,
+<em>"You have demonstrated understanding of molecular behavior, structural engineering, and the language of light. These are the foundations upon which all nanotechnology is built. This is the knowledge Princess Elara used to master her transformation."</em>`,
     choices: [
-      { text: "Study the molecular engineering knowledge", action: "nano_lesson" },
-      { text: "Return to explore the dragon's lair", action: "dragon_pattern" },
-      { text: "Share this discovery with the dragon", action: "dragon_engineers" },
-      { text: "Begin a new adventure", action: "welcome" }
+      { text: "Study the molecular engineering archives", action: "molecular_talk" },
+      { text: "Return to examine the transformation chamber", action: "queens_workshop" },
+      { text: "Share these discoveries with Master Cogsworth", action: "dragon_engineers" },
+      { text: "Use this knowledge to understand Elara", action: "elara_revealed" }
     ]
   },
 

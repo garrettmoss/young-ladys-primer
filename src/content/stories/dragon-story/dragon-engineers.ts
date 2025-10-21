@@ -12,9 +12,7 @@ The other engineers gasped. The Artificer Queen had been the greatest maker of t
 ${readerName} felt her heart race. Could the dragon itself be the lost Queen?`,
     choices: [
       { text: "Visit the Artificer Queen's abandoned workshop", action: "queens_workshop" },
-      { text: "Research the Protocol of Transformation", action: "protocol_research" },
-      { text: "Gather the ancient tools needed for the reversal", action: "gather_tools" },
-      { text: "Learn more about the Artificer Queen's disappearance", action: "queen_history" }
+      { text: "Research the Protocol of Transformation", action: "protocol_research" }
     ]
   },
 
@@ -28,12 +26,12 @@ But what caught ${readerName}'s attention was the workbench, covered with bluepr
 
 At the bottom of the final blueprint, she found words that made her gasp: "For love, I will become the thing I have always been in my heart - powerful enough to protect what I cherish most."
 
-On the workbench lay one final item: a small, unfinished clockwork heart, still warm to the touch.`,
+On the workbench lay one final item: a small, unfinished clockwork heart, still warm to the touch. And beside it, a sealed vault with a molecular lock unlike anything she'd ever seen.`,
     choices: [
-      { text: "Study the transformation chamber", action: "study_chamber" },
-      { text: "Examine the clockwork heart", action: "clockwork_heart" },
-      { text: "Read all the Queen's notes and blueprints", action: "read_blueprints" },
-      { text: "Test if the workshop's magic still works", action: "test_workshop_magic" }
+      { text: "Study the transformation chamber", action: "queen_history" },
+      { text: "Examine the clockwork heart", action: "protocol_research" },
+      { text: "Learn about molecular engineering", action: "molecular_talk" },
+      { text: "Unlock the sealed vault", action: "molecular_lock" }
     ]
   },
 
@@ -49,29 +47,7 @@ The plates revealed the reversal process too: to return consciousness to flesh, 
 
 Most importantly, the transformed being had to want to return. Without that desire, the strongest magic would fail.`,
     choices: [
-      { text: "Learn to read consciousness patterns", action: "read_consciousness" },
-      { text: "Understand Elara's deepest desires", action: "understand_elara" },
-      { text: "Discover what Elara truly wants now", action: "elara_true_desire" },
-      { text: "Find someone who truly knew Elara", action: "find_true_friend" }
-    ]
-  },
-
-  gather_tools: {
-    title: "The Instruments of Change",
-    content: (readerName: string) => `Master Cogsworth led ${readerName} through the palace's deepest vaults, where the ancient tools of the transformation arts were kept. Each implement was a masterpiece of both science and magic.
-
-"The Resonance Tuner," he explained, lifting a crystalline device that hummed with inner light, "attunes consciousness to its proper frequency. The Memory Prism captures and preserves the essential self. And this..." He reverently touched a small silver needle. "The Thread of Intent, which can weave souls back into flesh."
-
-But the most important tool was not an object at all - it was knowledge. "The greatest artificers knew that transformation was not about forcing change," Master Cogsworth whispered, "but about revealing what already exists within. Every human contains the seed of what they might become. Every dragon holds the memory of what they once were."
-
-As they gathered the ancient tools, ${readerName} felt their weight - not just physical, but emotional. These were instruments that could reshape reality itself, but they could only be used by someone pure of purpose and clear of heart.
-
-"Remember, Princess," Master Cogsworth warned, "these tools will amplify your intentions. If you approach the dragon with fear, fear is what you'll create. Approach with love, and love becomes possible."`,
-    choices: [
-      { text: "Practice using the tools safely", action: "practice_tools" },
-      { text: "Prepare your mind and heart for the task", action: "prepare_heart" },
-      { text: "Return to Elara with the tools", action: "return_with_tools" },
-      { text: "Seek additional guidance from Master Cogsworth", action: "more_guidance" }
+      { text: "Understand what Elara truly wants", action: "elara_revealed" }
     ]
   },
 
@@ -89,10 +65,7 @@ The ledger's final entry, written in Elara's own hand, made ${readerName}'s hear
 
 "But she never found him," Master Cogsworth finished sadly. "By the time her transformation was complete, Marcus had died in the dungeons, waiting for a rescue that came too late."`,
     choices: [
-      { text: "Tell Elara the truth about Marcus", action: "reveal_marcus_truth" },
-      { text: "Find Marcus's grave to bring Elara closure", action: "find_marcus_grave" },
-      { text: "Help Elara honor Marcus's memory properly", action: "honor_marcus" },
-      { text: "Focus on helping Elara find new purpose", action: "new_purpose_elara" }
+      { text: "The dragon must know the truth", action: "elara_revealed" }
     ]
   }
 };

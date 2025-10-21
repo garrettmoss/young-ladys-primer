@@ -13,12 +13,13 @@ ELECTRICITY - the most precise language of all. With tiny electrical whispers, o
 
 But here's the secret the ancients discovered: molecules don't just listen - they also speak. Every chemical reaction is a conversation, every crystal that forms tells a story of how its atoms prefer to arrange themselves.
 
-The mechanical dragon's scales, for instance, are made of carbon atoms holding hands in perfect hexagons, whispering strength to each other in bonds harder than diamond.`,
+The mechanical dragon's scales, for instance, are made of carbon atoms holding hands in perfect hexagons, whispering strength to each other in bonds harder than diamond.
+
+Understanding these principles was how Princess Elara created her transformation - speaking to molecules in their own languages until they rearranged themselves from flesh to living metal.`,
     choices: [
-      { text: "Learn to read molecular messages", action: "read_molecules" },
-      { text: "Practice the three languages", action: "practice_languages" },
-      { text: "Discover what the dragon's scales are saying", action: "scale_messages" },
-      { text: "Return to explore other paths", action: "nano_lesson" }
+      { text: "Understand how the dragon's scales work", action: "dragon_pattern" },
+      { text: "Apply this to the transformation chamber", action: "queens_workshop" },
+      { text: "Continue investigating Elara's story", action: "elara_revealed" }
     ]
   }
 };
