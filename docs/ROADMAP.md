@@ -62,6 +62,7 @@
 - [ ] Language and communication fundamentals
 - [ ] Music theory and wave concepts
 - [ ] Introduction to computational thinking
+- [ ] Economics: trade, resource flow, and human desire
 
 ### Interactive Elements
 - [ ] Molecular lock puzzle system (enhanced)
