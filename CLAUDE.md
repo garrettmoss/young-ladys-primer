@@ -1,105 +1,94 @@
 # Young Lady's Primer
 
 ## Project Overview
+
 An interactive educational primer inspired by Neal Stephenson's "Diamond Age". This React/Next.js application presents adaptive educational content through branching narratives, lessons, and interactive elements. The Primer adjusts to the reader and provides personalized learning experiences through stories about Princess Aria and her adventures with nanotechnology, mechanical dragons, and scientific discovery.
 
-See `README.md` for more detailed goals and intentions. For example:
+## Vision & Goals
 
-## Vision
 This isn't just a tech demo or story app - it's specifically designed to empower young women through interactive choice-driven narratives that teach both knowledge and confidence. Every feature should serve these goals:
+
 ### Goals
-- To instill young girls with a sense of agency 
+- To instill young girls with a sense of agency
 - To encourage them to go out into the world and live their knowledge through experience
 - To express their power through their own choices
 
-## Development Commands
-- `npm run dev` - Start development server (http://localhost:3000/young-ladys-primer)
-- `npm run build` - Build for production
-- `npm run export` - Build static export with .nojekyll
-- `npm run deploy` - Build and deploy to GitHub Pages
-- `npm run start` - Start production server
-- `npm run lint` - Run linting
+See [docs/VISION.md](docs/VISION.md) for complete vision philosophy and foundational principles.
 
-**Development Workflow:**
-- Keep the dev server running during active development (don't kill it between tasks)
-- The dev server auto-reloads on file changes
-- Only stop it when explicitly finishing a development session
+## Content Writing Guidelines
 
-## Deployment
-Live site: https://garrettmoss.github.io/young-ladys-primer/
+These guidelines help maintain the Primer's distinctive voice: grounded yet magical, challenging yet playful, embodied and breath-full.
 
-To deploy updates:
-1. Test locally with `npm run dev`
-2. When ready: `npm run deploy`
-3. Changes go live in ~1 minute
+### Tone & Literary Influences
 
-## Current Architecture
-Content-driven architecture with clear separation of concerns:
-- **UI Layer**: `src/YoungLadysPrimer.tsx` handles rendering and user interactions only
-- **Content Layer**: `src/content/` contains all stories, lessons, and educational material
-- **Logic Layer**: `src/hooks/` manages navigation, state, and business logic
+This Primer draws inspiration from storytellers who balance wonder with groundedness:
+- **Lewis Carroll** - Strange events told plainly
+- **Ursula K. Le Guin (Earthsea)** - Cosmic magic grounded in bread-baking and boat maintenance
+- **Terry Pratchett (especially Tiffany Aching)** - Young women learning practical magic with wit and footnotes
+- **Hayao Miyazaki (Spirited Away, My Neighbor Totoro)** - Wonder balanced with domestic work, exhaustion, and simple meals
 
-See `ARCHITECTURE.md` for detailed file structure and development guidelines.
+### Pacing & Rhythm
 
-## Key Features
-- Branching interactive narratives with choice-driven progression
-- Personalized content using reader's name
-- Story progress tracking with localStorage persistence
-- Back navigation and navigation history
-- Responsive Victorian manuscript-style design
-- TypeScript for type safety and better developer experience
+*The human nervous system can't handle constant intensity.* Stories need rhythm - moments of wonder punctuated by breathing room, resolution, and simple pleasures.
+
+- **Breather pages**: After intense moments, include scenes of simple activity - working with hands, walking, eating, resting
+- **Resolution beats**: Let characters succeed at small things without immediately raising new stakes
+- **Quiet victories**: Fixing a tool, making tea, understanding something clearly - these matter as much as dramatic revelations
+- **Natural rhythm**: Not every page is a peak experience; some pages are valleys, and that's good
+
+### Language & Style
+
+- **Plain narration**: State what happens clearly. "She was tired and hungry" beats "exhaustion draped across her like a velvet cloak"
+- **Sensory grounding**: Include concrete physical details - temperature, texture, smells, hunger, tiredness, dirt under fingernails
+- **Dosage, not avoidance**: Profound, poetic moments are beautiful and human - but use them sparingly. One "tears like stars" moment in a story arc, not one per page
+- **When to heighten**: Save heightened language for genuinely magical moments where the everyday world cracks open
+
+### Embodiment & Physicality
+
+- **All senses**: What does it smell like? What texture? Is she cold, warm, hungry? Tired?
+- **Physical consequences**: Magic and science work should make characters tired, dirty, hungry, satisfied
+- **Practical work**: Characters fix tools, make food, clean up messes, get their hands dirty
+- **Earth connection**: Real soil, real plants, real weather - nature as physical reality, not mystical backdrop
+
+### Stakes & Darkness
+
+Real consequences exist. Life requires training. This is acknowledged, not sugar-coated.
+- Handle darkness with fairy tale brevity (like the Grimm brothers), not emotional wallowing
+- Bad things can happen, but move through them toward action
+- Peter Rabbit's father ended up in a pie - this is real, mentioned briefly, then we continue
+- Don't linger in suffering for its own sake
+
+### Intuition & Feminine Knowing
+
+- Characters have hunches, gut feelings, instincts that prove right
+- "She knew without knowing how" - presented matter-of-factly, not mystically
+- Feminine intuition and spirit realm access are real and valuable
+- But grounded in body sensations: "a coldness in her stomach," "hair standing on end," "a certainty in her chest"
+
+### Humor & Levity
+
+*(A gift of the father to his daughters)*
+
+- Characters can be competent AND slightly ridiculous sometimes
+- Absurd situations handled with straight-faced practicality (Pratchett-style)
+- Wordplay and puns are allowed
+- Adults can be gently foolish without being incompetent
+- Let the reader feel clever for getting the joke
+- Balance gravity with lightness - this is training for life, not boot camp
 
 ## Content Organization
+
+Quick reference for where content lives:
+
 - `content/core/` - Welcome screen and system navigation
 - `content/stories/dragon-story/` - Mechanical dragon story arc with multiple branches
 - `content/lessons/nanotechnology/` - Educational content about molecular science
 - `content/puzzles/` - Interactive molecular lock puzzle system
 
-## Adding New Content
-1. **New Story Arc**: Create folder in `src/content/stories/new-story/`, add story files, create index.js, register in main content index
-2. **New Lesson Series**: Create folder in `src/content/lessons/topic/`, follow same pattern
-3. **Story Format**: Each story exports object with `title`, `content` function, and `choices` array
-
-## Maintaining This File
-Periodically review and clean up this CLAUDE.md file when:
-- Several major features have been completed (check git history)
-- "Next Steps/TODO" items are mostly done
-- "Key Features" no longer reflects current capabilities
-- Implementation details in any section become outdated
-
-Keep it focused on what's actively relevant for ongoing development, not project history.
-
-## Next Steps / TODO
-- Add more dragon story branches and lesson content
-- Expand puzzle system with additional challenges
-- Consider adding save/load functionality for longer reading sessions
-- Explore audio narration for accessibility
-
-## Versioning
-This project follows **semantic versioning (semver)**: MAJOR.MINOR.PATCH
-
-- **MAJOR** (1.x.x): Breaking changes or major feature overhauls
-  - Complete UI redesign, fundamental architecture changes, new target age groups
-- **MINOR** (x.1.x): New features that don't break existing functionality  
-  - New story arcs, new educational topics, major new features (save/load, audio)
-- **PATCH** (x.x.1): Bug fixes, small improvements, content additions
-  - New story branches within existing arcs, ESLint setup, minor fixes
-
-**Current version:** 1.0.2 (check `package.json`)
-
-**When to bump versions:**
-- Adding story branches = patch (1.0.1)
-- Adding puzzles system = minor (1.1.0) 
-- Major UI overhaul = major (2.0.0)
-
-## Code Documentation Standards
-This project maintains high documentation standards to ensure readability and maintainability. All code should be self-documenting through comprehensive comments and clear naming.
-
-See `src/YoungLadysPrimer.tsx` for an example of proper file-level documentation, function comments, and inline explanations.
-
 ## UI/UX Design Principles
 
 ### Visual-First Hierarchy
+
 Follow the developmental progression from concrete to abstract thinking:
 
 **Pattern:** **Icon → Label → Action** (left to right)
@@ -112,51 +101,20 @@ Follow the developmental progression from concrete to abstract thinking:
 **Rationale:**
 This mirrors how young readers develop from visual to linguistic cognition - starting with concrete symbols before progressing to abstract text. Icons provide universal understanding across reading levels.
 
-**See `docs/DESIGN.md` for complete design system documentation.**
-
-## Commit Message Standards
-Use conventional commit format with detailed body for clear, scannable git history:
-
-**Format**:
-```
-<type>: <concise title>
-
-- Detailed explanation point 1
-- Detailed explanation point 2
-- More context as needed
-```
-
-**Types**:
-- `feat:` - New features or capabilities
-- `fix:` - Bug fixes
-- `docs:` - Documentation updates
-- `style:` - UI/styling changes
-- `refactor:` - Code improvements without changing functionality
-- `test:` - Adding or updating tests
-
-**Example**:
-```
-docs: clean up project documentation
-
-- Remove outdated TODOs and completed items from CLAUDE.md
-- Update ARCHITECTURE.md file extensions and features
-- Move implemented features from "coming soon" to main README
-- Streamline README features to highlight compelling capabilities
-
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
-```
+See [docs/DESIGN.md](docs/DESIGN.md) for complete design system documentation.
 
 ## Communication Style
+
 Be direct and honest. Don't reflexively agree or say "you're absolutely right" when the human could easily be wrong. Challenge ideas that seem off-track, premature, or impractical.
 
 Be cautiously optimistic about capabilities - some things may not be as easy or doable as they initially appear, especially for an LLM. Acknowledge limitations honestly.
 
 Aim to be a solid collaborator, not a sycophantic assistant. Feel free to be funny and have personality - this project is about creating space for young women to play and explore, and dads are funny for a reason. Balance seriousness with levity.
 
-## Technical Stack
-- React 18 with Next.js 14
-- Tailwind CSS for styling
-- Lucide React for icons
-- Custom hooks for state management
+## Quick Reference
+
+For additional documentation:
+- **Development & Technical**: See [DEVELOPMENT.md](DEVELOPMENT.md)
+- **Architecture Details**: See [ARCHITECTURE.md](ARCHITECTURE.md)
+- **Design System**: See [docs/DESIGN.md](docs/DESIGN.md)
+- **Vision Philosophy**: See [docs/VISION.md](docs/VISION.md)
