@@ -385,9 +385,11 @@ const YoungLadysPrimer: React.FC = () => {
             {/* Choices with manuscript style */}
             {currentContent.choices && currentContent.choices.length > 0 && (
               <div className="space-y-3 mt-6">
-                <p className="choice-prompt">
-                  Choose your path, dear reader...
-                </p>
+                {currentStory === 'welcome' && (
+                  <p className="choice-prompt">
+                    Choose your path, dear reader...
+                  </p>
+                )}
                 {currentContent.choices.map((choice: Choice, index: number) => {
                   // Special actions that don't need story content
                   const isSpecialAction = choice.action === 'change-name';
@@ -470,6 +472,7 @@ const YoungLadysPrimer: React.FC = () => {
               aria-label="Open settings"
             >
               <Settings className="w-5 h-5" />
+              <span className="text-lg">Settings</span>
             </button>
           </div>
         </div>
