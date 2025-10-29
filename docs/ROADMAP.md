@@ -9,8 +9,8 @@
 - [x] Personalized content using reader's name
 - [x] Story progress tracking with localStorage
 - [x] Back navigation and history
-- [ ] Reduce choice overload (fewer options per page for containment)
-- [ ] Story convergence points and multiple endings
+- [x] Reduce choice overload (dragon story uses 2-3 choice pattern)
+- [x] Story convergence points (confluence narrative structure)
 
 ### User Experience
 - [x] Victorian manuscript-style UI design
@@ -40,8 +40,14 @@
 ### Content Management
 - [x] Modular content organization by theme
 - [x] TypeScript interfaces for type safety
-- [x] Dragon story arc with multiple approach paths
-- [ ] Complete dragon story with resolution branches
+- [x] Dragon story arc with confluence narrative pattern
+- [x] Choice reduction (2-3 options per page for most nodes)
+- [x] Convergence points (all paths → elara_revealed → find_peace)
+- [x] Mermaid flow documentation for story arcs
+- [ ] Story graph validation script (catches broken references)
+- [ ] Interactive flow visualizer (better than Mermaid for complexity)
+- [ ] Table of contents system (browsable story navigation)
+- [ ] Complete dragon story resolution branches
 - [ ] Lesson integration within stories
 - [ ] Puzzle integration within stories
 
@@ -145,12 +151,16 @@
 ---
 
 ## Current Status
-**Phase 1**: 75% complete - Core systems working, dark mode implemented, design system documented
-**Active Development**: Settings enhancements, dragon story completion, and lesson integration
+**Phase 1**: 85% complete - Core systems working, confluence narrative structure implemented, content management toolkit designed
+
+**Active Development**: Story Management Toolkit implementation (validation, visualization, table of contents)
 
 ## Next Sprint Goals
-1. Complete dragon story arc with all resolution paths
-2. Integrate first set of nanotechnology lessons into narrative
-3. Reduce choice complexity for better reader containment
-4. Add progress-based table of contents
+1. **Story Management Toolkit** (see [docs/TOOLKIT.md](TOOLKIT.md))
+   - Story graph validation script (catches broken references, orphaned nodes)
+   - Interactive flow visualizer (better than Mermaid for complex narratives)
+   - Table of contents system (browsable navigation with progress tracking)
+2. Complete dragon story resolution branches
+3. Integrate nanotechnology lessons into narrative flow
+4. Test on mobile devices and improve responsiveness
 

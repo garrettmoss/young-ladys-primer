@@ -5,7 +5,7 @@ This map visualizes the refactored structure of the dragon story arc after reduc
 ## Refactored Structure
 
 ```mermaid
-graph LR
+graph TD
     %% Entry point
     story_princess[story_princess<br/>The Princess and the Mechanical Dragon<br/>4 CHOICES]
 

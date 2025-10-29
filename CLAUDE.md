@@ -85,6 +85,20 @@ Quick reference for where content lives:
 - `content/lessons/nanotechnology/` - Educational content about molecular science
 - `content/puzzles/` - Interactive molecular lock puzzle system
 
+### Narrative Structure Patterns
+
+Stories follow **confluence narrative** structure (also called "braided" or "diamond" patterns):
+
+- **Tree trunk**: Main quest line with key story beats everyone experiences
+- **Tributaries**: Optional branches that split (choices) and rejoin (convergence points)
+- **River delta**: Multiple paths that feel different but merge for emotional climax
+
+This balances meaningful choice with narrative coherence. Readers feel agency through different paths, but all experience essential story beats at convergence points.
+
+**Example:** The dragon story has 3 investigation paths (observation/interaction/research) that converge at the emotional revelation, then split into 4 philosophical approaches, then reconverge at the thematic resolution.
+
+See [docs/TOOLKIT.md](docs/TOOLKIT.md) for detailed story planning tools, validation systems, and management framework.
+
 ## UI/UX Design Principles
 
 ### Visual-First Hierarchy
