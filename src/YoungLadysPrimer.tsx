@@ -20,7 +20,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Sparkles, ArrowRight, Feather, Home, ChevronLeft, Settings, Eclipse, BookMarked } from 'lucide-react';
+import { BookOpen, Sparkles, ArrowRight, Feather, School, ChevronLeft, Settings, Eclipse, BookMarked, Scroll, MoonStar, Cog, UserStar } from 'lucide-react';
 import { getStoryContent, Choice } from './content/index';
 import { useStoryNavigation } from './hooks/useStoryNavigation';
 
@@ -81,7 +81,22 @@ const YoungLadysPrimer: React.FC = () => {
   const currentContent = getStoryContent(storyKey, effectiveReaderName) || getStoryContent('welcome', effectiveReaderName)!;
 
   // Event Handlers: User interaction callbacks
-  
+
+  /**
+   * Get icon component for welcome page choices
+   * @param action - The choice action identifier
+   * @returns Icon component or null
+   */
+  const getWelcomeIcon = (action: string) => {
+    switch(action) {
+      case 'story_princess': return Scroll;
+      case 'lesson_choice': return MoonStar;
+      case 'puzzle_logic': return Cog;
+      case 'reflection': return UserStar;
+      default: return null;
+    }
+  };
+
   /**
    * Handle story choice selection - navigates to new story branch
    * @param action - The story identifier to navigate to
@@ -206,11 +221,13 @@ const YoungLadysPrimer: React.FC = () => {
               Illustrated Primer
             </span>
           </h1>
-          
-          <p className="subtitle">
-            "A book that adapts itself to the mind of its reader"
-          </p>
-          
+
+          {storyKey === 'welcome' && (
+            <p className="subtitle">
+              "A book that adapts itself to the mind of its reader"
+            </p>
+          )}
+
           {/* Decorative flourish */}
           <div className="flex items-center justify-center mt-4">
             <span className="text-amber-600/60 text-2xl">❦</span>
@@ -294,7 +311,7 @@ const YoungLadysPrimer: React.FC = () => {
             </div>
 
             {/* Settings page name display/editor */}
-            {isHydrated && currentStory === 'settings' && (
+            {storyKey === 'settings' && (
               <div className="space-y-4 mt-6">
                 {/* Reader Name Setting */}
                 <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
@@ -385,7 +402,7 @@ const YoungLadysPrimer: React.FC = () => {
             {/* Choices with manuscript style */}
             {currentContent.choices && currentContent.choices.length > 0 && (
               <div className="space-y-3 mt-6">
-                {currentStory === 'welcome' && (
+                {storyKey === 'welcome' && (
                   <p className="choice-prompt">
                     Choose your path, dear reader...
                   </p>
@@ -394,6 +411,7 @@ const YoungLadysPrimer: React.FC = () => {
                   // Special actions that don't need story content
                   const isSpecialAction = choice.action === 'change-name';
                   const isActionAvailable = isSpecialAction || getStoryContent(choice.action);
+                  const IconComponent = storyKey === 'welcome' ? getWelcomeIcon(choice.action) : null;
 
                   return (
                     <button
@@ -402,10 +420,15 @@ const YoungLadysPrimer: React.FC = () => {
                       disabled={!isActionAvailable}
                       className={`choice-button group ${isActionAvailable ? '' : 'disabled'}`}
                     >
-                      <span className="font-medium relative z-10" style={{ letterSpacing: '0.02em' }}>
-                        {choice.text}
-                        {!isActionAvailable && <span className="text-sm italic ml-2">(Coming soon)</span>}
-                      </span>
+                      <div className="flex items-center gap-3">
+                        {IconComponent && (
+                          <IconComponent className="w-5 h-5 text-amber-700" />
+                        )}
+                        <span className="font-medium relative z-10" style={{ letterSpacing: '0.02em' }}>
+                          {choice.text}
+                          {!isActionAvailable && <span className="text-sm italic ml-2">(Coming soon)</span>}
+                        </span>
+                      </div>
                       {isActionAvailable && (
                         <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-amber-700" />
                       )}
@@ -415,8 +438,8 @@ const YoungLadysPrimer: React.FC = () => {
               </div>
             )}
 
-            {/* Navigation buttons - only show when not on welcome page and after hydration */}
-            {isHydrated && currentStory !== 'welcome' && (
+            {/* Navigation buttons - only show when not on welcome page */}
+            {storyKey !== 'welcome' && (
               <div className="space-y-3 mt-6">
                 {currentContent.choices && currentContent.choices.length > 0 && (
                   <div className="flex items-center justify-center my-4">
@@ -444,7 +467,7 @@ const YoungLadysPrimer: React.FC = () => {
                   onClick={resetToWelcome}
                   className="home-button group"
                 >
-                  <Home className="home-button-icon" />
+                  <School className="home-button-icon" />
                   <span className="home-button-text">
                     Return to the Beginning
                   </span>

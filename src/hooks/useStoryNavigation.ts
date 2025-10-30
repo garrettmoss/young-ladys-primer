@@ -97,7 +97,7 @@ interface StoryProgress {
  */
 export const useStoryNavigation = (initialStory: string = 'welcome') => {
   // Navigation State - initialized from localStorage or defaults
-  const [currentStory, setCurrentStory] = useState<string>(() => 
+  const [currentStory, setCurrentStory] = useState<string>(() =>
     loadFromStorage(STORAGE_KEYS.CURRENT_STORY, initialStory)
   );
   const [storyProgress, setStoryProgress] = useState<StoryProgress>(() =>

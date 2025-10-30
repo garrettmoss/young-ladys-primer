@@ -67,7 +67,7 @@
   }
   
   .sparkle-animation {
-    @apply absolute inset-0 animate-pulse;
+    @apply absolute inset-0 animate-pulse z-20;
     filter: drop-shadow(0 0 3px rgba(250, 204, 21, 0.5));
   }
   
