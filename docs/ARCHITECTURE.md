@@ -82,11 +82,13 @@ young-ladys-primer/
 ## Content Format
 
 ### Story Structure
-```javascript
+Content functions use a **ContentContext object** for personalization, enabling scalable addition of new variables without changing function signatures:
+
+```typescript
 export const storyName = {
   story_key: {
     title: "Story Title",
-    content: (readerName) => `Story content with ${readerName}...`,
+    content: ({ readerName }: { readerName: string }) => `Story content with ${readerName}...`,
     choices: [
       { text: "Choice text", action: "next_story_key" },
       // ...
@@ -94,6 +96,11 @@ export const storyName = {
   }
 };
 ```
+
+**Context Destructuring Pattern:**
+- Functions destructure only the variables they need from ContentContext
+- Static content can use empty arrow functions: `content: () => "Static text"`
+- Future adaptive variables (readingLevel, choiceHistory, etc.) can be added without changing existing content
 
 ### Content Registration
 All content is registered in `src/content/index.js`:
@@ -247,11 +254,12 @@ graph TD
 - Uses content system through `getStoryContent()`
 - Delegates navigation to `useStoryNavigation` hook
 
-### `src/content/index.js`  
+### `src/content/index.ts`
 - Central content registry
 - Exports `allContent` object and utility functions
-- `getStoryContent(storyKey, readerName)` - fetches and processes content
+- `getStoryContent(storyKey, context)` - fetches and processes content with ContentContext
 - `getAllStoryKeys()` - returns available story keys
+- Defines `ContentContext` interface for future-proof personalization
 
 ### `src/hooks/useStoryNavigation.js`
 - Manages current story state

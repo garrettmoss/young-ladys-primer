@@ -30,7 +30,7 @@ Content-driven architecture with clear separation of concerns:
 - **Content Layer**: `src/content/` contains all stories, lessons, and educational material
 - **Logic Layer**: `src/hooks/` manages navigation, state, and business logic
 
-See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed file structure and development guidelines.
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for detailed file structure and development guidelines.
 
 ## Technical Stack
 
@@ -52,11 +52,29 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed file structure and developme
 2. Follow same pattern as story arcs
 3. Register in content index
 
-### Story Format
-Each story exports object with:
-- `title` - Story page title
-- `content` - Function that returns story text (can use reader's name)
-- `choices` - Array of choice objects with text and target page IDs
+### Content Format
+
+Content functions use **ContentContext destructuring** for scalable personalization:
+
+```typescript
+export const storyName = {
+  story_key: {
+    title: "Story Title",
+    content: ({ readerName }: { readerName: string }) =>
+      `Story content with ${readerName}...`,
+    choices: [
+      { text: "Choice text", action: "next_story_key" }
+    ]
+  }
+};
+```
+
+**Key Points:**
+- Functions destructure variables from `ContentContext` object
+- Only extract what's needed: `({ readerName })` or `({ readerName, readingLevel })`
+- Static content uses empty function: `content: () => "Static text"`
+- Future variables (readingLevel, choiceHistory, completedStories) can be added to ContentContext without changing existing content
+- See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for complete examples
 
 ## Versioning
 
