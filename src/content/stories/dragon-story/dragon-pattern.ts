@@ -1,7 +1,7 @@
 export const dragonPatternStories = {
   dragon_pattern: {
     title: "The Code in the Dance",
-    content: (readerName: string) => `Princess ${readerName} watched from the palace tower with her father's finest telescope, sketching the dragon's movements in her journal.
+    content: ({ readerName }: { readerName: string }) => `Princess ${readerName} watched from the palace tower with her father's finest telescope, sketching the dragon's movements in her journal.
 
 Three steps forward, two to the left, pause, then a graceful turn... She began to see it wasn't random at all. It was binary! The dragon was trying to communicate.
 
@@ -18,7 +18,7 @@ But how does one free someone from such a prison?`,
 
   binary_talk: {
     title: "A Digital Dialogue",
-    content: (readerName: string) => `${readerName} had an idea. She ordered the palace guards to light torches on the battlements - on for 1, off for 0. Slowly, carefully, she spelled out her message to the dragon: "01001001 00100000 01101000 01100101 01100001 01110010" - "I hear."
+    content: ({ readerName }: { readerName: string }) => `${readerName} had an idea. She ordered the palace guards to light torches on the battlements - on for 1, off for 0. Slowly, carefully, she spelled out her message to the dragon: "01001001 00100000 01101000 01100101 01100001 01110010" - "I hear."
 
 The dragon stopped its pacing. Its eyes flashed brighter, and it began a new dance, more complex than before. This time, it wasn't just speaking in binary - it was writing equations in the air with its movements, mathematical proofs that described the nature of its imprisonment.
 
@@ -32,7 +32,7 @@ The dragon - Elara - had found a way to hide her identity within the very curse 
 
   curse_research: {
     title: "Tales of Transformation",
-    content: (readerName: string) => `In the dustiest corner of the library, ${readerName} found a book bound in scales that shimmered like oil on water: "The Chronicle of Changed Ones."
+    content: ({ readerName }: { readerName: string }) => `In the dustiest corner of the library, ${readerName} found a book bound in scales that shimmered like oil on water: "The Chronicle of Changed Ones."
 
 The book told of an age when the boundary between flesh and metal was thin, when artificers could weave consciousness into clockwork. But with this power came a terrible price - those who delved too deep into the mechanical mysteries risked losing their humanity entirely.
 
@@ -48,7 +48,7 @@ At the bottom of the page, in different ink, someone had written: "She still wai
 
   reader_choice: {
     title: "The Primer Listens",
-    content: (readerName: string) => `The story pauses, the words on the page shimmering like morning dew.
+    content: ({ readerName }: { readerName: string }) => `The story pauses, the words on the page shimmering like morning dew.
 
 "Dear reader," the Primer speaks directly to you, "${readerName}, you have observed much. Princess ${readerName} stands at a crossroads, and perhaps your wisdom can guide her path.
 
@@ -69,7 +69,7 @@ The Primer awaits your insight...`,
 
   show_compassion: {
     title: "The Heart's Answer",
-    content: (readerName: string) => `Following the reader's wisdom, Princess ${readerName} chose the path of compassion. She approached Elara not as a problem to be solved, but as a being in pain who needed understanding.
+    content: ({ readerName }: { readerName: string }) => `Following the reader's wisdom, Princess ${readerName} chose the path of compassion. She approached Elara not as a problem to be solved, but as a being in pain who needed understanding.
 
 "Elara," she said softly, "you are not alone anymore. For a century you have carried this burden by yourself, but I am here now. You don't have to be strong for everyone. You don't have to solve everything alone."
 
@@ -88,7 +88,7 @@ In that moment of shared humanity, something magical happened. The dragon's scal
 
   unite_forces: {
     title: "Science and Magic as One",
-    content: (readerName: string) => `Inspired by the reader's insight, Princess ${readerName} realized that the answer lay not in choosing between technology and magic, but in uniting them as they were meant to be united.
+    content: ({ readerName }: { readerName: string }) => `Inspired by the reader's insight, Princess ${readerName} realized that the answer lay not in choosing between technology and magic, but in uniting them as they were meant to be united.
 
 She returned to Elara with both the ancient tools of transformation and the modern understanding of consciousness transfer. But more than that, she brought the recognition that the dragon's dilemma was not a problem of either science or magic - it was a problem that required both.
 
@@ -107,7 +107,7 @@ As technology and magic flowed together in harmony, something unprecedented happ
 
   power_story: {
     title: "The Song of Becoming",
-    content: (readerName: string) => `Trusting in the reader's wisdom about the power of story and song, Princess ${readerName} approached Elara with neither tools nor spells, but with the most powerful force of all: narrative.
+    content: ({ readerName }: { readerName: string }) => `Trusting in the reader's wisdom about the power of story and song, Princess ${readerName} approached Elara with neither tools nor spells, but with the most powerful force of all: narrative.
 
 "Elara," she said, sitting beside the great dragon, "tell me your story. Not the facts, not the history - tell me the story of your heart."
 
@@ -126,7 +126,7 @@ And in that telling, in that singing, in that weaving of narrative, Elara found 
 
   seek_understanding: {
     title: "The Wisdom of Patience",
-    content: (readerName: string) => `Following the reader's counsel to seek understanding before action, Princess ${readerName} chose the path of deep listening. Instead of rushing to solve or fix or change, she simply... stayed. She sat with Elara day after day, learning her rhythms, understanding her moods, discovering the person within the dragon.
+    content: ({ readerName }: { readerName: string }) => `Following the reader's counsel to seek understanding before action, Princess ${readerName} chose the path of deep listening. Instead of rushing to solve or fix or change, she simply... stayed. She sat with Elara day after day, learning her rhythms, understanding her moods, discovering the person within the dragon.
 
 Through patient observation, ${readerName} began to understand something profound: Elara's transformation had not been a mistake or a tragedy. It had been exactly what she needed to become - not forever, but for this time, for this purpose.
 
@@ -147,7 +147,7 @@ Understanding, it turned out, was the key to every lock.`,
 
   find_peace: {
     title: "A New Beginning",
-    content: (readerName: string) => `And so Princess ${readerName} and the dragon Elara began a new chapter together.
+    content: ({ readerName }: { readerName: string }) => `And so Princess ${readerName} and the dragon Elara began a new chapter together.
 
 Elara remained in her dragon form - not as a curse, but as a choice. She had learned that transformation was not about escaping who you are, but about becoming more fully yourself. The mechanical dragon was no longer a prison but a possibility - one form among many that Elara could inhabit as she wished.
 

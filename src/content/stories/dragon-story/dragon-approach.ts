@@ -1,7 +1,7 @@
 export const dragonApproachStories = {
   dragon_approach: {
     title: "A Brave Meeting",
-    content: (readerName: string) => `Against all advice from the court, Princess ${readerName} descended from the palace, her toolkit hidden beneath her cloak. The mechanical dragon's great head turned toward her as she approached, gears whirring and steam hissing softly.
+    content: ({ readerName }: { readerName: string }) => `Against all advice from the court, Princess ${readerName} descended from the palace, her toolkit hidden beneath her cloak. The mechanical dragon's great head turned toward her as she approached, gears whirring and steam hissing softly.
 
 Up close, she could see the intricate brass plates that formed its scales, each one engraved with microscopic symbols. The dragon lowered its massive head until it was level with hers, and in its crystalline eyes, she saw something impossible - a reflection not of herself, but of another young woman, trapped behind the glass.
 
@@ -16,7 +16,7 @@ This dragon knew the palace. Perhaps... it had once called it home.`,
 
   read_scales: {
     title: "The Language of Living Metal",
-    content: (readerName: string) => `Princess ${readerName} reached out with trembling fingers and touched the dragon's scales. The moment her skin made contact, the microscopic symbols began to glow with inner light, and knowledge flooded her mind.
+    content: ({ readerName }: { readerName: string }) => `Princess ${readerName} reached out with trembling fingers and touched the dragon's scales. The moment her skin made contact, the microscopic symbols began to glow with inner light, and knowledge flooded her mind.
 
 The symbols were not just decorative - they were a living language, inscribed by nanotechnological writers that had recorded every moment of the dragon's existence. Each scale told a story: memories of flight above the clouds, of conversations with scholars, of tears shed in loneliness.
 
@@ -30,7 +30,7 @@ In the final scale she touched, she found what she was looking for - a name writ
 
   play_music: {
     title: "A Song to Wake the Heart",
-    content: (readerName: string) => `${readerName} drew out her silver flute, the one her mother had given her before the plague took her. She took a deep breath and began to play the royal anthem - not backwards as the dragon had hummed it, but forwards, true and clear.
+    content: ({ readerName }: { readerName: string }) => `${readerName} drew out her silver flute, the one her mother had given her before the plague took her. She took a deep breath and began to play the royal anthem - not backwards as the dragon had hummed it, but forwards, true and clear.
 
 As the notes rang out across the courtyard, something miraculous happened. The dragon began to change. Its mechanical movements became more fluid, more graceful. The harsh grinding of gears softened to whispered harmonies. And most wonderfully, the dragon began to sing along.
 

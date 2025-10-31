@@ -1,7 +1,7 @@
 export const dragonEngineersStories = {
   dragon_engineers: {
     title: "The Council of Makers",
-    content: (readerName: string) => `Princess ${readerName} summoned the palace's finest engineers and artificers to the great hall. Master Cogsworth, ancient and wise, examined her sketches through his many-lensed spectacles.
+    content: ({ readerName }: { readerName: string }) => `Princess ${readerName} summoned the palace's finest engineers and artificers to the great hall. Master Cogsworth, ancient and wise, examined her sketches through his many-lensed spectacles.
 
 "Your Highness," he wheezed, his voice like rustling parchment, "this is no ordinary mechanical beast. These patterns you've recorded - they match the work of the legendary Artificer Queen, who vanished a hundred years ago."
 
@@ -18,7 +18,7 @@ ${readerName} felt her heart race. Could the dragon itself be the lost Queen?`,
 
   queens_workshop: {
     title: "The Chamber of Wonders",
-    content: (readerName: string) => `Deep beneath the palace, in chambers forgotten by all but the oldest servants, ${readerName} discovered the Artificer Queen's workshop. The door stood ajar, as if she had just stepped out for a moment.
+    content: ({ readerName }: { readerName: string }) => `Deep beneath the palace, in chambers forgotten by all but the oldest servants, ${readerName} discovered the Artificer Queen's workshop. The door stood ajar, as if she had just stepped out for a moment.
 
 Inside, the workshop was a wonderland of impossible machines. Clockwork birds that sang with human voices perched on shelves beside music boxes that played melodies from dreams. In the center stood the Queen's greatest creation: a transformation chamber, its crystalline walls still humming with residual power.
 
@@ -37,7 +37,7 @@ On the workbench lay one final item: a small, unfinished clockwork heart, still 
 
   protocol_research: {
     title: "The Science of Souls",
-    content: (readerName: string) => `In the royal library's most restricted section, ${readerName} found the Protocol of Transformation - not in books, but etched into plates of living metal that whispered their secrets when touched.
+    content: ({ readerName }: { readerName: string }) => `In the royal library's most restricted section, ${readerName} found the Protocol of Transformation - not in books, but etched into plates of living metal that whispered their secrets when touched.
 
 The Protocol revealed a truth that made her shiver: consciousness was not trapped in flesh, but was a pattern that could be written into any sufficiently complex system. The Artificer Queen had discovered how to encode a human soul into the quantum matrices of her machines.
 
@@ -53,7 +53,7 @@ Most importantly, the transformed being had to want to return. Without that desi
 
   queen_history: {
     title: "The Truth of Princess Elara",
-    content: (readerName: string) => `Master Cogsworth led ${readerName} to the palace archives, where he pulled out a hidden ledger bound in scales that shimmered like moonlight on water.
+    content: ({ readerName }: { readerName: string }) => `Master Cogsworth led ${readerName} to the palace archives, where he pulled out a hidden ledger bound in scales that shimmered like moonlight on water.
 
 "The true story of Princess Elara was hidden," he began, "because it was considered too dangerous - a tale of forbidden love that led to transformation beyond imagining."
 

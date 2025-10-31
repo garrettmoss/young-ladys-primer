@@ -1,7 +1,7 @@
 export const molecularCommunication = {
   molecular_talk: {
     title: "The Language of Atoms",
-    content: (readerName: string) => `"To speak to molecules," the Primer explains, "one must first understand that they are always listening, always dancing, always responding to the world around them.
+    content: ({ readerName }: { readerName: string }) => `"To speak to molecules," the Primer explains, "one must first understand that they are always listening, always dancing, always responding to the world around them.
 
 In ${readerName}'s kingdom, the artificers discovered that molecules respond to three kinds of messages:
 

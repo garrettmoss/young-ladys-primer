@@ -1,7 +1,7 @@
 export const puzzleNavigation = {
   puzzle_logic: {
     title: "Choose Your Challenge",
-    content: (readerName: string) => `The Primer's surface shimmers with intricate patterns of light, each one representing a different kind of challenge to stretch your mind and test your understanding.
+    content: ({ readerName }: { readerName: string }) => `The Primer's surface shimmers with intricate patterns of light, each one representing a different kind of challenge to stretch your mind and test your understanding.
 
 <div class="separator-line"></div>
 

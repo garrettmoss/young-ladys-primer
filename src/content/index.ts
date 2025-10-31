@@ -28,6 +28,26 @@ import { puzzleCollection } from './puzzles/index';
 // === TYPE DEFINITIONS ===
 
 /**
+ * Context object passed to content functions for personalization
+ * This allows content to access reader information and app state for adaptive content.
+ *
+ * Future expansion ready for Phase 3 adaptive learning features:
+ * - readingLevel: Adapt difficulty to reader's ability
+ * - choiceHistory: Enable narrative branching based on past decisions
+ * - completedStories: Progress-based content unlocking
+ * - preferences: Reader co-creation and customization
+ */
+export interface ContentContext {
+  readerName: string; // Reader's chosen name for personalization
+  // Future adaptive learning variables can be added here without breaking existing content:
+  // readingLevel?: string;
+  // choiceHistory?: string[];
+  // completedStories?: string[];
+  // multipleIntelligences?: Record<string, number>;
+  // preferences?: Record<string, any>;
+}
+
+/**
  * Represents a user choice in an interactive story
  */
 export interface Choice {
@@ -37,11 +57,11 @@ export interface Choice {
 
 /**
  * Raw story content as stored in content files
- * Content can be static string or personalized function
+ * Content can be static string or personalized function that receives context
  */
 export interface StoryContent {
   title: string;
-  content: string | ((readerName: string) => string);
+  content: string | ((context: ContentContext) => string);
   choices?: Choice[]; // Optional - some content may have no choices (endings, lessons)
 }
 
@@ -83,17 +103,17 @@ export const allContent: ContentRegistry = {
 /**
  * Retrieve and process story content for display
  *
- * Handles personalization by calling content functions with reader's name
- * and returns ready-to-render content with consistent interface.
+ * Handles personalization by calling content functions with context object
+ * containing reader information and app state for adaptive content.
  *
  * @param storyKey - Unique identifier for the story/content
- * @param readerName - Reader's name for personalization (defaults to 'Aria')
+ * @param context - Context object with reader info and app state for personalization
  * @returns Processed content ready for UI, or null if not found
  */
-export const getStoryContent = (storyKey: string, readerName: string = 'Aria'): ProcessedStoryContent | null => {
+export const getStoryContent = (storyKey: string, context: ContentContext): ProcessedStoryContent | null => {
   // Handle special dynamic content like settings
   if (storyKey === 'settings') {
-    return getSettingsContent(readerName);
+    return getSettingsContent(context);
   }
 
   const story = allContent[storyKey];
@@ -101,9 +121,9 @@ export const getStoryContent = (storyKey: string, readerName: string = 'Aria'): 
 
   return {
     ...story,
-    // Process personalization: convert functions to strings using reader's name
+    // Process personalization: convert functions to strings using context
     content: typeof story.content === 'function'
-      ? story.content(readerName)
+      ? story.content(context)
       : story.content
   };
 };

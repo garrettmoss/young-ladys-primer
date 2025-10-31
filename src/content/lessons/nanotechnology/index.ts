@@ -3,9 +3,9 @@ import { molecularCommunication } from './molecular-communication';
 export const nanotechnologyLessons = {
   nano_lesson: {
     title: "The Science of Small Things",
-    content: (readerName: string) => `Imagine, if you will, that you could shrink yourself smaller than the tiniest ant, smaller than a grain of sand, smaller even than a single cell...
+    content: ({ readerName }: { readerName: string }) => `Imagine, if you will, that you could shrink yourself smaller than the tiniest ant, smaller than a grain of sand, smaller even than a single cell...
 
-You would enter the realm of the very small - the nanoscale, where molecules dance and atoms join hands to build everything you see around you. 
+You would enter the realm of the very small - the nanoscale, where molecules dance and atoms join hands to build everything you see around you.
 
 In this world, a single drop of water would be an ocean of dancing molecules, each one spinning and tumbling in patterns more complex than any ballet.
 

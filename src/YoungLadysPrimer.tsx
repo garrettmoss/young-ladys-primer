@@ -21,7 +21,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { BookOpen, Sparkles, ArrowRight, Feather, School, ChevronLeft, Settings, Eclipse, BookMarked, Scroll, MoonStar, Cog, UserStar } from 'lucide-react';
-import { getStoryContent, Choice } from './content/index';
+import { getStoryContent, Choice, ContentContext } from './content/index';
 import { useStoryNavigation } from './hooks/useStoryNavigation';
 
 const YoungLadysPrimer: React.FC = () => {
@@ -78,7 +78,14 @@ const YoungLadysPrimer: React.FC = () => {
   // After hydration, use the actual currentStory from localStorage
   const storyKey = isHydrated ? currentStory : 'welcome';
   const effectiveReaderName = readerName || 'Aria'; // Fallback to default name
-  const currentContent = getStoryContent(storyKey, effectiveReaderName) || getStoryContent('welcome', effectiveReaderName)!;
+
+  // Build context object for content personalization
+  const contentContext: ContentContext = {
+    readerName: effectiveReaderName
+    // Future variables like readingLevel, choiceHistory, etc. can be added here
+  };
+
+  const currentContent = getStoryContent(storyKey, contentContext) || getStoryContent('welcome', contentContext)!;
 
   // Event Handlers: User interaction callbacks
 
@@ -410,7 +417,7 @@ const YoungLadysPrimer: React.FC = () => {
                 {currentContent.choices.map((choice: Choice, index: number) => {
                   // Special actions that don't need story content
                   const isSpecialAction = choice.action === 'change-name';
-                  const isActionAvailable = isSpecialAction || getStoryContent(choice.action);
+                  const isActionAvailable = isSpecialAction || getStoryContent(choice.action, contentContext);
                   const IconComponent = storyKey === 'welcome' ? getWelcomeIcon(choice.action) : null;
 
                   return (
