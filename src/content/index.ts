@@ -20,6 +20,7 @@
 
 import { welcomeContent } from './core/welcome';
 import { getSettingsContent } from './core/settings';
+import { debugContent } from './core/debug';
 import { dragonStoryCollection } from './stories/dragon-story/index';
 import { lessonNavigation } from './lessons/index';
 import { nanotechnologyLessons } from './lessons/nanotechnology/index';
@@ -92,8 +93,9 @@ interface ContentRegistry {
  */
 export const allContent: ContentRegistry = {
   ...welcomeContent,        // Core navigation and welcome screens
+  ...debugContent,          // Developer tools (dev mode only)
   ...lessonNavigation,      // Lesson category selection screen
-  ...dragonStoryCollection, // Main dragon story arc with multiple branches  
+  ...dragonStoryCollection, // Main dragon story arc with multiple branches
   ...nanotechnologyLessons, // Educational content about molecular science
   ...puzzleCollection       // Interactive logic puzzles and challenges
 };
@@ -101,35 +103,37 @@ export const allContent: ContentRegistry = {
 // === CONTENT ACCESS FUNCTIONS ===
 
 /**
- * Retrieve and process story content for display
+ * Retrieve and process content for display
  *
  * Handles personalization by calling content functions with context object
  * containing reader information and app state for adaptive content.
  *
- * @param storyKey - Unique identifier for the story/content
+ * Works with all content types: stories, lessons, puzzles, settings, debug pages, etc.
+ *
+ * @param contentKey - Unique identifier for the content block
  * @param context - Context object with reader info and app state for personalization
  * @returns Processed content ready for UI, or null if not found
  */
-export const getStoryContent = (storyKey: string, context: ContentContext): ProcessedStoryContent | null => {
+export const getContent = (contentKey: string, context: ContentContext): ProcessedStoryContent | null => {
   // Handle special dynamic content like settings
-  if (storyKey === 'settings') {
+  if (contentKey === 'settings') {
     return getSettingsContent(context);
   }
 
-  const story = allContent[storyKey];
-  if (!story) return null;
+  const content = allContent[contentKey];
+  if (!content) return null;
 
   return {
-    ...story,
+    ...content,
     // Process personalization: convert functions to strings using context
-    content: typeof story.content === 'function'
-      ? story.content(context)
-      : story.content
+    content: typeof content.content === 'function'
+      ? content.content(context)
+      : content.content
   };
 };
 
 /**
- * Get all available story keys for debugging or content management
- * @returns Array of all story identifiers in the content registry
+ * Get all available content keys for debugging or content management
+ * @returns Array of all content identifiers in the registry (stories, lessons, puzzles, etc.)
  */
-export const getAllStoryKeys = (): string[] => Object.keys(allContent);
+export const getAllContentKeys = (): string[] => Object.keys(allContent);
