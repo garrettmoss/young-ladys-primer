@@ -19,65 +19,52 @@
  * - TypeScript for compile-time safety and better developer experience
  */
 
-import React, { useState, useEffect } from 'react';
-import { BookOpen, Sparkles, ArrowRight, Feather, School, ChevronLeft, Settings, Eclipse, BookMarked, Scroll, MoonStar, Cog, UserStar } from 'lucide-react';
-import { getStoryContent, Choice, ContentContext } from './content/index';
-import { useStoryNavigation } from './hooks/useStoryNavigation';
+import React from 'react';
+import { BookOpen, Sparkles, ArrowRight, Feather, School, ChevronLeft, Settings, Eclipse, BookMarked, Scroll, MoonStar, Cog, UserStar, Bug } from 'lucide-react';
+import { getContent, Choice, ContentContext } from './content/index';
+import { useContentNavigation } from './hooks/useContentNavigation';
+import { useHydration } from './hooks/useHydration';
+import { useReaderPreferences } from './hooks/useReaderPreferences';
 
 const YoungLadysPrimer: React.FC = () => {
-  // UI State: Reader's name and name input modal visibility
-  const [readerName, setReaderName] = useState<string>(''); // Will be loaded from localStorage
-  const [showNameInput, setShowNameInput] = useState<boolean>(false); // Controls name input modal
-  const [isHydrated, setIsHydrated] = useState<boolean>(false); // Track hydration status for SSR compatibility
-  const [settingsNameInput, setSettingsNameInput] = useState<string>(''); // Temporary state for settings name editor
-  const [isEditingName, setIsEditingName] = useState<boolean>(false); // Controls whether name is being edited in settings
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false); // Dark mode state
-  
+  // Hydration state for SSR compatibility
+  const isHydrated = useHydration();
+
+  // Reader preferences (name, dark mode, and related UI state)
+  const {
+    readerName,
+    setReaderName,
+    isDarkMode,
+    showNameInput,
+    setShowNameInput,
+    settingsNameInput,
+    setSettingsNameInput,
+    isEditingName,
+    setIsEditingName,
+    handleNameSubmit,
+    handleChooseLater,
+    handleDarkModeToggle,
+    handleEditNameClick,
+    handleSettingsNameSave,
+    handleCancelNameEdit,
+  } = useReaderPreferences();
+
   // Navigation State: Managed by custom hook for separation of concerns
   const {
-    currentStory,     // Current story/page identifier (string)
-    storyProgress,    // Object tracking which stories have been visited
-    navigateToStory,  // Function to move to a new story
-    resetToWelcome,   // Function to return to the welcome screen
-    goBack,           // Function to navigate back to previous story
-    canGoBack         // Boolean indicating if back navigation is possible
-  } = useStoryNavigation();
+    currentContent: currentContentKey,  // Current content identifier (string)
+    contentProgress,                     // Object tracking which content has been visited
+    navigateToContent,                   // Function to move to new content
+    resetToWelcome,                      // Function to return to the welcome screen
+    goBack,                              // Function to navigate back to previous content
+    canGoBack                            // Boolean indicating if back navigation is possible
+  } = useContentNavigation();
 
-  // Hydration Effect: Ensure consistent rendering between server and client
-  useEffect(() => {
-    setIsHydrated(true);
-
-    // Load reader name from localStorage or show name input for first-time users
-    try {
-      const storedName = localStorage.getItem('young-ladys-primer-reader-name');
-      if (storedName) {
-        setReaderName(storedName);
-      } else {
-        // No stored name - this is a first-time user, show name input
-        setShowNameInput(true);
-      }
-    } catch (error) {
-      console.warn('Failed to load reader name from localStorage:', error);
-      // If localStorage fails, show name input as fallback
-      setShowNameInput(true);
-    }
-
-    // Load dark mode preference from localStorage
-    try {
-      const storedDarkMode = localStorage.getItem('young-ladys-primer-dark-mode');
-      if (storedDarkMode === 'true') {
-        setIsDarkMode(true);
-      }
-    } catch (error) {
-      console.warn('Failed to load dark mode preference from localStorage:', error);
-    }
-  }, []);
-
-  // Content Resolution: Fetch story content with personalization
+  // Content Resolution: Fetch content with personalization
   // During SSR, always use 'welcome' to prevent hydration mismatch
-  // After hydration, use the actual currentStory from localStorage
-  const storyKey = isHydrated ? currentStory : 'welcome';
-  const effectiveReaderName = readerName || 'Aria'; // Fallback to default name
+  // After hydration, use the actual currentContentKey from localStorage
+  const contentKey = isHydrated ? currentContentKey : 'welcome';
+  // Also guard reader name with hydration check to prevent SSR mismatch
+  const effectiveReaderName = isHydrated ? (readerName || 'Aria') : 'Aria';
 
   // Build context object for content personalization
   const contentContext: ContentContext = {
@@ -85,7 +72,7 @@ const YoungLadysPrimer: React.FC = () => {
     // Future variables like readingLevel, choiceHistory, etc. can be added here
   };
 
-  const currentContent = getStoryContent(storyKey, contentContext) || getStoryContent('welcome', contentContext)!;
+  const currentContent = getContent(contentKey, contentContext) || getContent('welcome', contentContext)!;
 
   // Event Handlers: User interaction callbacks
 
@@ -111,39 +98,24 @@ const YoungLadysPrimer: React.FC = () => {
   const handleChoice = (action: string) => {
     if (action === 'change-name') {
       setShowNameInput(true);
-    } else {
-      navigateToStory(action);
-    }
-  };
-
-  /**
-   * Handle name input submission - saves name to localStorage and closes modal
-   */
-  const handleNameSubmit = (): void => {
-    const trimmedName = readerName.trim();
-    if (trimmedName) {
-      try {
-        localStorage.setItem('young-ladys-primer-reader-name', trimmedName);
-      } catch (error) {
-        console.warn('Failed to save reader name to localStorage:', error);
+    } else if (action === 'debug_confirm_clear_all') {
+      // Debug action: Clear all localStorage and reload
+      if (typeof window !== 'undefined') {
+        localStorage.clear();
+        window.location.reload();
       }
-      setShowNameInput(false);
-    }
-  };
-
-  /**
-   * Handle "choose later" - closes modal and saves default name 'Aria'
-   */
-  const handleChooseLater = (): void => {
-    const defaultName = 'Aria';
-    setReaderName(defaultName);
-    setShowNameInput(false);
-
-    // Save default name to localStorage so user isn't prompted again
-    try {
-      localStorage.setItem('young-ladys-primer-reader-name', defaultName);
-    } catch (error) {
-      console.warn('Failed to save default reader name to localStorage:', error);
+    } else if (action === 'debug_confirm_reset_user') {
+      // Debug action: Clear user data but preserve preferences
+      if (typeof window !== 'undefined') {
+        const darkMode = localStorage.getItem('young-ladys-primer-dark-mode');
+        localStorage.clear();
+        if (darkMode) {
+          localStorage.setItem('young-ladys-primer-dark-mode', darkMode);
+        }
+        window.location.reload();
+      }
+    } else {
+      navigateToContent(action);
     }
   };
 
@@ -152,52 +124,7 @@ const YoungLadysPrimer: React.FC = () => {
    */
   const handleSettingsClick = (): void => {
     setIsEditingName(false); // Reset edit mode when entering settings
-    navigateToStory('settings');
-  };
-
-  /**
-   * Handle edit button click - enter edit mode for name
-   */
-  const handleEditNameClick = (): void => {
-    setSettingsNameInput(readerName); // Initialize input with current name
-    setIsEditingName(true);
-  };
-
-  /**
-   * Handle saving name from settings page inline editor
-   */
-  const handleSettingsNameSave = (): void => {
-    const trimmedName = settingsNameInput.trim();
-    if (trimmedName) {
-      setReaderName(trimmedName);
-      try {
-        localStorage.setItem('young-ladys-primer-reader-name', trimmedName);
-      } catch (error) {
-        console.warn('Failed to save reader name to localStorage:', error);
-      }
-      setIsEditingName(false); // Exit edit mode after saving
-    }
-  };
-
-  /**
-   * Handle cancel button click - exit edit mode without saving
-   */
-  const handleCancelNameEdit = (): void => {
-    setIsEditingName(false);
-    setSettingsNameInput(''); // Clear the input
-  };
-
-  /**
-   * Handle dark mode toggle - saves preference to localStorage
-   */
-  const handleDarkModeToggle = (): void => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    try {
-      localStorage.setItem('young-ladys-primer-dark-mode', String(newDarkMode));
-    } catch (error) {
-      console.warn('Failed to save dark mode preference to localStorage:', error);
-    }
+    navigateToContent('settings');
   };
 
   // === RENDER: Victorian Manuscript-Style UI ===
@@ -229,7 +156,7 @@ const YoungLadysPrimer: React.FC = () => {
             </span>
           </h1>
 
-          {storyKey === 'welcome' && (
+          {contentKey === 'welcome' && (
             <p className="subtitle">
               "A book that adapts itself to the mind of its reader"
             </p>
@@ -318,7 +245,7 @@ const YoungLadysPrimer: React.FC = () => {
             </div>
 
             {/* Settings page name display/editor */}
-            {storyKey === 'settings' && (
+            {contentKey === 'settings' && (
               <div className="space-y-4 mt-6">
                 {/* Reader Name Setting */}
                 <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
@@ -392,7 +319,7 @@ const YoungLadysPrimer: React.FC = () => {
                     <BookMarked className="w-5 h-5 text-amber-700" />
                     <div>
                       <strong className="text-amber-900">Reading Progress:</strong>
-                      <span className="ml-2 text-amber-800">{Object.keys(storyProgress).length} passages explored</span>
+                      <span className="ml-2 text-amber-800">{Object.keys(contentProgress).length} passages explored</span>
                     </div>
                   </div>
                 </div>
@@ -409,7 +336,7 @@ const YoungLadysPrimer: React.FC = () => {
             {/* Choices with manuscript style */}
             {currentContent.choices && currentContent.choices.length > 0 && (
               <div className="space-y-3 mt-6">
-                {storyKey === 'welcome' && (
+                {contentKey === 'welcome' && (
                   <p className="choice-prompt">
                     Choose your path, dear reader...
                   </p>
@@ -417,8 +344,8 @@ const YoungLadysPrimer: React.FC = () => {
                 {currentContent.choices.map((choice: Choice, index: number) => {
                   // Special actions that don't need story content
                   const isSpecialAction = choice.action === 'change-name';
-                  const isActionAvailable = isSpecialAction || getStoryContent(choice.action, contentContext);
-                  const IconComponent = storyKey === 'welcome' ? getWelcomeIcon(choice.action) : null;
+                  const isActionAvailable = isSpecialAction || getContent(choice.action, contentContext);
+                  const IconComponent = contentKey === 'welcome' ? getWelcomeIcon(choice.action) : null;
 
                   return (
                     <button
@@ -446,7 +373,7 @@ const YoungLadysPrimer: React.FC = () => {
             )}
 
             {/* Navigation buttons - only show when not on welcome page */}
-            {storyKey !== 'welcome' && (
+            {contentKey !== 'welcome' && (
               <div className="space-y-3 mt-6">
                 {currentContent.choices && currentContent.choices.length > 0 && (
                   <div className="flex items-center justify-center my-4">
@@ -504,6 +431,16 @@ const YoungLadysPrimer: React.FC = () => {
               <Settings className="w-5 h-5" />
               <span className="text-lg">Settings</span>
             </button>
+            {process.env.NODE_ENV === 'development' && (
+              <button
+                onClick={() => navigateToContent('debug')}
+                className="footer-stat hover:text-amber-600 transition-colors cursor-pointer flex items-center gap-1"
+                aria-label="Open debug tools"
+              >
+                <Bug className="w-5 h-5" />
+                <span className="text-lg">Debug</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
