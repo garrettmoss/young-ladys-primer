@@ -48,7 +48,10 @@ young-ladys-primer/
 │   │       └── navigation.ts         # Navigation puzzle
 │   │
 │   ├── hooks/                        # React hooks for shared logic
-│   │   └── useStoryNavigation.ts     # Story progression & history tracking
+│   │   ├── useContentNavigation.ts   # Content progression & history tracking
+│   │   ├── useLocalStorage.ts        # SSR-safe localStorage with type safety
+│   │   ├── useHydration.ts           # Client-side hydration tracking
+│   │   └── useReaderPreferences.ts   # Reader name & preferences management
 │   │
 │   └── utils/                        # Utility functions
 │
@@ -251,21 +254,39 @@ graph TD
 ### `src/YoungLadysPrimer.tsx`
 - Main React component with TypeScript
 - Handles UI rendering and user interactions
-- Uses content system through `getStoryContent()`
-- Delegates navigation to `useStoryNavigation` hook
+- Uses content system through `getContent()`
+- Delegates navigation to `useContentNavigation` hook
+- Manages reader preferences through `useReaderPreferences` hook
 
 ### `src/content/index.ts`
 - Central content registry
 - Exports `allContent` object and utility functions
-- `getStoryContent(storyKey, context)` - fetches and processes content with ContentContext
-- `getAllStoryKeys()` - returns available story keys
+- `getContent(contentKey, context)` - fetches and processes content with ContentContext (works with all content types: stories, lessons, puzzles, settings, debug)
+- `getAllContentKeys()` - returns all available content keys
 - Defines `ContentContext` interface for future-proof personalization
 
-### `src/hooks/useStoryNavigation.js`
-- Manages current story state
+### `src/hooks/useContentNavigation.ts`
+- Manages current content state
 - Tracks reading progress and navigation history
-- Provides navigation functions (`navigateToStory`, `resetToWelcome`, `goBack`)
+- Provides navigation functions (`navigateToContent`, `resetToWelcome`, `goBack`)
 - Supports back navigation with localStorage persistence
+
+### `src/hooks/useLocalStorage.ts`
+- Generic type-safe localStorage hook
+- SSR-safe with window checks
+- Includes error handling and backward compatibility for legacy string values
+- Automatically serializes/deserializes with JSON
+
+### `src/hooks/useHydration.ts`
+- Tracks client-side hydration completion
+- Returns false during SSR, true after mount
+- Prevents hydration mismatches with localStorage
+
+### `src/hooks/useReaderPreferences.ts`
+- Manages reader name and dark mode preferences
+- Handles name input modal UI state
+- Provides convenience methods for common operations
+- Persists preferences via useLocalStorage
 
 ## Benefits of This Architecture
 
