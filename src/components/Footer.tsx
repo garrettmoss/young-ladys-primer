@@ -1,5 +1,5 @@
 import React from 'react';
-import { Settings, Bug } from 'lucide-react';
+import { Settings, Wrench } from 'lucide-react';
 
 interface FooterProps {
   readerName: string;
@@ -38,10 +38,10 @@ export function Footer({
           <button
             onClick={onDebugClick}
             className="footer-stat hover:text-amber-600 transition-colors cursor-pointer flex items-center gap-1"
-            aria-label="Open debug tools"
+            aria-label="Open developer tools"
           >
-            <Bug className="w-5 h-5" />
-            <span className="text-lg">Debug</span>
+            <Wrench className="w-5 h-5" />
+            <span className="text-lg">Dev Tools</span>
           </button>
         )}
       </div>

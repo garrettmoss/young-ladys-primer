@@ -139,6 +139,169 @@
     line-height: 1.8;
     font-weight: 400;
   }
+
+  /* Technical/debug content display - can be used anywhere */
+  .technical-text {
+    font-family: 'Monaco', 'Courier New', monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    text-align: left;
+    text-indent: 0;
+  }
+
+  /* For long unbroken strings (URLs, keys, etc) */
+  .break-long-words {
+    word-break: break-all;
+    overflow-wrap: anywhere;
+  }
+
+  /* Debug panel item styling */
+  .debug-item {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border-left: 3px solid #d97706;
+    background: rgba(217, 119, 6, 0.05);
+    border-radius: 0.25rem;
+  }
+
+  .debug-key {
+    font-weight: 600;
+    color: #92400e;
+    margin-bottom: 0.5rem;
+    font-size: 0.9em;
+    word-break: break-word;
+  }
+
+  .debug-key-collapsible {
+    cursor: pointer;
+    user-select: none;
+    padding: 0.25rem;
+    margin: -0.25rem;
+    border-radius: 0.25rem;
+    transition: background 0.2s;
+  }
+
+  .debug-key-collapsible:hover {
+    background: rgba(217, 119, 6, 0.1);
+  }
+
+  .debug-collapse-icon {
+    display: inline-block;
+    margin-right: 0.5rem;
+    transition: transform 0.2s;
+    font-size: 0.8em;
+    color: #92400e;
+  }
+
+  .debug-value {
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.85em;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 0.25rem;
+    max-height: 200px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: #451a03;
+  }
+
+  .debug-meta {
+    font-size: 0.75em;
+    color: #92400e;
+    font-style: italic;
+    margin-top: 0.25rem;
+  }
+
+  .debug-copy {
+    margin-top: 0.5rem;
+    font-size: 0.75em;
+    padding: 0.25rem 0.5rem;
+    background: linear-gradient(to right, #f59e0b, #d97706);
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-family: Baskerville, serif;
+    transition: all 0.2s;
+  }
+
+  .debug-copy:hover {
+    background: linear-gradient(to right, #d97706, #b45309);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .debug-copy:active {
+    transform: translateY(1px);
+  }
+
+  /* Expand/collapse styles */
+  .debug-value-container {
+    position: relative;
+  }
+
+  .debug-value.debug-collapsed {
+    max-height: 100px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .debug-value.debug-collapsed::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.05));
+  }
+
+  .debug-value.debug-expanded {
+    max-height: none;
+  }
+
+
+  /* Type badges */
+  .debug-type-badge {
+    display: inline-block;
+    font-size: 0.7em;
+    padding: 0.15rem 0.4rem;
+    background: rgba(217, 119, 6, 0.15);
+    color: #92400e;
+    border-radius: 0.25rem;
+    margin-left: 0.5rem;
+    font-weight: normal;
+    font-family: 'Monaco', 'Courier New', monospace;
+  }
+
+  /* JSON syntax highlighting */
+  .json-key {
+    color: #92400e;
+    font-weight: 600;
+  }
+
+  .json-string {
+    color: #d97706;
+  }
+
+  .json-number {
+    color: #ea580c;
+  }
+
+  .json-boolean {
+    color: #b91c1c;
+    font-weight: 600;
+  }
+
+  .json-null {
+    color: #78716c;
+    font-style: italic;
+  }
+
+  .json-punctuation {
+    color: #57534e;
+  }
   
   /* Choice button styling */
   .choice-button {
