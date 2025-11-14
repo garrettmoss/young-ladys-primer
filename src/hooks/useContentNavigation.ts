@@ -33,6 +33,14 @@ const STORAGE_KEYS = {
   CONVERSATION_HISTORY: 'young-ladys-primer-history'
 } as const;
 
+/**
+ * Maximum number of navigation history items to keep in memory and storage.
+ * Prevents unbounded growth of localStorage. With 50 items, storage stays
+ * under ~4 KB even with long content keys. Users rarely need more than
+ * 50 back-navigation steps.
+ */
+const MAX_HISTORY_LENGTH = 50;
+
 // === STORAGE HELPERS ===
 
 /**
@@ -138,11 +146,21 @@ export const useContentNavigation = (initialContent: string = 'welcome') => {
     setCurrentContent(action);
 
     // Log navigation event for history and analytics
-    setConversationHistory(prev => [...prev, {
-      from: currentContent,
-      to: action,
-      timestamp: new Date()
-    }]);
+    setConversationHistory(prev => {
+      const newHistory = [...prev, {
+        from: currentContent,
+        to: action,
+        timestamp: new Date()
+      }];
+
+      // Trim history to MAX_HISTORY_LENGTH to prevent unbounded growth
+      // Keep only the most recent items since users rarely need 50+ back steps
+      if (newHistory.length > MAX_HISTORY_LENGTH) {
+        return newHistory.slice(-MAX_HISTORY_LENGTH);
+      }
+
+      return newHistory;
+    });
   };
 
   /**
@@ -150,9 +168,13 @@ export const useContentNavigation = (initialContent: string = 'welcome') => {
    *
    * Useful for "home" buttons or when reader wants to start over.
    * Does not clear progress - reader can continue where they left off.
+   * Clears navigation history since the back button is not shown on welcome screen.
    */
   const resetToWelcome = (): void => {
     setCurrentContent('welcome');
+    // Clear history when returning to welcome since back button won't be shown anyway
+    // This prevents history from accumulating across multiple reading sessions
+    setConversationHistory([]);
   };
 
   /**

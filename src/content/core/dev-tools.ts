@@ -45,11 +45,11 @@ const debugPage: StoryContent = {
   title: 'Developer Tools',
   content: (_context: ContentContext) => {
     let html = `<strong>Development Mode Active</strong>
-
 This page provides debugging utilities for testing the Primer's behavior. It will not appear in production builds.
 
-<strong>LocalStorage Contents:</strong>
+<div style="margin: 1.5rem 0; padding: 1rem; border: 2px solid var(--color-warning, #dc2626); border-radius: 0.5rem; background: var(--bg-warning-subtle, rgba(220, 38, 38, 0.1));"><div style="font-weight: bold; margin-bottom: 0.5rem; color: var(--color-warning, #dc2626);">⚠️ Destructive Actions</div><button onclick="if (window.confirm('⚠️ WARNING: This will permanently delete ALL localStorage data including your name, story progress, dark mode preference, and navigation history.\\n\\nThe page will reload after clearing.\\n\\nAre you absolutely sure?')) { localStorage.clear(); window.location.reload(); }" style="margin: 0 0.5rem 0.5rem 0; padding: 0.5rem 1rem; background: #dc2626; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 500;" onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">🗑️ Clear All Data</button><button onclick="if (window.confirm('⚠️ This will clear your name, story progress, and navigation history.\\n\\nDark mode preference will be preserved.\\n\\nThe page will reload after resetting.\\n\\nProceed?')) { const darkMode = localStorage.getItem('young-ladys-primer-dark-mode'); localStorage.clear(); if (darkMode) localStorage.setItem('young-ladys-primer-dark-mode', darkMode); window.location.reload(); }" style="margin: 0 0.5rem 0.5rem 0; padding: 0.5rem 1rem; background: #ea580c; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 500;" onmouseover="this.style.background='#c2410c'" onmouseout="this.style.background='#ea580c'">👤 Reset to First Time User</button></div>
 
+<strong>LocalStorage Contents:</strong>
 `;
 
     // Read localStorage if available
@@ -145,89 +145,12 @@ This page provides debugging utilities for testing the Primer's behavior. It wil
     }
 
     return html.trim();
-  },
-  choices: [
-    {
-      text: '🗑️ Clear All Data (Reset Everything)',
-      action: 'debug_clear_all'
-    },
-    {
-      text: '👤 Reset to First Time User (Clear Name & Progress)',
-      action: 'debug_reset_user'
-    },
-    {
-      text: '🏠 Return to Welcome',
-      action: 'welcome'
-    }
-  ]
-};
-
-/**
- * Debug action handlers
- * These are special actions that perform debug operations
- */
-
-const debugClearAll: StoryContent = {
-  title: 'Confirm: Clear All Data?',
-  content: `
-<strong style="color: #dc2626;">⚠️ Warning: Destructive Action</strong>
-
-This will permanently delete ALL data stored in localStorage, including:
-- Your reader name
-- Story progress and navigation history
-- Dark mode preference
-- All conversation history
-
-The page will reload after clearing.
-
-Are you sure you want to proceed?
-  `.trim(),
-  choices: [
-    {
-      text: '❌ Cancel (Go Back)',
-      action: 'debug'
-    },
-    {
-      text: '✓ Yes, Clear Everything',
-      action: 'debug_confirm_clear_all'
-    }
-  ]
-};
-
-const debugResetUser: StoryContent = {
-  title: 'Confirm: Reset User Data?',
-  content: `
-<strong style="color: #dc2626;">⚠️ Warning: Partial Reset</strong>
-
-This will clear:
-- Your reader name (you'll be prompted to re-enter it)
-- Story progress and navigation history
-- Conversation history
-
-This will preserve:
-- Dark mode preference
-
-The page will reload after resetting.
-
-Are you sure you want to proceed?
-  `.trim(),
-  choices: [
-    {
-      text: '❌ Cancel (Go Back)',
-      action: 'debug'
-    },
-    {
-      text: '✓ Yes, Reset User Data',
-      action: 'debug_confirm_reset_user'
-    }
-  ]
+  }
 };
 
 /**
  * Export all dev tools content
  */
 export const devToolsContent = {
-  debug: debugPage,
-  debug_clear_all: debugClearAll,
-  debug_reset_user: debugResetUser
+  debug: debugPage
 };
