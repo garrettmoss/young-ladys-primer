@@ -35,7 +35,7 @@ function syntaxHighlightJSON(json: string): string {
 /**
  * Determine the type of a parsed JSON value
  */
-function getJSONType(parsed: any): string {
+function getJSONType(parsed: unknown): string {
   if (Array.isArray(parsed)) return 'Array';
   if (parsed === null) return 'null';
   return typeof parsed === 'object' ? 'Object' : typeof parsed;
@@ -75,19 +75,19 @@ This page provides debugging utilities for testing the Primer's behavior. It wil
           let displayValue = value;
           let isJSON = false;
           let jsonType = 'String';
-          let parsedValue: any;
+          let parsedValue: unknown;
 
           try {
             parsedValue = JSON.parse(value);
             displayValue = JSON.stringify(parsedValue, null, 2);
             isJSON = true;
             jsonType = getJSONType(parsedValue);
-          } catch (e) {
+          } catch {
             // Not JSON, use as-is
           }
 
           // Apply syntax highlighting if JSON
-          let highlightedValue = isJSON
+          const highlightedValue = isJSON
             ? syntaxHighlightJSON(displayValue)
             : escapeHtml(displayValue);
 
