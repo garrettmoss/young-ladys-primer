@@ -19,7 +19,7 @@
 - [x] Dark mode with Victorian "candlelit manuscript" aesthetic
 - [x] Reading progress tracking in settings
 - [x] Visual-first UI principle (icon → label → action pattern)
-- [ ] Responsive design and elegant animations (partially complete)
+- [x] Responsive design and elegant animations
 - [ ] Table of contents that fills out as reader progresses
 - [ ] 3D navigation map visualization (inspired by Treasure Planet)
 
@@ -47,9 +47,9 @@
 - [ ] Story graph validation script (catches broken references)
 - [ ] Interactive flow visualizer (better than Mermaid for complexity)
 - [ ] Table of contents system (browsable story navigation)
-- [ ] Complete dragon story resolution branches
-- [ ] Lesson integration within stories
-- [ ] Puzzle integration within stories
+- [x] Complete dragon story resolution branches
+- [x] Lesson integration within stories
+- [x] Puzzle integration within stories
 
 ## Phase 2: Content Expansion
 *Creating rich educational content across multiple domains*
@@ -151,7 +151,7 @@
 ---
 
 ## Current Status
-**Phase 1**: 85% complete - Core systems working, confluence narrative structure implemented, content management toolkit designed
+**Phase 1**: 95% complete - Core systems stable, confluence narrative structure implemented, infrastructure refactored and optimized
 
 **Active Development**: Story Management Toolkit implementation (validation, visualization, table of contents)
 
@@ -160,7 +160,5 @@
    - Story graph validation script (catches broken references, orphaned nodes)
    - Interactive flow visualizer (better than Mermaid for complex narratives)
    - Table of contents system (browsable navigation with progress tracking)
-2. Complete dragon story resolution branches
-3. Integrate nanotechnology lessons into narrative flow
-4. Test on mobile devices and improve responsiveness
+2. Test on mobile devices and improve responsiveness
 
