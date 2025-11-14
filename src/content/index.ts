@@ -20,7 +20,7 @@
 
 import { welcomeContent } from './core/welcome';
 import { getSettingsContent } from './core/settings';
-import { debugContent } from './core/debug';
+import { devToolsContent } from './core/dev-tools';
 import { dragonStoryCollection } from './stories/dragon-story/index';
 import { lessonNavigation } from './lessons/index';
 import { nanotechnologyLessons } from './lessons/nanotechnology/index';
@@ -93,7 +93,7 @@ interface ContentRegistry {
  */
 export const allContent: ContentRegistry = {
   ...welcomeContent,        // Core navigation and welcome screens
-  ...debugContent,          // Developer tools (dev mode only)
+  ...devToolsContent,       // Developer tools (dev mode only)
   ...lessonNavigation,      // Lesson category selection screen
   ...dragonStoryCollection, // Main dragon story arc with multiple branches
   ...nanotechnologyLessons, // Educational content about molecular science

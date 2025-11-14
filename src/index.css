@@ -134,7 +134,6 @@
     @apply text-amber-900/90 leading-loose text-lg;
     font-family: Baskerville, 'Book Antiqua', 'Palatino Linotype', serif;
     text-align: justify;
-    text-indent: 2em;
     letter-spacing: 0.01em;
     line-height: 1.8;
     font-weight: 400;
@@ -173,25 +172,26 @@
     word-break: break-word;
   }
 
-  .debug-key-collapsible {
-    cursor: pointer;
-    user-select: none;
-    padding: 0.25rem;
-    margin: -0.25rem;
-    border-radius: 0.25rem;
-    transition: background 0.2s;
-  }
-
-  .debug-key-collapsible:hover {
-    background: rgba(217, 119, 6, 0.1);
+  .debug-value-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 
   .debug-collapse-icon {
-    display: inline-block;
-    margin-right: 0.5rem;
-    transition: transform 0.2s;
+    flex-shrink: 0;
+    margin-top: 0.5rem;
     font-size: 0.8em;
     color: #92400e;
+    cursor: pointer;
+    padding: 0.15rem 0.25rem;
+    border-radius: 0.25rem;
+    transition: background 0.2s;
+    user-select: none;
+  }
+
+  .debug-collapse-icon:hover {
+    background: rgba(217, 119, 6, 0.15);
   }
 
   .debug-value {
@@ -208,7 +208,7 @@
   }
 
   .debug-meta {
-    font-size: 0.75em;
+    font-size: 0.85em;
     color: #92400e;
     font-style: italic;
     margin-top: 0.25rem;

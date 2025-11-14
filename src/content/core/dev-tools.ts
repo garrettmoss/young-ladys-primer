@@ -101,40 +101,42 @@ This page provides debugging utilities for testing the Primer's behavior. It wil
           // Build the item HTML
           html += `<div class="debug-item">`;
 
-          // Header with collapse icon (if needed)
-          if (needsCollapse) {
-            html += `
-  <div class="debug-key debug-key-collapsible" onclick="
-    const valueEl = document.getElementById('${uniqueId}-value');
-    const iconEl = document.getElementById('${uniqueId}-icon');
-    const isCollapsed = valueEl.classList.contains('debug-collapsed');
-    if (isCollapsed) {
-      valueEl.classList.remove('debug-collapsed');
-      valueEl.classList.add('debug-expanded');
-      iconEl.textContent = '▼';
-    } else {
-      valueEl.classList.add('debug-collapsed');
-      valueEl.classList.remove('debug-expanded');
-      iconEl.textContent = '▶';
-    }
-  ">
-    <span class="debug-collapse-icon" id="${uniqueId}-icon">▶</span>
-    ${escapeHtml(key)}${typeBadge}
-  </div>`;
-          } else {
-            html += `
-  <div class="debug-key">${escapeHtml(key)}${typeBadge}</div>`;
-          }
+          // Key name and badge (always shown without icon)
+          html += `<div class="debug-key">${escapeHtml(key)}${typeBadge}</div>`;
 
-          // Value display
-          html += `
-  <div class="debug-value ${needsCollapse ? 'debug-collapsed' : ''}" id="${uniqueId}-value">${highlightedValue}</div>`;
+          // Value display with optional collapse icon
+          if (needsCollapse) {
+            html += `<div class="debug-value-wrapper">
+<span class="debug-collapse-icon" id="${uniqueId}-icon" onclick="
+  const valueEl = document.getElementById('${uniqueId}-value');
+  const iconEl = document.getElementById('${uniqueId}-icon');
+  const isCollapsed = valueEl.classList.contains('debug-collapsed');
+  if (isCollapsed) {
+    valueEl.classList.remove('debug-collapsed');
+    valueEl.classList.add('debug-expanded');
+    iconEl.textContent = '▼';
+  } else {
+    valueEl.classList.add('debug-collapsed');
+    valueEl.classList.remove('debug-expanded');
+    iconEl.textContent = '▶';
+  }
+">▶</span>
+<div class="debug-value debug-collapsed" id="${uniqueId}-value">${highlightedValue}</div>
+</div>`;
+          } else {
+            html += `<div class="debug-value" id="${uniqueId}-value">${highlightedValue}</div>`;
+          }
 
           // Add copy button
           const escapedFullValue = escapeHtml(value);
-          html += `
-  <button class="debug-copy" onclick="navigator.clipboard.writeText(this.getAttribute('data-value')).then(() => { const btn = this; const orig = btn.textContent; btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = orig, 1500); })" data-value="${escapedFullValue.replace(/"/g, '&quot;')}">Copy ${isJSON ? 'JSON' : 'Value'}</button>
-</div>
+          html += `<button class="debug-copy" onclick="navigator.clipboard.writeText(this.getAttribute('data-value')).then(() => { const btn = this; const orig = btn.textContent; btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = orig, 1500); })" data-value="${escapedFullValue.replace(/"/g, '&quot;')}">Copy ${isJSON ? 'JSON' : 'Value'}</button>`;
+
+          // Add metadata for collapsed items
+          if (needsCollapse) {
+            html += `<div class="debug-meta">Collapsed: Showing ~100 chars of ${displayValue.length} total</div>`;
+          }
+
+          html += `</div>
 `;
         });
       }
@@ -222,9 +224,9 @@ Are you sure you want to proceed?
 };
 
 /**
- * Export all debug content
+ * Export all dev tools content
  */
-export const debugContent = {
+export const devToolsContent = {
   debug: debugPage,
   debug_clear_all: debugClearAll,
   debug_reset_user: debugResetUser

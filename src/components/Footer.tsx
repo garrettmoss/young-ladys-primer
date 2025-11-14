@@ -4,14 +4,14 @@ import { Settings, Wrench } from 'lucide-react';
 interface FooterProps {
   readerName: string;
   onSettingsClick: () => void;
-  onDebugClick: () => void;
+  onDevToolsClick: () => void;
   isDevelopment: boolean;
 }
 
 export function Footer({
   readerName,
   onSettingsClick,
-  onDebugClick,
+  onDevToolsClick,
   isDevelopment
 }: FooterProps) {
   return (
@@ -36,7 +36,7 @@ export function Footer({
         </button>
         {isDevelopment && (
           <button
-            onClick={onDebugClick}
+            onClick={onDevToolsClick}
             className="footer-stat hover:text-amber-600 transition-colors cursor-pointer flex items-center gap-1"
             aria-label="Open developer tools"
           >

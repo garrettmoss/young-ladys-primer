@@ -237,7 +237,7 @@ function YoungLadysPrimer() {
         <Footer
           readerName={effectiveReaderName}
           onSettingsClick={handleSettingsClick}
-          onDebugClick={() => navigateToContent('debug')}
+          onDevToolsClick={() => navigateToContent('debug')}
           isDevelopment={process.env.NODE_ENV === 'development'}
         />
       </div>
