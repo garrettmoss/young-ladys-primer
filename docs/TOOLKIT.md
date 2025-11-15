@@ -16,16 +16,29 @@ This toolkit provides three complementary systems to support confluence narrativ
 
 ## Part 1: Narrative Structure Patterns
 
-### What is Confluence Narrative?
+### Overview
 
-The Primer uses a **confluence narrative** structure (also called "braided narrative" or "diamond structure") that balances meaningful choice with narrative coherence.
+The Primer uses multiple narrative patterns depending on content type and pedagogical goals. Each pattern serves different purposes while supporting the core mission: **empowering young women through choice-driven experiences**.
 
-Think of it as:
+This section describes four complementary structures:
+
+1. **Confluence** (braided/diamond) - Our primary story pattern
+2. **Hub-and-Spoke** - Long-form epics with flexible entry points
+3. **Gauntlet** - Sequential trials with progressive difficulty
+4. **String of Pearls** - Modular wisdom nodes with non-linear navigation
+
+---
+
+### Pattern 1: Confluence Narrative
+
+The Primer's primary story structure, also called **braided narrative** or **diamond structure**, balances meaningful choice with narrative coherence.
+
+**Think of it as:**
 - **Tree trunk**: Main storyline with essential beats everyone experiences
 - **Tributaries**: Optional paths that split (choices) and rejoin (convergence points)
 - **River delta**: Multiple streams that feel different but merge for emotional climax
 
-### Why Not Pure Branching?
+**Why Not Pure Branching?**
 
 Pure branching creates exponential complexity:
 - 4 choices → 4 paths
@@ -37,7 +50,7 @@ This is unsustainable for hand-crafted narrative and leads to:
 - Impossible maintenance burden
 - Reader choice paralysis
 
-### The Confluence Solution
+**The Confluence Solution**
 
 Instead, paths **split and rejoin**:
 - Readers feel agency (choices matter in the moment)
@@ -45,7 +58,7 @@ Instead, paths **split and rejoin**:
 - Manageable content creation (18 nodes, not 1,024)
 - Emotional coherence (everyone experiences the climax)
 
-### Dragon Story Example
+**Dragon Story Example**
 
 The dragon story demonstrates confluence structure:
 
@@ -69,25 +82,149 @@ The dragon story demonstrates confluence structure:
 
 **Result**: Readers feel like they took meaningfully different paths, but the story maintains coherent emotional arc and thematic resolution.
 
-### When to Use Each Pattern
-
-**Confluence (Braided) Structure:**
-- Long-form narratives (15+ nodes)
+**Best for:**
+- Medium-to-long narratives (12-25 nodes)
 - Character development arcs
 - Educational content with multiple learning approaches
 - Stories with clear thematic resolution
 
-**Pure Branching:**
-- Short decision trees (5-8 nodes)
-- Puzzles with right/wrong answers
-- Tutorial sequences
-- Quick interaction moments
+---
 
-**Linear Progression:**
-- Lesson content
-- Exposition and world-building
-- Breather pages between choices
-- Resolution sequences
+### Pattern 2: Hub-and-Spoke (Tree Canopy)
+
+A 3D extension of confluence for longer-form epics. Imagine looking up at a tree: the **trunk** is the main story thread, but **branches** extend outward at different heights (story junctures), creating multiple entry and exploration points.
+
+**Structure:**
+```
+        Main Story Trunk (vertical)
+              |
+    ┌─────────┼─────────┐
+    │         │         │
+  spoke-1   spoke-2   spoke-3  (at Chapter 3)
+              |
+    ┌─────────┼─────────┐
+    │         │         │
+  spoke-4   spoke-5   spoke-6  (at Chapter 7)
+              |
+           ending
+```
+
+**Key Characteristics:**
+- Elongated central "hub" (main quest line) runs vertically through the story
+- Spokes extend at key junctures (not just at the beginning)
+- Readers can join the main story at different chapters if prerequisites are met
+- More complex than confluence but maintains narrative coherence
+
+**Trade-offs:**
+- More complex to author (requires careful prerequisite planning)
+- Richer replayability (explore different spokes across playthroughs)
+- Good for episodic content where chapters can stand somewhat alone
+
+**Future possibility:** Multiple story arcs could intersect with each other (like forest canopies touching), creating cross-arc convergence points. This is not currently planned but worth considering for long-term expansion.
+
+**Best for:**
+- Long-form epics (30+ nodes)
+- Multi-chapter sagas with distinct arcs
+- Content where readers might enter mid-story (sequels, expansions)
+- Stories with strong episodic structure
+
+---
+
+### Pattern 3: Gauntlet (Sequential Trials)
+
+A series of progressive challenges inspired by Princess Nell's trials in *The Diamond Age*. Each trial builds on previous learning, escalating in difficulty and complexity.
+
+**Structure:**
+```
+Entry → Trial 1 → Trial 2 → Trial 3 → Trial 4 → Resolution
+         ↓         ↓         ↓         ↓
+      (learn)   (apply)  (synthesize) (master)
+```
+
+**Key Characteristics:**
+- Primarily linear progression with escalating difficulty
+- Each trial teaches something new that becomes prerequisite for the next
+- Can include convergence points (multiple approaches to same trial)
+- Strong sense of growth and mastery
+- Clear beginning and completion
+
+**Not Purely Linear:**
+A gauntlet can incorporate confluence patterns—multiple paths through a single trial that reconverge before the next challenge. What matters is the overall progressive structure.
+
+**Example Application:**
+- Trial 1: Observe mechanical systems (pattern recognition)
+- Trial 2: Interact with simple machines (hands-on learning)
+- Trial 3: Build something functional (application)
+- Trial 4: Solve an unforeseen problem (synthesis)
+- Resolution: Use all learned skills in a final challenge
+
+**Best for:**
+- Training sequences and skill-building arcs
+- Stories emphasizing growth through difficulty
+- Educational content with clear learning progression
+- Challenges that require mastery before advancement
+
+---
+
+### Pattern 4: String of Pearls (Modular Wisdom Nodes)
+
+A collection of semi-independent "pearls"—each a complete micro-lesson or story moment—connected by theme rather than strict sequence. Readers explore in their own order, discovering gems of knowledge and experience.
+
+**Structure:**
+```
+      pearl-A ←→ pearl-B
+         ↕           ↕
+      pearl-C ←→ pearl-D ←→ pearl-E
+                     ↕
+                  pearl-F
+```
+
+**Key Characteristics:**
+- Each pearl is self-contained (complete in itself)
+- Light branching between pearls (suggested paths, not rigid sequence)
+- Non-linear navigation—can revisit pearls in any order
+- Thematic coherence rather than plot coherence
+- High replayability (different orders reveal different patterns)
+
+**Navigation Flexibility:**
+- Readers can move freely between connected pearls
+- Some pearls might unlock others (prerequisites)
+- No single "correct" path through the content
+- Completion = experiencing all pearls, not following a sequence
+
+**Example Applications:**
+- Lesson modules (each pearl = a scientific concept)
+- Exploratory story vignettes (different perspectives on same event)
+- Museum-style learning (wander and discover)
+- Poetry or wisdom teachings (order doesn't diminish meaning)
+
+**Best for:**
+- Educational content without strict learning prerequisites
+- Exploratory narratives (multiple character perspectives)
+- Supplementary content (can be experienced in any order)
+- Reference material that readers revisit selectively
+
+---
+
+### Pattern Selection Guide
+
+Choose your narrative structure based on content goals:
+
+| Pattern | Node Count | Structure | Replayability | Best For |
+|---------|------------|-----------|---------------|----------|
+| **Confluence** | 12-25 | Split & rejoin | Medium-High | Primary story arcs |
+| **Hub-and-Spoke** | 30+ | Multi-entry trunk | Very High | Long-form epics |
+| **Gauntlet** | 8-20 | Progressive trials | Medium | Skill-building sequences |
+| **String of Pearls** | 6-15 | Non-linear network | Very High | Lessons & exploration |
+| **Pure Branching** | 5-8 | Tree without convergence | Low | Puzzles, tutorials |
+| **Linear** | 3-10 | No choices | Low | Exposition, breathers |
+
+**General Guidelines:**
+- Start with **confluence** for story content (proven and manageable)
+- Use **gauntlet** when emphasizing growth through challenge
+- Use **string of pearls** for educational content without strict prerequisites
+- Reserve **hub-and-spoke** for ambitious long-form projects
+- Mix patterns within a larger work (confluence arcs within a hub-and-spoke epic)
 
 ---
 
