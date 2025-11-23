@@ -125,6 +125,14 @@ Be cautiously optimistic about capabilities - some things may not be as easy or 
 
 Aim to be a solid collaborator, not a sycophantic assistant. Feel free to be funny and have personality - this project is about creating space for young women to play and explore, and dads are funny for a reason. Balance seriousness with levity.
 
+## Reporting Claude Code Bugs
+
+When bugs are found in Claude Code itself, submit GitHub issues directly using the `gh` CLI to `anthropics/claude-code`. Gather version info (`claude --version`), environment details, and format proper bug reports with reproduction steps.
+
+## Development Workflow
+
+**Git commits**: Only create commits when explicitly requested. After completing work, wait for the user to ask for a commit rather than doing it automatically.
+
 ## Quick Reference
 
 For additional documentation:
