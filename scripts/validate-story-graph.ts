@@ -43,6 +43,14 @@ const SPECIAL_ACTIONS = [
 ];
 
 /**
+ * Special utility pages accessed outside the normal story flow
+ * These are accessed via direct navigation and won't trigger orphan/dead-end warnings
+ */
+const SPECIAL_PAGES = [
+  'debug'  // Dev tools page
+];
+
+/**
  * Entry points into the content graph
  */
 const ENTRY_POINTS = [
@@ -155,7 +163,7 @@ function detectOrphans(contentGraph: ContentRegistry): ValidationIssue[] {
 
   // Find unreferenced nodes
   for (const contentId of allContentIds) {
-    if (!referencedIds.has(contentId)) {
+    if (!referencedIds.has(contentId) && !SPECIAL_PAGES.includes(contentId)) {
       issues.push({
         type: 'warning',
         message: `Orphaned content '${contentId}' - nothing links to this node`,
@@ -179,7 +187,7 @@ function detectDeadEnds(contentGraph: ContentRegistry): ValidationIssue[] {
     // Skip if it has choices
     if (content.choices && content.choices.length > 0) continue;
 
-    // Check if it's intentionally an ending
+    // Check if it's intentionally an ending or special page
     // We'll consider nodes without choices as intentional endings for now
     // This is a simple heuristic - could be enhanced with explicit isEnding flag
     const isLikelyIntentionalEnding =
@@ -187,7 +195,7 @@ function detectDeadEnds(contentGraph: ContentRegistry): ValidationIssue[] {
       contentId.includes('conclusion') ||
       contentId.includes('complete');
 
-    if (!isLikelyIntentionalEnding) {
+    if (!isLikelyIntentionalEnding && !SPECIAL_PAGES.includes(contentId)) {
       issues.push({
         type: 'warning',
         message: `Potential dead end '${contentId}' - no choices and doesn't look like an ending`,
@@ -229,10 +237,10 @@ function analyzeReachability(contentGraph: ContentRegistry): ValidationIssue[] {
     }
   }
 
-  // Find unreachable nodes (excluding known placeholders)
+  // Find unreachable nodes (excluding known placeholders and special pages)
   const allContentIds = Object.keys(contentGraph);
   for (const contentId of allContentIds) {
-    if (!reachable.has(contentId) && !KNOWN_PLACEHOLDERS.includes(contentId)) {
+    if (!reachable.has(contentId) && !KNOWN_PLACEHOLDERS.includes(contentId) && !SPECIAL_PAGES.includes(contentId)) {
       issues.push({
         type: 'warning',
         message: `Unreachable content '${contentId}' - no path from entry points`,
