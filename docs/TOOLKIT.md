@@ -337,13 +337,14 @@ Summary: 2 warnings, 0 errors
 
 **Acceptance Criteria**
 
-- [ ] Validates all action references against content registry
-- [ ] Identifies orphaned nodes (with entry point exceptions)
-- [ ] Detects dead ends (no choices, not ending)
-- [ ] Runs as `npm run validate-content`
-- [ ] Clear, actionable error messages with file locations
-- [ ] Zero false positives on current dragon story content
-- [ ] Execution time under 1 second for 100 nodes
+- [x] Validates all action references against content registry
+- [x] Identifies orphaned nodes (with entry point exceptions)
+- [x] Detects dead ends (no choices, not ending)
+- [x] Runs as `npm run validate-content`
+- [x] Clear, actionable error messages with file locations
+- [x] Zero false positives on current dragon story content
+- [x] Execution time under 1 second for 100 nodes
+- [x] Supports special utility pages (via SPECIAL_PAGES constant)
 
 **File Locations**
 

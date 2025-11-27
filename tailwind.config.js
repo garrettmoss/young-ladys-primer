@@ -21,13 +21,20 @@ module.exports = {
         'vintage': {
           amber: {
             50: '#f9f6f0',
-            100: '#f5f1e6', 
+            100: '#f5f1e6',
             200: '#ede8db',
             600: '#d97706',
             700: '#b45309',
             800: '#92400e',
             900: '#78350f',
           }
+        },
+        'flow': {
+          entry: '#FFD700',      // Gold - entry points
+          convergence: '#4ECDC4', // Teal - convergence nodes
+          lesson: '#95E1D3',     // Mint - educational content
+          puzzle: '#F38181',     // Rose - interactive puzzles
+          ending: '#AA96DA'      // Purple - story endings
         }
       }
     },
