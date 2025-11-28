@@ -12,6 +12,7 @@
     "validate-content": "tsx scripts/validate-story-graph.ts"
   },
   "dependencies": {
+    "dagre": "^0.8.5",
     "lucide-react": "^0.546.0",
     "next": "^14.2.0",
     "react": "^18.2.0",
