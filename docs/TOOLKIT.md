@@ -282,186 +282,35 @@ Each project is designed to be implemented independently in a fresh Claude sessi
 
 ### Project 1: Story Graph Validation Script
 
-**Problem Statement**
+**Status:** Complete ✓
 
-Currently, broken story references are only caught at runtime when a reader clicks a choice. We need compile-time validation to catch:
-- Typos in action strings
-- Orphaned content nodes
-- Dead-end pages (no choices, not marked as ending)
-- Unreachable content
+Build-time validation script that catches broken references, orphaned nodes, and dead ends before they reach production. Runs as `npm run validate-content`.
 
-**Technical Requirements**
+**File Locations:**
+- Script: [scripts/validate-story-graph.ts](../../scripts/validate-story-graph.ts)
+- Usage: `npm run validate-content`
 
-- **Language**: TypeScript
-- **Integration**: npm script (`npm run validate-content`)
-- **Input**: Existing content registry from `src/content/index.ts`
-- **Output**: Human-readable error report with file locations
-
-**Core Validation Checks**
-
-1. **Reference Validation**
-   - Every `choice.action` points to a real node in `allContent`
-   - Report: line number, file, invalid reference
-
-2. **Orphan Detection**
-   - Find nodes that nothing points to (except entry points)
-   - Ignore: `welcome`, `story_princess`, and other declared entry points
-   - Report: list of orphaned node IDs
-
-3. **Dead End Detection**
-   - Find nodes with no choices that aren't marked as endings
-   - Report: nodes missing choices or ending flag
-
-4. **Reachability Analysis** (optional enhancement)
-   - Verify all content is reachable from entry points
-   - Use graph traversal from declared entry points
-
-**Example Output**
-
-```
-Story Graph Validation Report
-==============================
-
-✓ Reference Validation: PASSED
-  - All 156 choice references point to valid nodes
-
-✗ Orphan Detection: 2 WARNINGS
-  - 'old_dragon_intro' (src/content/stories/dragon-story/intro.ts:45)
-  - 'test_puzzle_variant' (src/content/puzzles/molecular-lock.ts:12)
-
-✓ Dead End Detection: PASSED
-  - All 18 non-ending nodes have choices
-
-Summary: 2 warnings, 0 errors
-```
-
-**Acceptance Criteria**
-
-- [x] Validates all action references against content registry
-- [x] Identifies orphaned nodes (with entry point exceptions)
-- [x] Detects dead ends (no choices, not ending)
-- [x] Runs as `npm run validate-content`
-- [x] Clear, actionable error messages with file locations
-- [x] Zero false positives on current dragon story content
-- [x] Execution time under 1 second for 100 nodes
-- [x] Supports special utility pages (via SPECIAL_PAGES constant)
-
-**File Locations**
-
-- Script: `scripts/validate-story-graph.ts`
-- Package.json: Add `"validate-content": "tsx scripts/validate-story-graph.ts"`
-- Dependencies: May need `tsx` for TypeScript execution
-
-**Future Enhancements**
-
-- Pre-commit git hook integration
-- CI/CD pipeline integration
-- Auto-fix suggestions for common errors
-- Mermaid diagram generation from validated graph
+**Validates:**
+- All choice actions point to real nodes
+- No orphaned content (except entry points)
+- No unintentional dead ends
+- All content reachable from entry points
 
 ---
 
 ### Project 2: Interactive Flow Visualizer
 
-**Problem Statement**
+**Status:** Phase 1 Complete ✓ (commit 0dfdb6e)
 
-Mermaid diagrams work well for static documentation but break down as stories grow:
-- Can't zoom/pan effectively on complex graphs (18+ nodes)
-- No interactivity (can't click to navigate)
-- Hard to see convergence patterns at a glance
-- Manual maintenance burden
+Interactive graph visualization for story structure with zoom/pan controls, convergence highlighting, and Victorian-themed styling. Built with React Flow.
 
-We need an interactive visualization that:
-- Shows story structure clearly at any scale
-- Allows click-to-navigate during authoring
-- Highlights convergence points and critical paths
-- Can be embedded in the Primer itself for readers
+**Implementation:** See [implementations/flow-visualizer.md](implementations/flow-visualizer.md) for detailed phases and technical specs.
 
-**Technical Requirements**
-
-- **Framework**: React component (integrates with existing Next.js app)
-- **Library**: Consider `react-flow` or `d3-dag` for graph layout
-- **Input**: Reads from `src/content/index.ts` (same data as validation script)
-- **Output**: Interactive web component with zoom/pan/click navigation
-
-**Core Features**
-
-1. **Automatic Layout**
-   - Parse content registry to build graph
-   - Hierarchical layout (top-to-bottom or left-to-right)
-   - Highlight convergence points (multiple edges → one node)
-   - Color-code by type (entry, lesson, puzzle, convergence, ending)
-
-2. **Interactive Navigation**
-   - Click node → show content preview
-   - Click edge → highlight path
-   - Zoom/pan controls (mouse wheel, drag)
-   - Search/filter nodes by ID or title
-
-3. **Visualization Modes**
-   - Full graph view (all nodes)
-   - Path view (show one complete path)
-   - Convergence view (highlight merge points)
-   - Progress view (show reader's current path)
-
-4. **Author Tools**
-   - Export to PNG/SVG
-   - Generate Mermaid code from current graph
-   - Show metrics (node count, avg choices, max depth)
-
-**Visual Design**
-
-- Use existing color palette from `src/app/globals.css`
-- Match Victorian aesthetic (parchment tones, ink lines)
-- Entry nodes: Gold (`#FFD700`)
-- Convergence: Teal (`#4ECDC4`)
-- Lessons: Mint (`#95E1D3`)
-- Puzzles: Rose (`#F38181`)
-- Endings: Purple (`#AA96DA`)
-
-**Example Usage**
-
-```typescript
-import { StoryFlowVisualizer } from '@/components/StoryFlowVisualizer';
-import { allContent } from '@/content';
-
-export default function ContentAuthoringPage() {
-  return (
-    <StoryFlowVisualizer
-      content={allContent}
-      entryPoint="story_princess"
-      onNodeClick={(nodeId) => console.log('Navigate to:', nodeId)}
-    />
-  );
-}
-```
-
-**Acceptance Criteria**
-
-- [ ] Parses content registry automatically (no manual diagram updates)
-- [ ] Interactive zoom/pan controls work smoothly
-- [ ] Click node → show title, content preview, choices
-- [ ] Highlights convergence points visually
-- [ ] Color-codes nodes by type (entry/lesson/puzzle/ending)
-- [ ] Responsive design (works on tablet/desktop)
-- [ ] Exports diagram to PNG/SVG
-- [ ] Shows basic metrics (node count, avg choices per page)
-- [ ] Renders dragon story (18 nodes) clearly and navigably
-
-**File Locations**
-
-- Component: `src/components/StoryFlowVisualizer.tsx`
-- Types: Extend `src/content/index.ts` if needed
-- Page: `src/app/authoring/flow/page.tsx` (new authoring tool page)
-- Or: Integrate into existing dev tools
-
-**Future Enhancements**
-
-- Reader-facing mode (show only unlocked nodes)
-- Real-time collaboration (multiple authors)
-- A/B testing integration (show alternate paths)
-- Analytics overlay (show popular paths)
-- Export to interactive HTML embed for documentation
+**Phase Progress:**
+- [x] Phase 1: Foundation & Setup (reactflow, colors, graph-builder utility)
+- [ ] Phase 2: Core Components (visualizer, custom nodes, sidebar)
+- [ ] Phase 3: Interactivity (metrics, controls, progress tracking)
+- [ ] Phase 4: Integration & Polish (dev tools, export, responsive design)
 
 ---
 
