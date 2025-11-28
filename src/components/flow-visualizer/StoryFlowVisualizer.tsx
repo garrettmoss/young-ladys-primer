@@ -126,7 +126,7 @@ export function StoryFlowVisualizer({
   // Get selected node data
   const selectedNode = useMemo(() => {
     if (!selectedNodeId) return null;
-    return nodes.find(n => n.id === selectedNodeId);
+    return nodes.find(n => n.id === selectedNodeId) || null;
   }, [selectedNodeId, nodes]);
 
   // Get selected node's choices (from content registry)
