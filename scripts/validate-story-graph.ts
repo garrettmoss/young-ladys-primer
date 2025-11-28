@@ -162,7 +162,7 @@ function detectOrphans(contentGraph: ContentRegistry): ValidationIssue[] {
   }
 
   // Find unreferenced nodes
-  for (const contentId of allContentIds) {
+  for (const contentId of Array.from(allContentIds)) {
     if (!referencedIds.has(contentId) && !SPECIAL_PAGES.includes(contentId)) {
       issues.push({
         type: 'warning',
