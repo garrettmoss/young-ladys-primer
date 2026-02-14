@@ -21,7 +21,7 @@ Built with React Flow, integrates with existing Next.js app, uses Victorian aest
 ## Phase Progress
 
 - [x] **Phase 1: Foundation & Setup** (commit 0dfdb6e)
-- [ ] **Phase 2: Core Components**
+- [x] **Phase 2: Core Components** (commit d12778d)
 - [ ] **Phase 3: Interactivity & Features**
 - [ ] **Phase 4: Integration & Polish**
 
@@ -72,9 +72,10 @@ Dragon story convergence points:
 
 ---
 
-## Phase 2: Core Components
+## Phase 2: Core Components ✓
 
-**Status:** Ready to implement
+**Completed:** 2025-11-27
+**Commit:** d12778d
 
 ### Components to Build
 
@@ -178,15 +179,40 @@ src/components/flow-visualizer/
 └── index.ts                    # Exports
 ```
 
+### Deliverables
+
+1. **StoryFlowVisualizer.tsx** ([src/components/flow-visualizer/StoryFlowVisualizer.tsx](../../src/components/flow-visualizer/StoryFlowVisualizer.tsx))
+   - React Flow integration with dagre layout algorithm
+   - Transforms content registry using graph-builder utility
+   - Handles node selection and sidebar state
+   - Tight-tree layout with optimized spacing (nodesep: 120, ranksep: 150)
+
+2. **StoryNode.tsx** ([src/components/flow-visualizer/StoryNode.tsx](../../src/components/flow-visualizer/StoryNode.tsx))
+   - Custom node renderer with Victorian aesthetic
+   - Color-coded by node type with border highlights
+   - Convergence badge for nodes with 3+ incoming edges
+   - Type icons and choice count display
+   - Hover states and selection highlighting
+
+3. **ContentSidebar.tsx** ([src/components/flow-visualizer/ContentSidebar.tsx](../../src/components/flow-visualizer/ContentSidebar.tsx))
+   - Collapsible sidebar with node details
+   - Shows metadata, content text, choices, and incoming connections
+   - Flexbox layout prevents scroll z-index issues
+   - Color-coded header matching node type
+
+4. **Dev Page** ([pages/dev/flow.tsx](../../pages/dev/flow.tsx))
+   - Full-screen visualization at `/dev/flow`
+   - Test harness for flow visualizer development
+
 ### Acceptance Criteria
 
-- [ ] Visualizer renders all content nodes
-- [ ] Nodes color-coded by type (entry/convergence/lesson/puzzle/ending)
-- [ ] Click node opens sidebar with full details
-- [ ] Zoom/pan controls work smoothly
-- [ ] Victorian aesthetic matches existing app
-- [ ] Renders dragon story (18 nodes) clearly
-- [ ] Convergence points visually distinct
+- [x] Visualizer renders all content nodes
+- [x] Nodes color-coded by type (entry/convergence/lesson/puzzle/ending)
+- [x] Click node opens sidebar with full details
+- [x] Zoom/pan controls work smoothly
+- [x] Victorian aesthetic matches existing app
+- [x] Renders dragon story (18 nodes) clearly
+- [x] Convergence points visually distinct
 
 ---
 

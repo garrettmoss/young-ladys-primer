@@ -10,6 +10,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import ReactFlow, {
   Controls,
+  ControlButton,
   Background,
   MiniMap,
   Node,
@@ -17,6 +18,8 @@ import ReactFlow, {
   NodeTypes,
   useNodesState,
   useEdgesState,
+  useReactFlow,
+  ReactFlowProvider,
   BackgroundVariant
 } from 'reactflow';
 import dagre from 'dagre';
@@ -26,6 +29,10 @@ import { contentRegistryToFlowGraph, type FlowNodeData } from '@/utils/graph-bui
 import { allContent } from '@/content';
 import { StoryNode } from './StoryNode';
 import { ContentSidebar } from './ContentSidebar';
+
+// === CONSTANTS ===
+
+const DEFAULT_VIEWPORT = { x: 0, y: 0, zoom: 0.6 };
 
 // === TYPES ===
 
@@ -48,15 +55,17 @@ function applyDagreLayout(nodes: Node<FlowNodeData>[], edges: Edge[]): Node<Flow
   // Configure graph layout
   dagreGraph.setGraph({
     rankdir: 'TB',        // Top to bottom
-    nodesep: 80,          // Horizontal spacing
-    ranksep: 120,         // Vertical spacing
-    marginx: 50,
-    marginy: 50
+    nodesep: 120,         // Horizontal spacing between nodes at same rank
+    ranksep: 150,         // Vertical spacing between ranks
+    marginx: 80,
+    marginy: 80,
+    align: 'UL',          // Align nodes to upper-left
+    ranker: 'tight-tree'  // Use tight-tree algorithm for better hierarchy
   });
 
   // Add nodes to dagre graph
   nodes.forEach((node) => {
-    dagreGraph.setNode(node.id, { width: 250, height: 100 });
+    dagreGraph.setNode(node.id, { width: 280, height: 120 });
   });
 
   // Add edges to dagre graph
@@ -74,16 +83,57 @@ function applyDagreLayout(nodes: Node<FlowNodeData>[], edges: Edge[]): Node<Flow
     return {
       ...node,
       position: {
-        x: nodeWithPosition.x - 125, // Center node (width / 2)
-        y: nodeWithPosition.y - 50   // Center node (height / 2)
+        x: nodeWithPosition.x - 140, // Center node (width / 2 = 280 / 2)
+        y: nodeWithPosition.y - 60   // Center node (height / 2 = 120 / 2)
       }
     };
   });
 }
 
-// === MAIN COMPONENT ===
+// === CONTROLS WITH HOME BUTTON ===
 
-export function StoryFlowVisualizer({
+function HomeControls() {
+  const { setViewport, fitView, zoomIn, zoomOut } = useReactFlow();
+
+  const onZoomIn = useCallback(() => { zoomIn({ duration: 300 }); }, [zoomIn]);
+  const onZoomOut = useCallback(() => { zoomOut({ duration: 300 }); }, [zoomOut]);
+  const onFitView = useCallback(() => { fitView({ duration: 300 }); }, [fitView]);
+  const onHome = useCallback(() => { setViewport(DEFAULT_VIEWPORT, { duration: 300 }); }, [setViewport]);
+
+  return (
+    <Controls
+      className="bg-parchment/95 backdrop-blur-sm border-2 border-ink/20 rounded-lg shadow-lg"
+      showInteractive={false}
+      showFitView={false}
+      showZoom={false}
+    >
+      <ControlButton onClick={onZoomIn} title="Zoom in">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+          <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+        </svg>
+      </ControlButton>
+      <ControlButton onClick={onZoomOut} title="Zoom out">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+          <path fillRule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
+        </svg>
+      </ControlButton>
+      <ControlButton onClick={onFitView} title="Fit all nodes in view">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+          <path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H5v3a1 1 0 01-2 0V4zm10-1a1 1 0 100 2h3v3a1 1 0 102 0V4a1 1 0 00-1-1h-4zM4 13a1 1 0 011 1v3h3a1 1 0 110 2H4a1 1 0 01-1-1v-4a1 1 0 011-1zm14 0a1 1 0 01 1 1v4a1 1 0 01-1 1h-4a1 1 0 110-2h3v-3a1 1 0 011-1z" />
+        </svg>
+      </ControlButton>
+      <ControlButton onClick={onHome} title="Reset to default view">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+        </svg>
+      </ControlButton>
+    </Controls>
+  );
+}
+
+// === INNER COMPONENT (needs ReactFlowProvider) ===
+
+function StoryFlowVisualizerInner({
   contentFilter,
   entryPoint,
   showProgress = false
@@ -155,25 +205,38 @@ export function StoryFlowVisualizer({
         onEdgesChange={onEdgesChange}
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
-        fitView
-        minZoom={0.1}
+        defaultViewport={DEFAULT_VIEWPORT}
+        minZoom={0.2}
         maxZoom={2}
         defaultEdgeOptions={{
           type: 'smoothstep',
           animated: false,
-          style: { stroke: '#64402e', strokeWidth: 2 }
+          style: {
+            stroke: '#64402e',
+            strokeWidth: 2.5
+          },
+          labelStyle: {
+            fill: '#64402e',
+            fontSize: 11,
+            fontWeight: 500,
+            fontFamily: 'ui-sans-serif, system-ui, sans-serif'
+          },
+          labelBgStyle: {
+            fill: '#f9f6f0',
+            fillOpacity: 0.9
+          },
+          labelBgPadding: [6, 4] as [number, number],
+          labelBgBorderRadius: 4
         }}
       >
         <Background
           variant={BackgroundVariant.Dots}
-          gap={20}
-          size={1}
+          gap={24}
+          size={1.5}
           color="#d4c5b0"
+          className="opacity-40"
         />
-        <Controls
-          className="bg-parchment border border-ink/20 rounded-lg shadow-lg"
-          showInteractive={false}
-        />
+        <HomeControls />
         <MiniMap
           nodeColor={(node) => {
             const data = node.data as FlowNodeData;
@@ -188,8 +251,11 @@ export function StoryFlowVisualizer({
             };
             return colorMap[data.nodeType] || colorMap.default;
           }}
-          className="bg-parchment border border-ink/20 rounded-lg shadow-lg"
-          maskColor="rgba(249, 246, 240, 0.6)"
+          className="bg-parchment/95 backdrop-blur-sm border-2 border-ink/20 rounded-lg shadow-lg"
+          maskColor="rgba(249, 246, 240, 0.7)"
+          nodeStrokeWidth={3}
+          pannable
+          zoomable
         />
       </ReactFlow>
 
@@ -202,5 +268,15 @@ export function StoryFlowVisualizer({
         incomingConnections={incomingConnections}
       />
     </div>
+  );
+}
+
+// === EXPORTED WRAPPER ===
+
+export function StoryFlowVisualizer(props: StoryFlowVisualizerProps) {
+  return (
+    <ReactFlowProvider>
+      <StoryFlowVisualizerInner {...props} />
+    </ReactFlowProvider>
   );
 }

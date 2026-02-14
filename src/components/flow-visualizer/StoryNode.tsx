@@ -45,7 +45,7 @@ export const StoryNode = memo(({ data, selected }: NodeProps<FlowNodeData>) => {
   return (
     <div
       className="relative"
-      style={{ width: 250, minHeight: 100 }}
+      style={{ width: 280, minHeight: 120 }}
     >
       {/* Incoming handle */}
       <Handle
@@ -58,15 +58,16 @@ export const StoryNode = memo(({ data, selected }: NodeProps<FlowNodeData>) => {
       {/* Node card */}
       <div
         className={`
-          bg-parchment rounded-lg shadow-md
+          bg-parchment rounded-lg
           border-2 transition-all duration-200
+          hover:shadow-lg cursor-pointer
           ${selected ? 'ring-2 ring-amber-500 ring-offset-2' : ''}
         `}
         style={{
           borderColor: selected ? '#f59e0b' : borderColor,
           boxShadow: selected
-            ? '0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1)'
-            : '0 1px 3px 0 rgba(0, 0, 0, 0.1)'
+            ? '0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.1)'
+            : '0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.05)'
         }}
       >
         {/* Convergence badge */}
@@ -91,8 +92,8 @@ export const StoryNode = memo(({ data, selected }: NodeProps<FlowNodeData>) => {
         </div>
 
         {/* Title */}
-        <div className="px-3 py-3">
-          <h3 className="font-serif text-sm font-semibold text-ink leading-tight line-clamp-2">
+        <div className="px-4 py-3">
+          <h3 className="font-serif text-base font-semibold text-ink leading-tight line-clamp-2">
             {label}
           </h3>
         </div>

@@ -72,12 +72,12 @@ export function ContentSidebar({
 
       {/* Sidebar panel */}
       <aside
-        className="fixed right-0 top-0 h-screen w-96 bg-parchment border-l-2 border-ink/20 shadow-2xl z-50 overflow-y-auto"
+        className="fixed right-0 top-0 h-screen w-96 bg-parchment border-l-2 border-ink/20 shadow-2xl z-50 flex flex-col"
         style={{ borderLeftColor: borderColor }}
       >
         {/* Header */}
         <div
-          className="sticky top-0 bg-parchment border-b-2 border-ink/10 z-10 p-4"
+          className="flex-shrink-0 bg-parchment border-b-2 border-ink/10 p-4"
           style={{ backgroundColor: `${borderColor}10` }}
         >
           <div className="flex items-start justify-between gap-3">
@@ -113,7 +113,7 @@ export function ContentSidebar({
         </div>
 
         {/* Content */}
-        <div className="p-4 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 space-y-6">
           {/* Metadata */}
           <section>
             <h3 className="font-serif text-sm font-semibold text-ink/80 mb-2 uppercase tracking-wide">
