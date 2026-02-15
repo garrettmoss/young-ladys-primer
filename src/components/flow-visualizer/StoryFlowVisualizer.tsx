@@ -93,10 +93,21 @@ function applyDagreLayout(nodes: Node<FlowNodeData>[], edges: Edge[]): Node<Flow
 // === CONTROLS WITH HOME BUTTON ===
 
 function HomeControls() {
-  const { setViewport, fitView, zoomIn, zoomOut } = useReactFlow();
+  const { setViewport, getViewport, fitView } = useReactFlow();
 
-  const onZoomIn = useCallback(() => { zoomIn({ duration: 300 }); }, [zoomIn]);
-  const onZoomOut = useCallback(() => { zoomOut({ duration: 300 }); }, [zoomOut]);
+  const zoomToCenter = useCallback((factor: number) => {
+    const { x, y, zoom } = getViewport();
+    const newZoom = Math.min(Math.max(zoom * factor, 0.1), 3);
+    // Adjust x,y so the viewport center stays fixed
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    const newX = cx - (cx - x) * (newZoom / zoom);
+    const newY = cy - (cy - y) * (newZoom / zoom);
+    setViewport({ x: newX, y: newY, zoom: newZoom }, { duration: 300 });
+  }, [getViewport, setViewport]);
+
+  const onZoomIn = useCallback(() => { zoomToCenter(1.5); }, [zoomToCenter]);
+  const onZoomOut = useCallback(() => { zoomToCenter(1 / 1.5); }, [zoomToCenter]);
   const onFitView = useCallback(() => { fitView({ duration: 300 }); }, [fitView]);
   const onHome = useCallback(() => { setViewport(DEFAULT_VIEWPORT, { duration: 300 }); }, [setViewport]);
 
@@ -206,8 +217,8 @@ function StoryFlowVisualizerInner({
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
         defaultViewport={DEFAULT_VIEWPORT}
-        minZoom={0.2}
-        maxZoom={2}
+        minZoom={0.1}
+        maxZoom={3}
         defaultEdgeOptions={{
           type: 'smoothstep',
           animated: false,
