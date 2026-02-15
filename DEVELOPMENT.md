@@ -107,11 +107,14 @@ Use conventional commit format with detailed body for clear, scannable git histo
 **Format**:
 ```
 <type>: <concise title>
-
-- Detailed explanation point 1
-- Detailed explanation point 2
-- More context as needed
 ```
+
+Optionally include a **scope** when changes are confined to a specific area:
+```
+<type>(<scope>): <concise title>
+```
+
+Common scopes: `flow-visualizer`, `content`, `puzzle`, `design`, etc.
 
 **Types**:
 - `feat:` - New features or capabilities
@@ -121,18 +124,20 @@ Use conventional commit format with detailed body for clear, scannable git histo
 - `refactor:` - Code improvements without changing functionality
 - `test:` - Adding or updating tests
 
-**Example**:
+**Examples**:
 ```
 docs: clean up project documentation
 
 - Remove outdated TODOs and completed items from CLAUDE.md
 - Update ARCHITECTURE.md file extensions and features
 - Move implemented features from "coming soon" to main README
-- Streamline README features to highlight compelling capabilities
+```
 
-🤖 Generated with [Claude Code](https://claude.ai/code)
+```
+fix(flow-visualizer): center-anchored zoom with larger step size
 
-Co-Authored-By: Claude <noreply@anthropic.com>
+Custom zoom buttons now zoom 1.5x per click and keep the viewport
+center fixed during zoom.
 ```
 
 ## Project Management
