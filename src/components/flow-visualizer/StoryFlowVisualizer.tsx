@@ -29,6 +29,7 @@ import { contentRegistryToFlowGraph, type FlowNodeData } from '@/utils/graph-bui
 import { allContent } from '@/content';
 import { StoryNode } from './StoryNode';
 import { ContentSidebar } from './ContentSidebar';
+import { NODE_WIDTH, NODE_HEIGHT, FLOW_COLORS, FLOW_PANEL_CLASSES } from './flow-constants';
 
 // === CONSTANTS ===
 
@@ -65,7 +66,7 @@ function applyDagreLayout(nodes: Node<FlowNodeData>[], edges: Edge[]): Node<Flow
 
   // Add nodes to dagre graph
   nodes.forEach((node) => {
-    dagreGraph.setNode(node.id, { width: 280, height: 120 });
+    dagreGraph.setNode(node.id, { width: NODE_WIDTH, height: NODE_HEIGHT });
   });
 
   // Add edges to dagre graph
@@ -83,8 +84,8 @@ function applyDagreLayout(nodes: Node<FlowNodeData>[], edges: Edge[]): Node<Flow
     return {
       ...node,
       position: {
-        x: nodeWithPosition.x - 140, // Center node (width / 2 = 280 / 2)
-        y: nodeWithPosition.y - 60   // Center node (height / 2 = 120 / 2)
+        x: nodeWithPosition.x - NODE_WIDTH / 2,
+        y: nodeWithPosition.y - NODE_HEIGHT / 2
       }
     };
   });
@@ -113,7 +114,7 @@ function HomeControls() {
 
   return (
     <Controls
-      className="bg-parchment/95 backdrop-blur-sm border-2 border-ink/20 rounded-lg shadow-lg"
+      className={`flow-controls ${FLOW_PANEL_CLASSES}`}
       showInteractive={false}
       showFitView={false}
       showZoom={false}
@@ -251,18 +252,9 @@ function StoryFlowVisualizerInner({
         <MiniMap
           nodeColor={(node) => {
             const data = node.data as FlowNodeData;
-            // Use the color map from graph-builder
-            const colorMap = {
-              entry: '#FFD700',
-              convergence: '#4ECDC4',
-              lesson: '#95E1D3',
-              puzzle: '#F38181',
-              ending: '#AA96DA',
-              default: '#E0E0E0'
-            };
-            return colorMap[data.nodeType] || colorMap.default;
+            return FLOW_COLORS[data.nodeType] || FLOW_COLORS.default;
           }}
-          className="bg-parchment/95 backdrop-blur-sm border-2 border-ink/20 rounded-lg shadow-lg"
+          className={FLOW_PANEL_CLASSES}
           maskColor="rgba(249, 246, 240, 0.7)"
           nodeStrokeWidth={3}
           pannable

@@ -11,6 +11,7 @@
 import { type Node } from 'reactflow';
 import { type FlowNodeData, getNodeColor } from '@/utils/graph-builder';
 import type { StoryContent } from '@/content';
+import { FLOW_COLORS } from './flow-constants';
 
 // === TYPES ===
 
@@ -94,7 +95,8 @@ export function ContentSidebar({
                 </span>
                 {incomingEdges >= 3 && (
                   <span
-                    className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-flow-convergence text-white"
+                    className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium text-white"
+                    style={{ backgroundColor: FLOW_COLORS.convergence }}
                     title="Convergence point"
                   >
                     ◈ Convergence
@@ -208,7 +210,13 @@ export function ContentSidebar({
 
           {/* Ending indicator */}
           {choiceCount === 0 && (
-            <section className="bg-flow-ending/10 border border-flow-ending/30 rounded-lg p-4">
+            <section
+              className="rounded-lg p-4 border"
+              style={{
+                backgroundColor: `${FLOW_COLORS.ending}1A`,
+                borderColor: `${FLOW_COLORS.ending}4D`
+              }}
+            >
               <div className="flex items-center gap-2 text-sm">
                 <span className="text-2xl">✦</span>
                 <p className="text-ink/80 italic">

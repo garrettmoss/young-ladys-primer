@@ -8,6 +8,7 @@
 import { memo } from 'react';
 import { Handle, Position, NodeProps } from 'reactflow';
 import { type FlowNodeData, getNodeColor } from '@/utils/graph-builder';
+import { NODE_WIDTH, NODE_HEIGHT, FLOW_COLORS } from './flow-constants';
 
 // === ICON COMPONENTS ===
 
@@ -45,7 +46,7 @@ export const StoryNode = memo(({ data, selected }: NodeProps<FlowNodeData>) => {
   return (
     <div
       className="relative"
-      style={{ width: 280, minHeight: 120 }}
+      style={{ width: NODE_WIDTH, minHeight: NODE_HEIGHT }}
     >
       {/* Incoming handle */}
       <Handle
@@ -73,7 +74,8 @@ export const StoryNode = memo(({ data, selected }: NodeProps<FlowNodeData>) => {
         {/* Convergence badge */}
         {isConvergence && (
           <div
-            className="absolute -top-2 -right-2 bg-flow-convergence text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-md z-10"
+            className="absolute -top-2 -right-2 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-md z-10"
+            style={{ backgroundColor: FLOW_COLORS.convergence }}
             title={`Convergence point: ${incomingEdges} paths merge here`}
           >
             {incomingEdges}

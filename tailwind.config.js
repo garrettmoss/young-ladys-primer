@@ -29,13 +29,6 @@ module.exports = {
             900: '#78350f',
           }
         },
-        'flow': {
-          entry: '#FFD700',      // Gold - entry points
-          convergence: '#4ECDC4', // Teal - convergence nodes
-          lesson: '#95E1D3',     // Mint - educational content
-          puzzle: '#F38181',     // Rose - interactive puzzles
-          ending: '#AA96DA'      // Purple - story endings
-        }
       }
     },
   },

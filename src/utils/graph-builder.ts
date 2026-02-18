@@ -7,6 +7,7 @@
 
 import type { StoryContent, Choice } from '@/content';
 import type { Node, Edge } from 'reactflow';
+import { FLOW_COLORS } from '@/components/flow-visualizer/flow-constants';
 
 // === CONFIGURATION ===
 
@@ -141,19 +142,10 @@ function getContentPreview(content: StoryContent): string {
 }
 
 /**
- * Get color based on node type (for use with Tailwind classes)
+ * Get color based on node type
  */
 export function getNodeColor(nodeType: NodeType): string {
-  const colorMap: Record<NodeType, string> = {
-    entry: '#FFD700',      // Gold
-    convergence: '#4ECDC4', // Teal
-    lesson: '#95E1D3',     // Mint
-    puzzle: '#F38181',     // Rose
-    ending: '#AA96DA',     // Purple
-    default: '#E0E0E0'     // Gray
-  };
-
-  return colorMap[nodeType];
+  return FLOW_COLORS[nodeType];
 }
 
 // === MAIN TRANSFORMATION FUNCTION ===
