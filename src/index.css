@@ -25,6 +25,18 @@
   }
 }
 
+/* Flow visualizer controls - larger buttons (outside @layer to override React Flow defaults) */
+.react-flow__controls-button {
+  width: 28px !important;
+  height: 28px !important;
+  padding: 6px !important;
+}
+
+.react-flow__controls-button svg {
+  max-width: 20px !important;
+  max-height: 20px !important;
+}
+
 @layer components {
   /* Main container */
   .primer-container {
