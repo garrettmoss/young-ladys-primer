@@ -7,8 +7,8 @@
 import type { NodeType } from '@/utils/graph-builder';
 
 // Node layout dimensions (used by Dagre layout + StoryNode renderer)
-export const NODE_WIDTH = 280;
-export const NODE_HEIGHT = 120;
+export const NODE_WIDTH = 360;
+export const NODE_HEIGHT = 150;
 
 // Color palette for flow node types
 export const FLOW_COLORS: Record<NodeType, string> = {

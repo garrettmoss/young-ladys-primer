@@ -33,7 +33,16 @@ import { NODE_WIDTH, NODE_HEIGHT, FLOW_COLORS, FLOW_PANEL_CLASSES } from './flow
 
 // === CONSTANTS ===
 
-const DEFAULT_VIEWPORT = { x: 0, y: 0, zoom: 0.6 };
+/** Entry node IDs used for the default "home" viewport framing */
+const HOME_VIEW_NODE_IDS = ['welcome', 'story_princess'];
+
+/** fitView options for the home/default view: frame entry nodes at a readable zoom */
+const HOME_FIT_VIEW_OPTIONS = {
+  nodes: HOME_VIEW_NODE_IDS.map(id => ({ id })),
+  padding: 0.4,
+  maxZoom: 1.0,
+  duration: 300,
+};
 
 // === TYPES ===
 
@@ -110,7 +119,7 @@ function HomeControls() {
   const onZoomIn = useCallback(() => { zoomToCenter(1.5); }, [zoomToCenter]);
   const onZoomOut = useCallback(() => { zoomToCenter(1 / 1.5); }, [zoomToCenter]);
   const onFitView = useCallback(() => { fitView({ duration: 300 }); }, [fitView]);
-  const onHome = useCallback(() => { setViewport(DEFAULT_VIEWPORT, { duration: 300 }); }, [setViewport]);
+  const onHome = useCallback(() => { fitView(HOME_FIT_VIEW_OPTIONS); }, [fitView]);
 
   return (
     <Controls
@@ -217,7 +226,8 @@ function StoryFlowVisualizerInner({
         onEdgesChange={onEdgesChange}
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
-        defaultViewport={DEFAULT_VIEWPORT}
+        fitView
+        fitViewOptions={HOME_FIT_VIEW_OPTIONS}
         minZoom={0.1}
         maxZoom={3}
         defaultEdgeOptions={{
@@ -229,7 +239,7 @@ function StoryFlowVisualizerInner({
           },
           labelStyle: {
             fill: '#64402e',
-            fontSize: 11,
+            fontSize: 13,
             fontWeight: 500,
             fontFamily: 'ui-sans-serif, system-ui, sans-serif'
           },
