@@ -153,12 +153,10 @@
 ## Current Status
 **Phase 1**: 95% complete - Core systems stable, confluence narrative structure implemented, infrastructure refactored and optimized
 
-**Active Development**: Story Management Toolkit implementation (validation, visualization, table of contents)
-
-## Next Sprint Goals
-1. **Story Management Toolkit** (see [docs/TOOLKIT.md](TOOLKIT.md))
-   - Story graph validation script (catches broken references, orphaned nodes)
-   - Interactive flow visualizer (better than Mermaid for complex narratives)
-   - Table of contents system (browsable navigation with progress tracking)
-2. Test on mobile devices and improve responsiveness
+**Active Development**: Major overhaul in progress. See [OVERHAUL-PLAN.md](OVERHAUL-PLAN.md) for the detailed phased plan covering:
+- Multi-arc architecture (story arc abstraction + welcome screen)
+- New story arc: "The Cartographer's Garden"
+- Flow visualizer fixes and per-arc filtering
+- ContentContext expansion for AI readiness
+- AI/ML pipeline: fine-tuning a small open-source model for adaptive content generation
 
