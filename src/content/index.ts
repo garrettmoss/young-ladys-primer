@@ -18,6 +18,32 @@
  * 4. Content will automatically be available throughout the app
  */
 
+/**
+ * Format raw content string into HTML for display.
+ * Runs on all content body text (not titles or button labels).
+ *
+ * Handles:
+ * - Double-newlines → <p> paragraph tags
+ * - Single newlines within a paragraph → <br> line breaks
+ * - **bold** → <strong>
+ * - *italic* → <em>
+ * - Existing HTML passes through untouched
+ */
+function formatContent(raw: string): string {
+  return raw
+    .split(/\n\n+/)
+    .map(para => {
+      let html = para.trim();
+      // Bold first (** before *), then italic
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+      // Single newlines → line breaks
+      html = html.replace(/\n/g, '<br>');
+      return `<p>${html}</p>`;
+    })
+    .join('\n');
+}
+
 import { welcomeContent } from './core/welcome';
 import { storySelectContent } from './core/story-select';
 import { getSettingsContent } from './core/settings';
@@ -143,12 +169,13 @@ export const getContent = (contentKey: string, context: ContentContext): Process
   const content = allContent[contentKey];
   if (!content) return null;
 
+  const rawContent = typeof content.content === 'function'
+    ? content.content(context)
+    : content.content;
+
   return {
     ...content,
-    // Process personalization: convert functions to strings using context
-    content: typeof content.content === 'function'
-      ? content.content(context)
-      : content.content
+    content: formatContent(rawContent)
   };
 };
 

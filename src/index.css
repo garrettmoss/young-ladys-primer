@@ -151,6 +151,10 @@
     font-weight: 400;
   }
 
+  .story-text p {
+    margin-bottom: 1em;
+  }
+
   /* Technical/debug content display - can be used anywhere */
   .technical-text {
     font-family: 'Monaco', 'Courier New', monospace;
