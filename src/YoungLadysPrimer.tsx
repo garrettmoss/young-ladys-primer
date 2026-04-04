@@ -64,8 +64,9 @@ function YoungLadysPrimer() {
   // During SSR, always use 'welcome' to prevent hydration mismatch
   // After hydration, use the actual currentContentKey from localStorage
   const contentKey = isHydrated ? currentContentKey : 'welcome';
-  // Also guard reader name with hydration check to prevent SSR mismatch
+  // Also guard reader name and dark mode with hydration check to prevent SSR mismatch
   const effectiveReaderName = isHydrated ? (readerName || 'Aria') : 'Aria';
+  const effectiveDarkMode = isHydrated ? isDarkMode : false;
 
   // Build context object for content personalization
   const contentContext: ContentContext = {
@@ -131,10 +132,10 @@ function YoungLadysPrimer() {
   // === RENDER: Victorian Manuscript-Style UI ===
 
   return (
-    <div className={`primer-container ${isDarkMode ? 'dark-mode' : ''}`}>
+    <div className={`primer-container ${effectiveDarkMode ? 'dark-mode' : ''}`}>
       <div className="primer-content">
         {/* Ornate Header */}
-        <Header contentKey={contentKey} isDarkMode={isDarkMode} />
+        <Header contentKey={contentKey} isDarkMode={effectiveDarkMode} />
 
         {/* Name Input Modal */}
         <NameInputModal
@@ -178,7 +179,7 @@ function YoungLadysPrimer() {
                 settingsNameInput={settingsNameInput}
                 setSettingsNameInput={setSettingsNameInput}
                 isEditingName={isEditingName}
-                isDarkMode={isDarkMode}
+                isDarkMode={effectiveDarkMode}
                 contentProgressCount={Object.keys(contentProgress).length}
                 onEditNameClick={handleEditNameClick}
                 onSettingsNameSave={handleSettingsNameSave}
