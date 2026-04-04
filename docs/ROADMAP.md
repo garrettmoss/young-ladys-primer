@@ -44,8 +44,8 @@
 - [x] Choice reduction (2-3 options per page for most nodes)
 - [x] Convergence points (all paths → elara_revealed → find_peace)
 - [x] Mermaid flow documentation for story arcs
-- [ ] Story graph validation script (catches broken references)
-- [ ] Interactive flow visualizer (better than Mermaid for complexity)
+- [x] Story graph validation script (catches broken references)
+- [x] Interactive flow visualizer (better than Mermaid for complexity)
 - [ ] Table of contents system (browsable story navigation)
 - [x] Complete dragon story resolution branches
 - [x] Lesson integration within stories
