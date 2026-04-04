@@ -17,6 +17,7 @@ import { dragonStoryCollection } from '../src/content/stories/dragon-story/index
 import { lessonNavigation } from '../src/content/lessons/index';
 import { nanotechnologyLessons } from '../src/content/lessons/nanotechnology/index';
 import { puzzleCollection } from '../src/content/puzzles/index';
+import { arcs, getArcEntryPoints } from '../src/content/arcs';
 import type { StoryContent, Choice } from '../src/content/index';
 
 // === CONFIGURATION ===
@@ -51,10 +52,12 @@ const SPECIAL_PAGES = [
 ];
 
 /**
- * Entry points into the content graph
+ * Entry points into the content graph — 'welcome' is always an entry point,
+ * plus each registered arc's entry point.
  */
 const ENTRY_POINTS = [
-  'welcome'
+  'welcome',
+  ...getArcEntryPoints()
 ];
 
 // === TYPE DEFINITIONS ===

@@ -57,6 +57,23 @@ export interface Choice {
 }
 
 /**
+ * Metadata describing a self-contained story arc within the Primer.
+ * Arcs are layered on top of the flat allContent registry — they don't
+ * change how content is stored, just how it's grouped and discovered.
+ */
+export interface StoryArc {
+  id: string;
+  title: string;
+  description: string;
+  entryPoint: string;
+  contentKeys: string[];
+  lessons: string[];
+  puzzles: string[];
+  icon: string;
+  status: 'available' | 'coming_soon' | 'locked';
+}
+
+/**
  * Raw story content as stored in content files
  * Content can be static string or personalized function that receives context
  */
