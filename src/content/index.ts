@@ -70,7 +70,6 @@ export interface StoryArc {
   contentKeys: string[];
   lessons: string[];
   puzzles: string[];
-  icon: string;
   status: 'available' | 'coming_soon' | 'locked';
 }
 

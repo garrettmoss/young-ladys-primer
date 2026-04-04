@@ -10,7 +10,7 @@ Choose wisely — or rather, choose boldly. There are no wrong doors, only diffe
     choices: arcs
       .filter(arc => arc.status === 'available')
       .map(arc => ({
-        text: `${arc.icon} ${arc.title}`,
+        text: arc.title,
         action: arc.entryPoint
       }))
   }

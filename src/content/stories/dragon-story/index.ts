@@ -24,6 +24,5 @@ export const dragonArc: StoryArc = {
     'chamber_two_gas', 'lock_hint_two', 'chamber_three_green', 'chamber_three_red',
     'chamber_three_blue', 'chamber_three_clear', 'lock_hint_three'
   ],
-  icon: '🐉',
   status: 'available'
 };
