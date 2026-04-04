@@ -35,6 +35,7 @@
 - [x] Configure Next.js static export for GitHub Pages
 - [ ] Mobile responsiveness testing on real devices
 - [ ] Consider Vercel/Netlify migration for custom domain & performance
+- [ ] Evaluate Vite + React migration (drop Next.js SSR layer; all features are client-side)
 - [ ] Custom domain setup (youngladysprimer.com?)
 
 ### Content Management
