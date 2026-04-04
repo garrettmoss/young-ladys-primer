@@ -12,6 +12,7 @@
  */
 
 import { welcomeContent } from '../src/content/core/welcome';
+import { storySelectContent } from '../src/content/core/story-select';
 import { devToolsContent } from '../src/content/core/dev-tools';
 import { dragonStoryCollection } from '../src/content/stories/dragon-story/index';
 import { lessonNavigation } from '../src/content/lessons/index';
@@ -88,6 +89,7 @@ interface ValidationReport {
 function buildContentGraph(): ContentRegistry {
   return {
     ...welcomeContent,
+    ...storySelectContent,
     ...devToolsContent,
     ...lessonNavigation,
     ...dragonStoryCollection,

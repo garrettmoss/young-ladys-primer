@@ -7,7 +7,7 @@ Like the morning mist that reveals new landscapes as it lifts, each page you tur
 
 What would you like to learn about today?`,
     choices: [
-      { text: "Tell me a story", action: "story_princess" },
+      { text: "Tell me a story", action: "story_select" },
       { text: "Teach me something new", action: "lesson_choice" },
       { text: "Show me a puzzle", action: "puzzle_logic" },
       { text: "Help me understand myself", action: "reflection" }

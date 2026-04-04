@@ -40,22 +40,28 @@ The flat `allContent` map stays unchanged. The arc registry is metadata layered 
 
 ## Phase 2: Welcome Screen + Arc Selection
 
-**Status**: Not started
+**Status**: Complete (2026-04-04)
 **Estimated effort**: 1 session
 **Dependencies**: Phase 1
+
+### Revised approach
+
+Instead of rewriting the welcome screen to embed arcs directly, we kept welcome basically the same and added a new `story_select` intermediate screen. "Tell me a story" now links to `story_select`, which dynamically lists all available arcs from the registry. This is simpler, keeps the welcome page clean, and scales naturally as arcs are added.
 
 ### Changes
 
 | File | Change |
 |------|--------|
-| `src/content/core/welcome.ts` | Rewrite to generate choices dynamically from the arc registry (one choice per arc + existing lesson/puzzle/settings options) |
-| `src/content/index.ts` | Update `getContent()` welcome special-case to call arc-aware builder |
-| `src/YoungLadysPrimer.tsx` | Replace hardcoded `getWelcomeIcon` with arc-based icon lookup |
-| `src/hooks/useContentNavigation.ts` | Optional: add arc-level progress tracking (% of arc's nodes visited) |
+| `src/content/core/story-select.ts` | **New file**. Story selection screen that dynamically lists available arcs from the registry |
+| `src/content/core/welcome.ts` | "Tell me a story" action changed from `story_princess` to `story_select` |
+| `src/content/index.ts` | Import and register `storySelectContent` in the content registry |
+| `src/YoungLadysPrimer.tsx` | Update `getWelcomeIcon` case from `story_princess` to `story_select` |
+| `scripts/validate-story-graph.ts` | Register `storySelectContent` in the validation graph |
 
 ### Verification
-- Welcome screen dynamically lists all registered arcs
-- Adding a new arc to the registry automatically adds it to welcome
+- Welcome screen unchanged except "Tell me a story" goes to arc selection
+- Arc selection dynamically lists all registered arcs with `status: 'available'`
+- Adding a new arc to the registry automatically adds it to the selection screen
 - Existing navigation and progress tracking unaffected
 
 ---

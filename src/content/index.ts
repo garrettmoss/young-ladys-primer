@@ -19,6 +19,7 @@
  */
 
 import { welcomeContent } from './core/welcome';
+import { storySelectContent } from './core/story-select';
 import { getSettingsContent } from './core/settings';
 import { devToolsContent } from './core/dev-tools';
 import { dragonStoryCollection } from './stories/dragon-story/index';
@@ -110,6 +111,7 @@ interface ContentRegistry {
  */
 export const allContent: ContentRegistry = {
   ...welcomeContent,        // Core navigation and welcome screens
+  ...storySelectContent,    // Story arc selection screen
   ...devToolsContent,       // Developer tools (dev mode only)
   ...lessonNavigation,      // Lesson category selection screen
   ...dragonStoryCollection, // Main dragon story arc with multiple branches

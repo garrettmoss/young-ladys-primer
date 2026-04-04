@@ -84,7 +84,7 @@ function YoungLadysPrimer() {
    */
   const getWelcomeIcon = (action: string) => {
     switch(action) {
-      case 'story_princess': return Scroll;
+      case 'story_select': return Scroll;
       case 'lesson_choice': return MoonStar;
       case 'puzzle_logic': return Cog;
       case 'reflection': return UserStar;
