@@ -8,7 +8,7 @@
    */
   "compilerOptions": {
     // Compilation Target & Environment
-    "target": "es5",              // Target older browsers for wide compatibility
+    "target": "es6",              // ES6 (2015) — universally supported; Next.js handles further transpilation
     "lib": [                      // Include modern DOM and ES features
       "dom",                      // Browser DOM APIs
       "dom.iterable",            // Modern DOM iteration methods
