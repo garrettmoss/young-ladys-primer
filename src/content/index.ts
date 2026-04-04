@@ -23,6 +23,7 @@ import { storySelectContent } from './core/story-select';
 import { getSettingsContent } from './core/settings';
 import { devToolsContent } from './core/dev-tools';
 import { dragonStoryCollection } from './stories/dragon-story/index';
+import { gardenStoryCollection } from './stories/garden-arc/index';
 import { lessonNavigation } from './lessons/index';
 import { nanotechnologyLessons } from './lessons/nanotechnology/index';
 import { puzzleCollection } from './puzzles/index';
@@ -114,6 +115,7 @@ export const allContent: ContentRegistry = {
   ...devToolsContent,       // Developer tools (dev mode only)
   ...lessonNavigation,      // Lesson category selection screen
   ...dragonStoryCollection, // Main dragon story arc with multiple branches
+  ...gardenStoryCollection, // Cartographer's Garden arc (in progress)
   ...nanotechnologyLessons, // Educational content about molecular science
   ...puzzleCollection       // Interactive logic puzzles and challenges
 };

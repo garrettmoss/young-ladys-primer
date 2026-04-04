@@ -14,9 +14,11 @@
 
 import type { StoryArc } from './index';
 import { dragonArc } from './stories/dragon-story/index';
+import { gardenArc } from './stories/garden-arc/index';
 
 export const arcs: StoryArc[] = [
-  dragonArc
+  dragonArc,
+  gardenArc
 ];
 
 export function getArcById(id: string): StoryArc | undefined {

@@ -15,6 +15,7 @@ import { welcomeContent } from '../src/content/core/welcome';
 import { storySelectContent } from '../src/content/core/story-select';
 import { devToolsContent } from '../src/content/core/dev-tools';
 import { dragonStoryCollection } from '../src/content/stories/dragon-story/index';
+import { gardenStoryCollection } from '../src/content/stories/garden-arc/index';
 import { lessonNavigation } from '../src/content/lessons/index';
 import { nanotechnologyLessons } from '../src/content/lessons/nanotechnology/index';
 import { puzzleCollection } from '../src/content/puzzles/index';
@@ -33,7 +34,11 @@ const KNOWN_PLACEHOLDERS = [
   'narrative_lesson',
   'social_lesson',
   'nano_deep',
-  'quiz_nano'
+  'quiz_nano',
+  // Garden arc - nodes not yet written
+  'western_wall',
+  'eastern_grove',
+  'study_map'
 ];
 
 /**
@@ -93,6 +98,7 @@ function buildContentGraph(): ContentRegistry {
     ...devToolsContent,
     ...lessonNavigation,
     ...dragonStoryCollection,
+    ...gardenStoryCollection,
     ...nanotechnologyLessons,
     ...puzzleCollection
   };

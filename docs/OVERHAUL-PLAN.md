@@ -68,7 +68,7 @@ Instead of rewriting the welcome screen to embed arcs directly, we kept welcome 
 
 ## Phase 3: New Story Arc — "The Cartographer's Garden"
 
-**Status**: Not started
+**Status**: In progress — outline complete, tone check (`garden_entrance`) written and approved (2026-04-04)
 **Estimated effort**: 3-5 sessions (outline → tone check → writing in batches)
 **Dependencies**: Phase 1 (for arc metadata), but prose writing can start any time
 
