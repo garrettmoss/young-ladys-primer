@@ -21,10 +21,12 @@ These guidelines help maintain the Primer's distinctive voice: grounded yet magi
 
 ### Tone & Literary Influences
 
-This Primer draws inspiration from storytellers who balance wonder with groundedness:
-- **Lewis Carroll** - Strange events told plainly
+This Primer draws inspiration from storytellers who balance wonder with groundedness. The order matters — earlier entries carry more weight:
+- **Neal Stephenson (The Diamond Age)** - The source. The Primer meets the child where she is, gives her purpose, and grows with her. Stories are training disguised as adventure — the reader doesn't realize she's learning until she already knows
+- **Terry Pratchett (especially Tiffany Aching)** - Humor is load-bearing, not decorative — it should show up often and feel effortless, never forced. Young women learning practical magic with wit and footnotes. Competence paired with absurdity
+- **Paulo Coelho (The Alchemist)** - The engine of *why*. Characters pursue their Personal Legend — a calling they feel before they can name it. Setbacks aren't failures, they're the journey teaching you what you need to know next. The Soul of the World expresses itself through each person's unique path. This gives characters motivation to push through hard, boring, painful work
+- **Lewis Carroll (Through the Looking-Glass)** - Strange events told plainly. Useful as seasoning, not the main flavor — pure Carroll without warmth reads too dry
 - **Ursula K. Le Guin (Earthsea)** - Cosmic magic grounded in bread-baking and boat maintenance
-- **Terry Pratchett (especially Tiffany Aching)** - Young women learning practical magic with wit and footnotes
 - **Hayao Miyazaki (Spirited Away, My Neighbor Totoro)** - Wonder balanced with domestic work, exhaustion, and simple meals
 
 ### Pacing & Rhythm
