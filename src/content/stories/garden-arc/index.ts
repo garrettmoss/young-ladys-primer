@@ -1,8 +1,14 @@
 import { gardenEntrance } from './garden-entrance';
+import { westernWallPath } from './western-wall';
+import { clearingPathContent } from './clearing-path';
+import { oldWellContent } from './old-well';
 import type { StoryArc } from '../../index';
 
 export const gardenStoryCollection = {
-  ...gardenEntrance
+  ...gardenEntrance,
+  ...westernWallPath,
+  ...clearingPathContent,
+  ...oldWellContent
 };
 
 export const gardenArc: StoryArc = {
