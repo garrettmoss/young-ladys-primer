@@ -1,23 +1,23 @@
 export const gardenEntrance = {
   garden_entrance: {
     title: "The Map Inside the Primer",
-    content: ({ readerName }: { readerName: string }) => `Between two pages ${readerName} had read a dozen times before, something new appeared: a folded piece of paper, brown at the edges, soft from years of being pressed flat.
+    content: ({ readerName }: { readerName: string }) => `Between two pages ${readerName} had read a dozen times before, something new appeared: a folded piece of paper, brown at the edges, soft as cloth from years of being pressed flat.
 
-She unfolded it carefully. It was a map.
+It smelled like soil. That was the first strange thing — a page that smelled like outside.
 
-Not a proper map — not the kind with neat borders and compass roses. This one was hand-drawn in dark ink on paper that smelled like soil. It showed a walled garden on the kingdom's edge, surrounded by wild country, with the walls drawn thick and sure. Inside the walls, things got strange. Arrows curved between trees. Dotted lines ran underground. Tiny numbers sat next to flower beds, crossed out and rewritten. Someone had spent a very long time on this map, and had not quite finished it.
+She unfolded it and her heart did something odd. A little jump, like when you miss a step going downstairs, except she was sitting perfectly still. It was a map. Hand-drawn in dark ink, covered in tiny arrows and dotted lines and numbers that someone had crossed out and rewritten, crossed out and rewritten, crossed out and rewritten. Whoever made this had been very determined and not quite finished.
 
-In the bottom margin, in handwriting so small ${readerName} had to squint, a note read:
+In the bottom margin, in handwriting so small she had to squint:
 
 *If you are reading this, the garden has been waiting long enough.*
 
-${readerName} turned the map over. On the back was a rough sketch of the garden's layout — a crumbling western wall half-buried in brambles, an eastern grove of old oaks, and at the center, a clearing marked with a single word: *heart.*
+${readerName} read that twice. She had the strangest feeling — not that she'd found the map, but that the map had found her. Which was ridiculous, obviously. Maps don't find people. They just sit there, being maps, until someone picks them up.
 
-She folded the map and put it in her pocket. The garden wasn't far.`,
+She picked it up anyway.`,
     choices: [
       { text: "Start at the crumbling western wall", action: "western_wall" },
-      { text: "Follow the map's path to the eastern grove", action: "eastern_grove" },
-      { text: "Study the map's margins for clues", action: "study_map" }
+      { text: "Follow the map to the eastern grove", action: "eastern_grove" },
+      { text: "Study the map's strange margins", action: "study_map" }
     ]
   }
 };
