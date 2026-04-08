@@ -20,7 +20,10 @@ graph TD
 
     %% Western wall path (physical work, humor)
     western_wall --> clearing_path[clearing_path<br/>Clearing the Brambles<br/>1 choice]
-    clearing_path --> old_well[old_well<br/>The Well and the Beetle<br/>1 choice]
+    clearing_path --> wall_lunch[wall_lunch<br/>Bread, Cheese, and a Beetle<br/>1 choice]
+    wall_lunch --> lichen_grid[lichen_grid<br/>The Pattern on the Wall<br/>1 choice]
+    lichen_grid --> old_well[old_well<br/>The Well<br/>1 choice]
+    old_well --> well_roots[well_roots<br/>What Grows Below<br/>1 choice]
 
     %% Eastern grove path (intuition, listening)
     eastern_grove --> root_network[root_network<br/>The Threads Below<br/>1 choice]
@@ -31,7 +34,7 @@ graph TD
     cartographer_story --> pattern_lesson[pattern_lesson<br/>LESSON: Emergence<br/>1 choice]
 
     %% CONVERGENCE
-    old_well --> garden_heart[garden_heart<br/>The Heart of the Garden<br/>3 CHOICES]
+    well_roots --> garden_heart[garden_heart<br/>The Heart of the Garden<br/>3 CHOICES]
     listening_post --> garden_heart
     pattern_lesson --> garden_heart
 
@@ -65,18 +68,27 @@ graph TD
 ### Entry
 
 **`garden_entrance` — The Map Inside the Primer** (3 choices)
-The reader turns a page and finds a folded map pressed between the Primer's pages — old, hand-drawn, stained with soil. It shows a walled garden on the kingdom's edge with strange annotations: arrows between trees, dotted lines underground, tiny numbers next to flower beds. A note in faded ink reads: *"If you are reading this, the garden has been waiting long enough."* The reader chooses how to begin: go to the garden and start at its crumbling western wall, follow the map's marked path to the eastern grove, or study the map's margins for clues about who made it.
+A folded map appears between pages the reader has read before. It smells like soil. Hand-drawn, covered in tiny arrows and crossed-out numbers. A note reads: *"If you are reading this, the garden has been waiting long enough."* The reader feels the map found her, not the other way around — which is ridiculous, obviously. She picks it up anyway.
 
 ### Western Wall Path (physical work, humor, embodiment)
 
 **`western_wall` — The Overgrown Wall** (1 choice → clearing_path)
-The western wall is half-collapsed, buried under a century of brambles and ivy. The reader pushes through thorny growth to reach it. The wall is warm sandstone, crumbling, covered in lichen that grows in oddly regular patterns. It's hard work. Thorns scratch her arms. A fat black beetle sits on the wall watching her, motionless, as if supervising. She finds a rusted iron gate behind the brambles, jammed shut.
+Brambles have swallowed the wall. The reader fights through, gets scratched and torn. Meets a fat black beetle that watches her with unsettling focus. Finds a rusted iron gate behind the thorns.
 
-**`clearing_path` — Clearing the Brambles** (1 choice → old_well)
-Slow, sweaty work. The reader clears brush, pulls ivy, and pries the gate open with a flat rock. Breather page: she sits on the wall, eats bread and cheese she packed, watches clouds. The beetle is still there. It picks up a small pebble in its mandibles and carries it three inches, sets it down, walks back. Picks up the same pebble. Carries it three inches. Sets it down. She realizes the lichen patterns on the wall aren't random — they're a grid. Like a map legend.
+**`clearing_path` — Clearing the Brambles** (1 choice → wall_lunch)
+Hard sweaty labor — pulling ivy, sawing stems with a flat rock, prying the gate open inch by inch. The gate complains about it. Some things should take a long time; it's how you know they matter.
 
-**`old_well` — The Well and the Beetle** (1 choice → garden_heart)
-Behind the gate she finds a dry well with a spiral staircase carved inside. At the bottom, roots have broken through the walls — hundreds of pale threads reaching into the dark, all converging toward the garden's center. She can feel a low vibration through the stone, almost like a pulse. The beetle has followed her. It places its pebble on the top step with what she can only describe as determination. Something about the rhythm of the roots reminds her of breathing.
+**`wall_lunch` — Bread, Cheese, and a Beetle** (1 choice → lichen_grid)
+Breather page. She sits on the wall, eats, watches the beetle pick up a pebble, carry it three inches, set it down, and do it again. And again. The beetle is not discouraged. She respects that.
+
+**`lichen_grid` — The Pattern on the Wall** (1 choice → old_well)
+The lichen grows in a grid — silver, green, silver, green. Not random. A map legend built into the wall itself. The cartographer left instructions for anyone patient enough to notice.
+
+**`old_well` — The Well** (1 choice → well_roots)
+A dry well with spiral steps carved inside. Cool air, sweet earth smell. She goes down. The light shrinks to a star. Halfway down, her fingers touch something that isn't stone.
+
+**`well_roots` — What Grows Below** (1 choice → garden_heart)
+Hundreds of pale roots have broken through the walls, all pointing toward the garden's center. Alive-warm. She feels a pulse — not sound, rhythm — in her teeth and breastbone. The beetle has followed her down with its pebble. It places the pebble at the bottom step with great care, as if to say: *there. That's where that goes.*
 
 ### Eastern Grove Path (intuition, listening, mycorrhizal networks)
 
@@ -128,12 +140,12 @@ The reader leaves the garden carrying Iris's map — but she sees it differently
 
 ## Node Count & Structure
 
-**Total: 16 nodes**
+**Total: 19 nodes**
 
 | Section | Nodes | Choice count |
 |---------|-------|-------------|
 | Entry | 1 | 3 choices |
-| Western wall path | 3 | 1 choice each |
+| Western wall path | 6 | 1 choice each |
 | Eastern grove path | 3 | 1 choice each |
 | Map study path | 3 | 1 choice each |
 | Convergence | 1 | 3 choices |
