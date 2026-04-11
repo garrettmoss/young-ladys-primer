@@ -68,7 +68,7 @@ Instead of rewriting the welcome screen to embed arcs directly, we kept welcome 
 
 ## Phase 2.5: Adaptive Content Architecture
 
-**Status**: Design phase (2026-04-07)
+**Status**: Design phase (2026-04-10)
 **Estimated effort**: 1-2 sessions (types + proof of concept)
 **Dependencies**: Phase 1 (arc structure), informs Phase 3 writing and Phase 6 AI
 
@@ -76,7 +76,7 @@ Instead of rewriting the welcome screen to embed arcs directly, we kept welcome 
 
 We've been writing story content at a single level — adult literary fiction length and complexity. The Primer should adapt to the reader. A 5-year-old and a 15-year-old should both experience the same story arc, the same beats, the same themes — but rendered at their level.
 
-### Core Principle: Theme Is Skeleton, Not Decoration
+### Core Principle: Theme Is the Heart, Not Decoration
 
 Thematic depth lives at every level, not just the highest. A 5-year-old doesn't need to be told "this is about persistence" — they watch the beetle carry its pebble and something lands. Good myths work this way: the theme is always present, always felt, never requiring explanation. What changes between levels is surface rendering (word count, vocabulary, detail density), not meaning.
 
@@ -106,7 +106,7 @@ Each beat gets rendered at multiple levels. The names use a garden metaphor (bec
 | 1 | **Seed** | Age 4-6 | 30-60 words (3-5 sentences) | Simple words, 1-2 sensory details, action-focused |
 | 2 | **Sprout** | Age 7-9 | 60-120 words (1-2 short paragraphs) | Compound sentences, humor lands, some interiority |
 | 3 | **Bloom** | Age 10-13 | 120-200 words (2-3 paragraphs) | Fuller descriptions, subtext, character voice emerges |
-| 4 | **Canopy** | Age 14+ | 200-350 words (3-4 paragraphs) | Literary prose, thematic layering explicit, Coelho/Pratchett voice fully present |
+| 4 | **Fruit** | Age 14-17 | 200-350 words (3-4 paragraphs) | Full character voice, subtext carries theme, reader trusted to find the meaning herself |
 
 What stays constant across ALL levels:
 - The beat (what happens)
@@ -120,8 +120,8 @@ What scales UP with level:
 - Word count and sentence complexity
 - Number of sensory details
 - Interior monologue / character voice
-- Narrative aside and commentary (Pratchett-style observations)
-- Explicit systems-thinking content (emergence, networks)
+- Narrative aside and commentary
+- Systems-thinking content (emergence, networks)
 - Backstory and worldbuilding depth
 
 ### Example: `western_wall` at Each Level
@@ -140,8 +140,10 @@ What scales UP with level:
 >
 > The wall was beautiful in the way old things left alone are beautiful. Warm sandstone, crumbling at the top, covered in silver-green lichen. A fat black beetle sat at eye level, watching her with unsettling focus. Behind the thickest brambles: an iron gate, rusted completely shut.
 
-**Canopy** (age 14+):
-> *(What we've been writing — the full literary version with Pratchett-style commentary, Coelho's sense of calling, and detailed sensory landscape)*
+**Fruit** (age 14-17):
+> The western wall was easy to find and hard to reach. Brambles had swallowed it — a century of thorns growing over and through the old sandstone until the wall was more plant than stone. She turned sideways and pushed through with her arms up, which meant the thorns got her ribs instead of her hands. A fair trade, she decided, though her ribs disagreed.
+>
+> She came through scratched and breathing hard, with a tear in her sleeve and a leaf in her hair she wouldn't find until later. The wall was beautiful the way old things left alone are beautiful — warm golden stone, crumbling where rain had worked it loose, covered in silver-green lichen that grew in oddly regular patches. A fat black beetle sat at eye level, watching her with the focused patience of someone who has been waiting a very long time and is not about to stop now. Behind the thickest brambles she could just make out an iron gate, rusted shut. The hinges had fused into solid lumps of orange.
 
 ### Implementation Strategy
 
@@ -153,8 +155,8 @@ What scales UP with level:
 
 **Phase 2 — Convert existing content:**
 - Extract beat/feeling skeletons from all written garden-arc nodes
-- Write Seed and Sprout levels for each (Bloom/Canopy already mostly exist)
-- Apply same pattern to dragon-story arc
+- Write Seed and Sprout levels for each (Bloom/Fruit already mostly exist)
+- Dragon story arc: archive (not converting — will be replaced eventually with a new arc written adaptive-first)
 
 **Phase 3 — AI bridge (connects to Phase 6):**
 - The beat + feeling skeleton becomes the prompt anchor for AI generation
@@ -169,7 +171,7 @@ When writing new story nodes, always write in this order:
 2. **Feeling** — one sentence, why it matters
 3. **Choices** — what the reader can do next
 4. **Seed** — the simplest rendering (this forces clarity)
-5. **Sprout** → **Bloom** → **Canopy** — layer up from there
+5. **Sprout** → **Bloom** → **Fruit** — layer up from there
 
 Writing Seed first is the discipline. If the beat doesn't work in 4 sentences, the beat is wrong.
 
@@ -178,13 +180,13 @@ Writing Seed first is the discipline. If the beat doesn't work in 4 sentences, t
 - Should the Primer detect reader level automatically (reading speed, choice patterns, time-on-page) or ask directly? Probably both — ask at first, then adapt.
 - Do choices themselves change at different levels? (Probably not — same agency, different prose.)
 - Should some beats *only* exist at higher levels? (e.g., `lichen_grid` might not appear for Seed readers — the path could be shorter.) This risks breaking the confluence structure though.
-- How does the dragon story arc retrofit? It was written at Canopy level. Extracting skeletons retroactively is doable but tedious.
+- How does the dragon story arc retrofit? It was written at Fruit level. Extracting skeletons retroactively is doable but tedious.
 
 ---
 
 ## Phase 3: New Story Arc — "The Cartographer's Garden"
 
-**Status**: In progress — outline complete, tone check (`garden_entrance`) written and approved (2026-04-04). Western wall path written (6 nodes) at Canopy level (2026-04-05). Adaptive content architecture designed (2026-04-07) — existing prose is the Canopy level; lower levels still needed.
+**Status**: In progress — outline complete, tone check (`garden_entrance`) written and approved (2026-04-04). Western wall path written (6 nodes) at roughly Fruit level (2026-04-10), needs trimming pass. Adaptive content architecture designed (2026-04-10) — lower levels still needed. Dragon story arc to be archived and replaced.
 **Estimated effort**: 3-5 sessions (outline → tone check → writing in batches)
 **Dependencies**: Phase 1 (for arc metadata), but prose writing can start any time
 
