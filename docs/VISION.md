@@ -115,7 +115,25 @@ Young women growing up with advanced technology need grounding in their physical
 ## Long-Term Vision
 
 ### The Reader's Journey
-A young woman encounters the Primer at age 5, learns to read with Princess Aria's adventures, grows through mathematical puzzles disguised as magical challenges, discovers her own interests and strengths, and emerges at 16 with confidence, knowledge, and the ability to think critically about the world around her.
+A young woman encounters the Primer at age 5, learns to read through her first stories, grows through mathematical puzzles disguised as magical challenges, discovers her own interests and strengths, and emerges at 16 with confidence, knowledge, and the ability to think critically about the world around her.
+
+### What the Primer Is
+
+The Primer is not a book she reads. It is a **library she is sent into**, containing many kingdoms — each a self-contained world with its own tone, ruler, and lessons. She travels between them, and over time she begins to notice that the kingdoms are connected: symbols recur, characters nod to each other, a larger shape emerges through repetition.
+
+**Training disguised as adventure.** The Primer is not "educational" in the curriculum sense. It is closer to *training* — preparation for a life she will have to live with her own hands. She does not know she is being taught cryptography, or ecology, or how to read people, or how to lead. She knows she is on a journey, and that each kingdom asks something of her. The lesson is never stated. It is inhabited.
+
+**The register shifts by kingdom.** Some kingdoms are fairy tales, and in those she is *Princess* [Name] — the protagonist of the register, robed in the story's archetypal weight. Other kingdoms are grounded and real-feeling, and she arrives in them simply as [Name], a girl with her own hands and her own hunger. The shift between these registers is deliberate and carries meaning. The moment she is called *Princess* again after being just-her-name for a while should land.
+
+### Open questions (deliberately unresolved)
+
+These are questions the project is actively sitting with, not gaps to be filled in by the next available session. Each will be answered by the writing, not by a doc.
+
+**The frame story.** Stephenson's Primer had a quest: Princess Nell collecting twelve keys from twelve kingdoms to unlock Castle Turing at the heart of the land. Each key was not a collectible but a demonstration of mastery — the story acknowledging she had learned something. The current aspiration is a similar frame: perhaps seven kingdoms, seven keys, unlocking something at the Primer's heart (the "seven-dimensional crystal heart" nodded to in early dragon-arc prose). This is a hypothesis, not a commitment. One complete kingdom must exist at adaptive quality before the frame is committed to. But the question *is the garden a kingdom of a larger whole, and if so what does it contribute to the heart?* is worth asking while writing it, even if the answer is not yet known.
+
+**The narrator's voice.** Stephenson's Primer was voiced by Miranda, a human ractor unknowingly performing it for Nell. The warmth of the book was her warmth. The current Primer has no Miranda. The voice is something in between — partly the author's, partly the AI's, and over time more emergently the Primer's own. Whether the Primer has an in-world narrator character, and who or what that voice belongs to, is an open question. Audio is not on the table yet — neither human-performed nor AI-synthesized. For now, the Primer's voice lives on the page, and its nature is being discovered through the writing rather than declared in advance.
+
+**Cross-kingdom threading.** If there is no explicit frame story yet, there can still be recurring symbols, minor characters, or lines of verse that echo across kingdoms — "winks from God," nods that suggest the kingdoms share a world without forcing the architecture to say so. This is a writing practice, not a schema feature. When a second kingdom is written, the question will become: what from the garden should echo here?
 
 ### The Device Evolution
 Starting as software, evolving to a dedicated e-paper device that can be read anywhere - under trees, by rivers, in sunlight - without internet dependency. A true book that adapts and grows.
