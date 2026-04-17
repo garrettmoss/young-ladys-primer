@@ -49,7 +49,7 @@ import { storySelectContent } from './core/story-select';
 import { getSettingsContent } from './core/settings';
 import { devToolsContent } from './core/dev-tools';
 import { dragonStoryCollection } from './stories/dragon-story/index';
-import { gardenStoryCollection } from './stories/garden-arc/index';
+import { gardenStoryCollection } from './stories/garden-story/index';
 import { lessonNavigation } from './lessons/index';
 import { nanotechnologyLessons } from './lessons/nanotechnology/index';
 import { puzzleCollection } from './puzzles/index';
@@ -85,20 +85,44 @@ export interface Choice {
 }
 
 /**
- * Metadata describing a self-contained story arc within the Primer.
- * Arcs are layered on top of the flat allContent registry — they don't
- * change how content is stored, just how it's grouped and discovered.
+ * One narrative arc within a Kingdom. A Story owns a set of content keys
+ * and an entry point; most kingdoms today have exactly one story, but the
+ * schema leaves room for multiple.
+ *
+ * `adaptive: false` signals the renderer to use the plain `content` field on
+ * each node (legacy behavior). Adaptive stories (Phase 3) will read from the
+ * Seed/Sprout/Bloom/Fruit renderings instead.
  */
-export interface StoryArc {
+export interface Story {
+  id: string;
+  title: string;
+  kingdomId: string;
+  entryPoint: string;
+  contentKeys: string[];
+  status: 'active' | 'legacy' | 'draft';
+  adaptive?: boolean;
+}
+
+/**
+ * A self-contained world: tone, setting, lessons, puzzles, and one or more
+ * Stories. Kingdoms are the top tier of the content library.
+ */
+export interface Kingdom {
   id: string;
   title: string;
   description: string;
-  entryPoint: string;
-  contentKeys: string[];
+  entryStoryId: string;
+  stories: Story[];
   lessons: string[];
   puzzles: string[];
-  status: 'available' | 'coming_soon' | 'locked';
+  icon?: string;
+  status: 'active' | 'legacy' | 'draft';
 }
+
+/**
+ * @deprecated Use `Story` instead. Kept for one migration cycle.
+ */
+export type StoryArc = Story;
 
 /**
  * Raw story content as stored in content files

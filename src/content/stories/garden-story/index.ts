@@ -5,7 +5,7 @@ import { wallLunchContent } from './wall-lunch';
 import { lichenGridContent } from './lichen-grid';
 import { oldWellContent } from './old-well';
 import { wellRootsContent } from './well-roots';
-import type { StoryArc } from '../../index';
+import type { Kingdom, Story } from '../../index';
 
 export const gardenStoryCollection = {
   ...gardenEntrance,
@@ -17,13 +17,23 @@ export const gardenStoryCollection = {
   ...wellRootsContent
 };
 
-export const gardenArc: StoryArc = {
-  id: 'garden-arc',
+const cartographersGarden: Story = {
+  id: 'cartographers-garden',
   title: "The Cartographer's Garden",
-  description: 'An old map leads to an abandoned garden that has been running a living calculation for a hundred years. The reader must figure out what it is trying to say.',
+  kingdomId: 'garden',
   entryPoint: 'garden_entrance',
   contentKeys: Object.keys(gardenStoryCollection),
+  status: 'active',
+  adaptive: false
+};
+
+export const gardenKingdom: Kingdom = {
+  id: 'garden',
+  title: "The Cartographer's Garden",
+  description: 'An old map leads to an abandoned garden that has been running a living calculation for a hundred years. The reader must figure out what it is trying to say.',
+  entryStoryId: cartographersGarden.id,
+  stories: [cartographersGarden],
   lessons: [],
   puzzles: [],
-  status: 'available'
+  status: 'active'
 };
