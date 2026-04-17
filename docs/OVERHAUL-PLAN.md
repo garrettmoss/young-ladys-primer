@@ -22,7 +22,7 @@ First pass at giving arcs runtime significance. Added `StoryArc` interface and `
 
 ### ✅ Phase 0b: Story-select screen (2026-04-04)
 
-Added `content/core/story-select.ts` — an intermediate screen between welcome and individual stories that dynamically lists available stories. Will be renamed to the **library** screen in Phase 4, with kingdom-tier UX.
+Added `content/core/story-select.ts` — an intermediate screen between welcome and individual stories that dynamically lists available stories. Superseded in Phase 4: the `welcome` page itself became the library, and `story-select.ts` was deleted.
 
 ### ✅ Phase 0c: Garden outline + western wall path prose (2026-04-10)
 
@@ -194,27 +194,45 @@ When writing new story nodes, always write in this order:
 
 ---
 
-## Phase 4: Welcome Screen + Library
+## Phase 4: Library as Opening Screen + Kingdom Hubs
 
-**Status**: Partially complete (story-select screen exists from Phase 0b). Needs renaming to library + kingdom-tier UX.
-**Estimated effort**: 1 session
+**Status**: In progress. Structural refactor landed; polish + reflection page still open.
+**Estimated effort**: 1 session (done) + follow-ups
 **Dependencies**: Phase 1
 
-### Changes
+### What shipped
+
+The `welcome` page itself became the library — the opening screen lists every non-draft kingdom as a choice. There is no separate `library` key; `welcome` *is* the library. Legacy kingdoms appear inline with a `(prototype)` suffix. A cross-kingdom "Help me understand myself" option sits alongside the kingdom list (currently a placeholder — reflection may never be built out, but the slot is reserved).
+
+Each kingdom gets a generated hub page at `hub_<kingdomId>`, produced by a single template in `src/content/core/kingdom-hub.ts`. The hub offers the standard three choices — "Tell me a story", "Teach me something new", "Show me a puzzle" — plus a "Choose a different kingdom" back-link to the library. Empty slots (e.g. garden kingdom has no lessons or puzzles yet) are rendered greyed out with a "(Coming soon)" suffix rather than hidden, so the reader sees the full shape of what a kingdom can hold.
+
+Per-kingdom voice comes from an optional `Kingdom.hubIntro` field; kingdoms without one fall back to `description`.
+
+### Delivered
 
 | File | Change |
 |------|--------|
-| `src/content/core/story-select.ts` | Rename to `library.ts`. Lists all kingdoms; legacy ones shown under a separate "Older stories" section with a small "prototype" badge. |
-| `src/content/core/welcome.ts` | "Tell me a story" routes to `library` instead of `story_select`. |
-| `src/YoungLadysPrimer.tsx` | Update icon mapping: `library` instead of `story_select`. |
-| `src/content/index.ts` | Register `libraryContent`, remove `storySelectContent`. |
-| `scripts/validate-story-graph.ts` | Update validation graph. |
+| `src/content/core/welcome.ts` | Rewritten. Dynamically lists kingdoms from the registry; adds the cross-kingdom reflection option. |
+| `src/content/core/kingdom-hub.ts` | New. `buildKingdomHub(kingdom)` template + `buildAllKingdomHubs()` helper; emits `__placeholder_<type>_<kingdomId>` actions for empty slots so `ChoiceButton` greys them out. |
+| `src/content/core/story-select.ts` | Deleted. |
+| `src/content/lessons/index.ts` | Deleted. The global `lesson_choice` menu went away — lessons now live only inside their kingdoms. |
+| `src/content/puzzles/navigation.ts` | Deleted. Same reason — `puzzle_logic` menu replaced by per-kingdom hub routing. |
+| `src/content/index.ts` | Registry spreads `welcomeContent` + `buildAllKingdomHubs()`; `Kingdom` gained optional `hubIntro`, `lessonEntry`, `puzzleEntry`. |
+| `src/content/stories/{dragon,garden}-story/index.ts` | Short `hubIntro` strings added. |
+| `src/YoungLadysPrimer.tsx` | Icon mapping derived from kingdom data (story entry points, lessons, puzzles) instead of a hardcoded switch; `UserStar` icon for reflection on the welcome page. |
+| `scripts/validate-story-graph.ts` | Updated imports + `KNOWN_PLACEHOLDERS`/`PLACEHOLDER_PREFIXES` handling for the hub placeholder actions and for `reflection`. |
+| `scripts/test-graph-builder.ts` | Updated imports to match. |
+
+### Still open
+- Reflection: currently a dead slot. Decide whether to write a simple static page or leave as "Coming soon" indefinitely.
+- Visual polish on the library page (kingdom cards vs. plain choice buttons?).
+- Per-kingdom icons on the library page (currently all `BookOpen`).
 
 ### Verification
-- Library dynamically lists active kingdoms prominently.
-- Legacy kingdoms (dragon) still visible under a separate section, still playable.
-- Adding a new kingdom to the registry automatically appears.
-- No regressions in welcome or progress tracking.
+- Library lists active kingdoms; legacy kingdoms appear inline with `(prototype)` suffix and remain playable.
+- Adding a new kingdom to `src/content/kingdoms.ts` automatically produces a hub and a library entry — no other code changes needed.
+- Empty story/lesson/puzzle slots render greyed with "(Coming soon)".
+- `npm run validate-content` passes: 0 errors, 0 warnings.
 
 ---
 
