@@ -15,11 +15,11 @@ import { welcomeContent } from '../src/content/core/welcome';
 import { storySelectContent } from '../src/content/core/story-select';
 import { devToolsContent } from '../src/content/core/dev-tools';
 import { dragonStoryCollection } from '../src/content/stories/dragon-story/index';
-import { gardenStoryCollection } from '../src/content/stories/garden-arc/index';
+import { gardenStoryCollection } from '../src/content/stories/garden-story/index';
 import { lessonNavigation } from '../src/content/lessons/index';
 import { nanotechnologyLessons } from '../src/content/lessons/nanotechnology/index';
 import { puzzleCollection } from '../src/content/puzzles/index';
-import { arcs, getArcEntryPoints } from '../src/content/arcs';
+import { getKingdomEntryPoints } from '../src/content/kingdoms';
 import type { StoryContent, Choice } from '../src/content/index';
 
 // === CONFIGURATION ===
@@ -35,10 +35,10 @@ const KNOWN_PLACEHOLDERS = [
   'social_lesson',
   'nano_deep',
   'quiz_nano',
-  // Garden arc - nodes not yet written
-  'western_wall',
+  // Garden kingdom - nodes not yet written (see docs/OVERHAUL-PLAN.md Phase 5)
   'eastern_grove',
-  'study_map'
+  'study_map',
+  'garden_heart'
 ];
 
 /**
@@ -59,11 +59,11 @@ const SPECIAL_PAGES = [
 
 /**
  * Entry points into the content graph — 'welcome' is always an entry point,
- * plus each registered arc's entry point.
+ * plus each registered story's entry point across every kingdom.
  */
 const ENTRY_POINTS = [
   'welcome',
-  ...getArcEntryPoints()
+  ...getKingdomEntryPoints()
 ];
 
 // === TYPE DEFINITIONS ===
