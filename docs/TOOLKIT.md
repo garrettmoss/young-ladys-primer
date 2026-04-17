@@ -120,7 +120,7 @@ A 3D extension of confluence for longer-form epics. Imagine looking up at a tree
 - Richer replayability (explore different spokes across playthroughs)
 - Good for episodic content where chapters can stand somewhat alone
 
-**Future possibility:** Multiple story arcs could intersect with each other (like forest canopies touching), creating cross-arc convergence points. This is not currently planned but worth considering for long-term expansion.
+**Future possibility:** Stories across different kingdoms could intersect (like forest canopies touching), creating cross-kingdom convergence points. This is not currently planned but worth considering for long-term expansion.
 
 **Best for:**
 - Long-form epics (30+ nodes)
@@ -384,8 +384,9 @@ Add metadata to content structure:
 interface StoryMetadata {
   id: string;
   type: 'story' | 'lesson' | 'puzzle';
-  arc?: string; // Group related content
-  chapter?: number; // Order within arc
+  kingdomId?: string;   // Kingdom this node belongs to
+  storyId?: string;     // Story within the kingdom
+  chapter?: number;     // Order within story
   prerequisites?: string[]; // Required nodes before unlock
   estimatedMinutes?: number;
 }
@@ -395,14 +396,16 @@ export const dragonStoryMetadata: Record<string, StoryMetadata> = {
   story_princess: {
     id: 'story_princess',
     type: 'story',
-    arc: 'dragon',
+    kingdomId: 'dragon',
+    storyId: 'dragon-story',
     chapter: 1,
     estimatedMinutes: 3
   },
   dragon_pattern: {
     id: 'dragon_pattern',
     type: 'story',
-    arc: 'dragon',
+    kingdomId: 'dragon',
+    storyId: 'dragon-story',
     chapter: 2,
     prerequisites: ['story_princess'],
     estimatedMinutes: 5
@@ -559,17 +562,18 @@ graph TD
 For new content, add to `src/content/metadata.ts`:
 
 ```typescript
-export const newArcMetadata: Record<string, StoryMetadata> = {
-  new_arc_entry: {
-    id: 'new_arc_entry',
+export const newStoryMetadata: Record<string, StoryMetadata> = {
+  new_story_entry: {
+    id: 'new_story_entry',
     type: 'story',
-    arc: 'new_arc',
+    kingdomId: 'new_kingdom',
+    storyId: 'new_story',
     chapter: 1,
     prerequisites: [], // Entry point has no prereqs
     estimatedMinutes: 3,
     tags: ['adventure', 'science', 'choice']
   },
-  // ... rest of arc
+  // ... rest of story
 };
 ```
 

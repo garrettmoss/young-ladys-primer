@@ -41,10 +41,10 @@
 ### Content Management
 - [x] Modular content organization by theme
 - [x] TypeScript interfaces for type safety
-- [x] Dragon story arc with confluence narrative pattern
+- [x] Dragon story with confluence narrative pattern
 - [x] Choice reduction (2-3 options per page for most nodes)
 - [x] Convergence points (all paths → elara_revealed → find_peace)
-- [x] Mermaid flow documentation for story arcs
+- [x] Mermaid flow documentation for stories
 - [x] Story graph validation script (catches broken references)
 - [x] Interactive flow visualizer (better than Mermaid for complexity)
 - [ ] Table of contents system (browsable story navigation)
@@ -55,9 +55,9 @@
 ## Phase 2: Content Expansion
 *Creating rich educational content across multiple domains*
 
-### Story Arcs
+### Kingdoms and Stories
 - [ ] Extended dragon story with deeper transformation branches
-- [ ] Additional story arcs beyond dragon narrative
+- [ ] Additional kingdoms beyond the dragon narrative
 - [ ] Multiple ending paths that converge meaningfully
 - [ ] Character development and emotional depth
 
@@ -155,9 +155,10 @@
 **Phase 1**: 95% complete - Core systems stable, confluence narrative structure implemented, infrastructure refactored and optimized
 
 **Active Development**: Major overhaul in progress. See [OVERHAUL-PLAN.md](OVERHAUL-PLAN.md) for the detailed phased plan covering:
-- Multi-arc architecture (story arc abstraction + welcome screen)
-- New story arc: "The Cartographer's Garden"
-- Flow visualizer fixes and per-arc filtering
+- Kingdom/Story two-tier architecture (✅ complete)
+- New kingdom: "The Cartographer's Garden"
+- Adaptive content model (Seed → Sprout → Bloom → Fruit)
+- Flow visualizer fixes and per-kingdom filtering
 - ContentContext expansion for AI readiness
 - AI/ML pipeline: fine-tuning a small open-source model for adaptive content generation
 

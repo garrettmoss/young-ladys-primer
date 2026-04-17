@@ -28,8 +28,8 @@ young-ladys-primer/
 │   │   ├── maps/                     # Story flow visualizations
 │   │   │   └── dragon-story.md       # Dragon story flowchart (Mermaid)
 │   │   │
-│   │   ├── stories/                  # Interactive story content
-│   │   │   └── dragon-story/         # Mechanical dragon story arc
+│   │   ├── stories/                  # Interactive story content, grouped by kingdom
+│   │   │   └── dragon-story/         # Mechanical dragon kingdom (legacy)
 │   │   │       ├── index.ts          # Story collection export
 │   │   │       ├── princess-meeting.ts
 │   │   │       ├── dragon-approach.ts
@@ -69,7 +69,7 @@ young-ladys-primer/
 
 ### 2. Content Organization
 - **Hierarchical Structure**: Content grouped by type (stories/lessons/puzzles)
-- **Modular Design**: Each story arc or lesson series in its own folder
+- **Modular Design**: Each kingdom (story + lessons + puzzles) in its own folder
 - **Function-Based Content**: Content can be static or dynamic (using reader name)
 
 ### 3. Scalability
@@ -183,7 +183,7 @@ Use for: Major decision points, hub locations, story climaxes
 Story flow maps live in `src/content/maps/` using Mermaid diagram syntax. These serve dual purposes:
 
 ### Current Purpose: Developer Documentation
-- **Visualize structure**: See the entire story arc at a glance
+- **Visualize structure**: See the entire story at a glance
 - **Identify problems**: Spot choice overload, exponential branching, missing convergence
 - **Plan refactoring**: Map out how to reduce choices and create better narrative flow
 - **Track implementation**: Color-coded nodes show what's complete vs. stub references
@@ -200,10 +200,11 @@ Story flow maps live in `src/content/maps/` using Mermaid diagram syntax. These 
 - **Arrows**: Show story progression paths from one node to another
 
 ### Current Maps
-- `dragon-story.md` - Complete flowchart of the mechanical dragon story arc
+- `dragon-story.md` - Complete flowchart of the mechanical dragon story
+- `garden-story.md` - Outline for the Cartographer's Garden story
 
 ### Creating New Maps
-When adding a new story arc, create a corresponding map file:
+When adding a new story, create a corresponding map file:
 ```bash
 src/content/maps/your-story-name.md
 ```
@@ -294,7 +295,7 @@ graph TD
 2. **Organized**: Related content grouped together logically  
 3. **Flexible**: Easy to add new story branches or lesson topics
 4. **Testable**: Content and UI logic can be tested separately
-5. **Collaborative**: Multiple people can work on different story arcs simultaneously
+5. **Collaborative**: Multiple people can work on different kingdoms simultaneously
 6. **Version Control Friendly**: Changes to stories don't conflict with UI changes
 
 ## Future Enhancements

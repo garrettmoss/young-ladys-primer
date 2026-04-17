@@ -18,15 +18,15 @@ The original dragon prototype is retained as a `legacy` kingdom — still visibl
 
 ### ✅ Phase 0a: `StoryArc` abstraction (2026-04-04)
 
-First pass at giving arcs runtime significance. Added `StoryArc` interface and `src/content/arcs.ts` registry. Will be superseded by the Kingdom/Story split in Phase 1 below — the old `StoryArc` becomes `Story`, with a new `Kingdom` layer on top.
+First pass at giving arcs runtime significance. Added `StoryArc` interface and `src/content/arcs.ts` registry. Superseded by the Kingdom/Story split in Phase 1 — `StoryArc` became a deprecated alias for `Story`, and a new `Kingdom` layer was added on top.
 
 ### ✅ Phase 0b: Story-select screen (2026-04-04)
 
-Added `content/core/story-select.ts` — an intermediate screen between welcome and individual stories that dynamically lists available arcs. Will be renamed to the **library** screen in Phase 4, with kingdom-tier UX.
+Added `content/core/story-select.ts` — an intermediate screen between welcome and individual stories that dynamically lists available stories. Will be renamed to the **library** screen in Phase 4, with kingdom-tier UX.
 
-### ✅ Phase 0c: Garden arc outline + western wall path prose (2026-04-10)
+### ✅ Phase 0c: Garden outline + western wall path prose (2026-04-10)
 
-- Full arc outline written: see [src/content/maps/garden-story.md](../src/content/maps/garden-story.md) (renamed from `garden-arc.md` in Phase 1) for the Mermaid flow chart and node-by-node summaries (19 nodes total).
+- Full story outline written: see [src/content/maps/garden-story.md](../src/content/maps/garden-story.md) for the Mermaid flow chart and node-by-node summaries (19 nodes total).
 - `garden_entrance` tone-check node written and approved (2026-04-04).
 - Western wall path written: 6 nodes (`western_wall`, `clearing_path`, `wall_lunch`, `lichen_grid`, `old_well`, `well_roots`) (2026-04-10).
 
@@ -36,41 +36,18 @@ Added `content/core/story-select.ts` — an intermediate screen between welcome 
 
 Designed the Seed → Sprout → Bloom → Fruit adaptive content model. Theme is the heart, not decoration. See Phase 3 below for implementation.
 
----
+### ✅ Phase 1: Kingdoms and Stories (2026-04-16)
 
-## Phase 1: Kingdoms and Stories
+Split the single-tier `StoryArc` concept into a two-tier Kingdom/Story model. A **Kingdom** is a self-contained world (tone, setting, lessons, puzzles); a **Story** is one narrative arc within a kingdom. Today's single-story-per-kingdom reality fits cleanly; future second stories slot in without a schema change.
 
-**Status**: Not started
-**Estimated effort**: 1 session
-**Dependencies**: None
+**Delivered:**
+- `Kingdom` and `Story` interfaces in `src/content/index.ts`. `StoryArc` kept as a deprecated type alias for `Story` (one migration cycle).
+- New `src/content/kingdoms.ts` registry with `getAllKingdoms`, `getActiveKingdoms`, `getKingdomById`, `getStoryById`, `getKingdomForContentKey`, `getKingdomEntryPoints`.
+- `dragonKingdom` (`status: 'legacy'`, story `adaptive: false`) and `gardenKingdom` (`status: 'active'`) exported from their respective story folders.
+- Renames: `src/content/arcs.ts` removed; `garden-arc/` → `garden-story/`; `garden-arc.md` → `garden-story.md`.
+- `story-select` and `validate-story-graph` updated to read from the kingdom registry.
 
-Split the current single-tier `StoryArc` concept into a two-tier model. A **Kingdom** is a self-contained world (tone, setting, lessons, puzzles). A **Story** is one narrative arc within a kingdom. Today's single-story-per-kingdom reality fits cleanly; future second stories slot in without a schema change.
-
-### Changes
-
-| File | Change |
-|------|--------|
-| `src/content/index.ts` | Add `Kingdom` and `Story` interfaces. Deprecate `StoryArc` (keep the type alias pointing at `Story` for one cycle to ease migration). `Kingdom`: `{ id, title, description, entryStoryId, stories[], lessons[], puzzles[], icon, status: 'active' \| 'legacy' \| 'draft' }`. `Story`: `{ id, title, kingdomId, entryPoint, contentKeys[], status }`. Story gets an optional `adaptive: boolean` flag (false for legacy stories so the renderer knows to use plain `content` field). |
-| `src/content/kingdoms.ts` | **New file**. Replaces `arcs.ts`. Registry of kingdoms with lookup helpers (`getKingdomById`, `getStoryById`, `getKingdomForContentKey`, `getActiveKingdoms`, `getAllKingdoms`). |
-| `src/content/stories/dragon-story/index.ts` | Wrap existing content as a `Story` inside `dragonKingdom` (`status: 'legacy'`, `adaptive: false`). |
-| `src/content/stories/garden-arc/index.ts` | Export `gardenKingdom` (`status: 'active'`) containing the "The Cartographer's Garden" story. |
-| `scripts/validate-story-graph.ts` | Derive entry points from the kingdom registry (active + legacy, so validation still covers dragon content). |
-
-### Folder + file renames (terminology cleanup)
-
-Rename while we're touching these files anyway, so the codebase uses Kingdom/Story terminology consistently:
-
-- `src/content/arcs.ts` → `src/content/kingdoms.ts`
-- `src/content/stories/garden-arc/` → `src/content/stories/garden-story/`
-- `src/content/maps/garden-arc.md` → `src/content/maps/garden-story.md`
-
-Dragon folder (`src/content/stories/dragon-story/`) already uses "story" naming — leave it. Other folder moves (e.g., reorganizing under `src/content/kingdoms/`) can happen later if useful; the registry is the source of truth, not the folder name.
-
-### Verification
-- `npm run build` succeeds.
-- `npm run validate-content` passes for both kingdoms.
-- Dragon kingdom still playable, no prose changes.
-- Garden kingdom still playable, no prose changes.
+Both kingdoms still playable with no prose changes. Pre-existing `garden_heart` placeholder error is unchanged (tracked for Phase 5).
 
 ---
 
@@ -243,13 +220,13 @@ When writing new story nodes, always write in this order:
 
 ## Phase 5: Cartographer's Garden — Remaining Nodes
 
-**Status**: Outline complete (see [src/content/maps/garden-story.md](../src/content/maps/garden-story.md) (renamed from `garden-arc.md` in Phase 1)). Entrance + western wall path nodes exist (will be rewritten in Phase 2). Eastern grove, map study, convergence, philosophical paths, and resolution not yet written.
+**Status**: Outline complete (see [src/content/maps/garden-story.md](../src/content/maps/garden-story.md)). Entrance + western wall path nodes exist (will be rewritten in Phase 2). Eastern grove, map study, convergence, philosophical paths, and resolution not yet written.
 **Estimated effort**: 2-3 sessions
 **Dependencies**: Phases 1-3
 
 ### Remaining nodes (~12 of the 19 total)
 
-Per the outline in [src/content/maps/garden-story.md](../src/content/maps/garden-story.md) (renamed from `garden-arc.md` in Phase 1):
+Per the outline in [src/content/maps/garden-story.md](../src/content/maps/garden-story.md):
 
 - **Eastern grove path** (3 nodes): `eastern_grove`, `root_network`, `listening_post`.
 - **Map study path** (3 nodes): `study_map`, `cartographer_story`, `pattern_lesson`.
@@ -407,7 +384,7 @@ Maps to **DPO (Direct Preference Optimization)** — retraining with reader enga
 
 | Order | Phase | Sessions | Dependencies |
 |-------|-------|----------|-------------|
-| 1 | Phase 1: Kingdoms + Stories | 1 | None |
+| 1 | ✅ Phase 1: Kingdoms + Stories | 1 | None |
 | 2 | Phase 3a: Adaptive types + renderer | 1 | Phase 1 |
 | 3 | Phase 2: Rewrite garden from Seed | 1 | Phase 3a |
 | 4 | Phase 4: Library screen | 1 | Phase 1 |

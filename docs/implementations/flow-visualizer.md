@@ -99,7 +99,7 @@ Main React component that:
 **Props:**
 ```typescript
 interface StoryFlowVisualizerProps {
-  contentFilter?: string;  // Filter by story arc
+  contentFilter?: string;  // Filter by kingdom
   entryPoint?: string;     // Highlight path from this node
   showProgress?: boolean;  // Show reader progress
 }
@@ -231,7 +231,7 @@ Display graph statistics:
 - Entry points and endings count
 - Convergence points identified
 - Max path depth from entry
-- Story arc breakdown
+- Kingdom breakdown
 
 #### 5. FlowControls.tsx
 **File:** `src/components/flow-visualizer/FlowControls.tsx`
