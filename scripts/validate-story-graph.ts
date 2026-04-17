@@ -12,11 +12,10 @@
  */
 
 import { welcomeContent } from '../src/content/core/welcome';
-import { storySelectContent } from '../src/content/core/story-select';
+import { buildAllKingdomHubs } from '../src/content/core/kingdom-hub';
 import { devToolsContent } from '../src/content/core/dev-tools';
 import { dragonStoryCollection } from '../src/content/stories/dragon-story/index';
 import { gardenStoryCollection } from '../src/content/stories/garden-story/index';
-import { lessonNavigation } from '../src/content/lessons/index';
 import { nanotechnologyLessons } from '../src/content/lessons/nanotechnology/index';
 import { puzzleCollection } from '../src/content/puzzles/index';
 import { getKingdomEntryPoints } from '../src/content/kingdoms';
@@ -30,15 +29,23 @@ import type { StoryContent, Choice } from '../src/content/index';
  */
 const KNOWN_PLACEHOLDERS = [
   'reflection',
-  'logic_lesson',
-  'narrative_lesson',
-  'social_lesson',
   'nano_deep',
   'quiz_nano',
   // Garden kingdom - nodes not yet written (see docs/OVERHAUL-PLAN.md Phase 5)
   'eastern_grove',
   'study_map',
   'garden_heart'
+];
+
+/**
+ * Placeholder action prefixes emitted by the kingdom hub generator when a
+ * kingdom hasn't filled a story/lesson/puzzle slot yet. These are intentional
+ * dead actions — ChoiceButton greys them out with "(Coming soon)".
+ */
+const PLACEHOLDER_PREFIXES = [
+  '__placeholder_story_',
+  '__placeholder_lesson_',
+  '__placeholder_puzzle_'
 ];
 
 /**
@@ -94,9 +101,8 @@ interface ValidationReport {
 function buildContentGraph(): ContentRegistry {
   return {
     ...welcomeContent,
-    ...storySelectContent,
+    ...buildAllKingdomHubs(),
     ...devToolsContent,
-    ...lessonNavigation,
     ...dragonStoryCollection,
     ...gardenStoryCollection,
     ...nanotechnologyLessons,
@@ -131,7 +137,8 @@ function validateReferences(contentGraph: ContentRegistry): ValidationIssue[] {
 
       // Check if action points to valid content
       if (!allContentIds.includes(action)) {
-        if (KNOWN_PLACEHOLDERS.includes(action)) {
+        const isPlaceholderPrefix = PLACEHOLDER_PREFIXES.some(p => action.startsWith(p));
+        if (KNOWN_PLACEHOLDERS.includes(action) || isPlaceholderPrefix) {
           issues.push({
             type: 'info',
             message: `Placeholder reference '${action}' (planned content)`,

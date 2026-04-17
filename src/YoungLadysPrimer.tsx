@@ -20,8 +20,9 @@
  */
 
 import React from 'react';
-import { Scroll, MoonStar, Cog, UserStar } from 'lucide-react';
+import { Scroll, MoonStar, Cog, BookOpen, UserStar } from 'lucide-react';
 import { getContent, Choice, ContentContext } from './content/index';
+import { getKingdomById } from './content/kingdoms';
 import { useContentNavigation } from './hooks/useContentNavigation';
 import { useHydration } from './hooks/useHydration';
 import { useReaderPreferences } from './hooks/useReaderPreferences';
@@ -79,18 +80,30 @@ function YoungLadysPrimer() {
   // Event Handlers: User interaction callbacks
 
   /**
-   * Get icon component for welcome page choices
-   * @param action - The choice action identifier
-   * @returns Icon component or null
+   * Icon for a choice on the welcome (library) page — BookOpen for kingdoms,
+   * UserStar for the cross-kingdom reflection option.
    */
   const getWelcomeIcon = (action: string) => {
-    switch(action) {
-      case 'story_select': return Scroll;
-      case 'lesson_choice': return MoonStar;
-      case 'puzzle_logic': return Cog;
-      case 'reflection': return UserStar;
-      default: return null;
-    }
+    if (action === 'reflection') return UserStar;
+    return BookOpen;
+  };
+
+  /**
+   * Icon for a choice on a kingdom hub page. Matches the action against the
+   * kingdom's story entry points, lessons, and puzzles; also recognizes the
+   * placeholder actions emitted when a kingdom hasn't filled a slot yet.
+   */
+  const getHubIcon = (kingdomId: string, action: string) => {
+    if (action === 'welcome') return BookOpen;
+    if (action.startsWith('__placeholder_story_')) return Scroll;
+    if (action.startsWith('__placeholder_lesson_')) return MoonStar;
+    if (action.startsWith('__placeholder_puzzle_')) return Cog;
+    const kingdom = getKingdomById(kingdomId);
+    if (!kingdom) return null;
+    if (kingdom.stories.some(s => s.entryPoint === action)) return Scroll;
+    if (kingdom.lessons.includes(action)) return MoonStar;
+    if (kingdom.puzzles.includes(action)) return Cog;
+    return null;
   };
 
   /**
@@ -198,7 +211,7 @@ function YoungLadysPrimer() {
             {/* Choices with manuscript style */}
             {currentContent.choices && currentContent.choices.length > 0 && (
               <div className="space-y-3 mt-6">
-                {contentKey === 'welcome' && (
+                {(contentKey === 'welcome' || contentKey.startsWith('hub_')) && (
                   <p className="choice-prompt">
                     Choose your path, dear reader...
                   </p>
@@ -207,7 +220,12 @@ function YoungLadysPrimer() {
                   // Special actions that don't need story content
                   const isSpecialAction = choice.action === 'change-name';
                   const isActionAvailable = isSpecialAction || getContent(choice.action, contentContext);
-                  const IconComponent = contentKey === 'welcome' ? getWelcomeIcon(choice.action) : null;
+                  let IconComponent = null;
+                  if (contentKey === 'welcome') {
+                    IconComponent = getWelcomeIcon(choice.action);
+                  } else if (contentKey.startsWith('hub_')) {
+                    IconComponent = getHubIcon(contentKey.slice(4), choice.action);
+                  }
 
                   return (
                     <ChoiceButton

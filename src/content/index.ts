@@ -45,12 +45,11 @@ function formatContent(raw: string): string {
 }
 
 import { welcomeContent } from './core/welcome';
-import { storySelectContent } from './core/story-select';
+import { buildAllKingdomHubs } from './core/kingdom-hub';
 import { getSettingsContent } from './core/settings';
 import { devToolsContent } from './core/dev-tools';
 import { dragonStoryCollection } from './stories/dragon-story/index';
 import { gardenStoryCollection } from './stories/garden-story/index';
-import { lessonNavigation } from './lessons/index';
 import { nanotechnologyLessons } from './lessons/nanotechnology/index';
 import { puzzleCollection } from './puzzles/index';
 
@@ -111,10 +110,13 @@ export interface Kingdom {
   id: string;
   title: string;
   description: string;
+  hubIntro?: string | ((context: ContentContext) => string);
   entryStoryId: string;
   stories: Story[];
   lessons: string[];
+  lessonEntry?: string;
   puzzles: string[];
+  puzzleEntry?: string;
   icon?: string;
   status: 'active' | 'legacy' | 'draft';
 }
@@ -160,14 +162,13 @@ interface ContentRegistry {
  * New content modules should be imported above and added here.
  */
 export const allContent: ContentRegistry = {
-  ...welcomeContent,        // Core navigation and welcome screens
-  ...storySelectContent,    // Story arc selection screen
-  ...devToolsContent,       // Developer tools (dev mode only)
-  ...lessonNavigation,      // Lesson category selection screen
-  ...dragonStoryCollection, // Main dragon story arc with multiple branches
-  ...gardenStoryCollection, // Cartographer's Garden arc (in progress)
-  ...nanotechnologyLessons, // Educational content about molecular science
-  ...puzzleCollection       // Interactive logic puzzles and challenges
+  ...welcomeContent,           // Library: kingdom selection (opening screen)
+  ...buildAllKingdomHubs(),    // Per-kingdom hub pages (hub_<kingdomId>)
+  ...devToolsContent,          // Developer tools (dev mode only)
+  ...dragonStoryCollection,    // Main dragon story arc with multiple branches
+  ...gardenStoryCollection,    // Cartographer's Garden arc
+  ...nanotechnologyLessons,    // Educational content about molecular science
+  ...puzzleCollection          // Interactive logic puzzles and challenges
 };
 
 // === CONTENT ACCESS FUNCTIONS ===

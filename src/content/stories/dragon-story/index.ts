@@ -25,6 +25,7 @@ export const dragonKingdom: Kingdom = {
   id: 'dragon',
   title: 'The Mechanical Dragon',
   description: 'Princess Aria discovers a mechanical dragon and uncovers the secrets of nanotechnology, ancient engineers, and the power of compassion.',
+  hubIntro: `Brass scales catch the late sun, and somewhere under the mountain an engine ticks that hasn't ticked in a hundred years. What draws you in?`,
   entryStoryId: dragonStory.id,
   stories: [dragonStory],
   lessons: ['nano_lesson', 'molecular_talk'],

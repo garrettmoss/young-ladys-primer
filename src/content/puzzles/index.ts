@@ -6,7 +6,6 @@
  * in the lessons, reinforcing learning through application.
  */
 
-import { puzzleNavigation } from './navigation';
 import { molecularLockPuzzle } from './molecular-lock';
 
 /**
@@ -14,6 +13,5 @@ import { molecularLockPuzzle } from './molecular-lock';
  * All puzzle modules should be imported above and added here
  */
 export const puzzleCollection = {
-  ...puzzleNavigation,
   ...molecularLockPuzzle
 };

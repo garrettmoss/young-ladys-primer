@@ -31,6 +31,7 @@ export const gardenKingdom: Kingdom = {
   id: 'garden',
   title: "The Cartographer's Garden",
   description: 'An old map leads to an abandoned garden that has been running a living calculation for a hundred years. The reader must figure out what it is trying to say.',
+  hubIntro: `The garden waits at the end of the map — walls half-swallowed by ivy, a gate that still opens, soil that remembers more than you'd think. What would you like to do here?`,
   entryStoryId: cartographersGarden.id,
   stories: [cartographersGarden],
   lessons: [],

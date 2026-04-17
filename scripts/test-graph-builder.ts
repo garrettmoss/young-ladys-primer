@@ -7,9 +7,9 @@
  */
 
 import { welcomeContent } from '../src/content/core/welcome';
+import { buildAllKingdomHubs } from '../src/content/core/kingdom-hub';
 import { devToolsContent } from '../src/content/core/dev-tools';
 import { dragonStoryCollection } from '../src/content/stories/dragon-story/index';
-import { lessonNavigation } from '../src/content/lessons/index';
 import { nanotechnologyLessons } from '../src/content/lessons/nanotechnology/index';
 import { puzzleCollection } from '../src/content/puzzles/index';
 import {
@@ -22,8 +22,8 @@ import {
 // Build the complete content registry
 const allContent: ContentRegistry = {
   ...welcomeContent,
+  ...buildAllKingdomHubs(),
   ...devToolsContent,
-  ...lessonNavigation,
   ...dragonStoryCollection,
   ...nanotechnologyLessons,
   ...puzzleCollection
