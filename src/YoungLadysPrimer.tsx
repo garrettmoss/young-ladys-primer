@@ -20,7 +20,7 @@
  */
 
 import React from 'react';
-import { Scroll, MoonStar, Cog, BookOpen, UserStar } from 'lucide-react';
+import { Scroll, MoonStar, Cog, Castle, UserStar } from 'lucide-react';
 import { getContent, Choice, ContentContext } from './content/index';
 import { getKingdomById } from './content/kingdoms';
 import { useContentNavigation } from './hooks/useContentNavigation';
@@ -80,12 +80,12 @@ function YoungLadysPrimer() {
   // Event Handlers: User interaction callbacks
 
   /**
-   * Icon for a choice on the welcome (library) page — BookOpen for kingdoms,
+   * Icon for a choice on the welcome (library) page — Castle for kingdoms,
    * UserStar for the cross-kingdom reflection option.
    */
   const getWelcomeIcon = (action: string) => {
     if (action === 'reflection') return UserStar;
-    return BookOpen;
+    return Castle;
   };
 
   /**
@@ -94,7 +94,7 @@ function YoungLadysPrimer() {
    * placeholder actions emitted when a kingdom hasn't filled a slot yet.
    */
   const getHubIcon = (kingdomId: string, action: string) => {
-    if (action === 'welcome') return BookOpen;
+    if (action === 'welcome') return Castle;
     if (action.startsWith('__placeholder_story_')) return Scroll;
     if (action.startsWith('__placeholder_lesson_')) return MoonStar;
     if (action.startsWith('__placeholder_puzzle_')) return Cog;

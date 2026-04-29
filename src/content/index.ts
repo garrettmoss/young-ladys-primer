@@ -81,6 +81,7 @@ export interface ContentContext {
 export interface Choice {
   text: string;   // Display text shown to the user
   action: string; // Story key to navigate to when selected
+  tag?: string;   // Optional italic suffix label (e.g. "legacy") — rendered separately from text
 }
 
 /**

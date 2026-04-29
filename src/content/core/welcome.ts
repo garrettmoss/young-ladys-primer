@@ -14,8 +14,9 @@ function buildWelcome(): StoryContent {
   const kingdomChoices: Choice[] = getAllKingdoms()
     .filter(k => k.status !== 'draft')
     .map(k => ({
-      text: k.status === 'legacy' ? `${k.title} (prototype)` : k.title,
-      action: hubKeyFor(k.id)
+      text: k.title,
+      action: hubKeyFor(k.id),
+      ...(k.status === 'legacy' ? { tag: 'legacy' } : {})
     }));
 
   const choices: Choice[] = [

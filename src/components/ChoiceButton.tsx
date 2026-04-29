@@ -27,7 +27,8 @@ export function ChoiceButton({
         )}
         <span className="font-medium relative z-10" style={{ letterSpacing: '0.02em' }}>
           {choice.text}
-          {!isAvailable && <span className="text-sm italic ml-2">(Coming soon)</span>}
+          {choice.tag && <span className="italic ml-2">({choice.tag})</span>}
+          {!isAvailable && <span className="italic ml-2">(Coming soon)</span>}
         </span>
       </div>
       {isAvailable && (
