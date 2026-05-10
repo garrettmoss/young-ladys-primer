@@ -79,6 +79,29 @@ Before any prose gets written:
 
 ---
 
+## Level-gating candidates
+
+Some beats in this story may not exist for all readers — see [OVERHAUL-PLAN.md:193](../OVERHAUL-PLAN.md#L193) for the original "do some beats exist only at higher levels?" question. The answer we've landed on: **yes, and that's the point**. Different readers should get genuinely different stories that are each cohesive, not the same story dumbed down.
+
+Mechanism (to be added in Phase 3a): a `minLevel?: AdaptiveLevel` field on `StoryBeat`. The renderer filters out choices that lead to nodes the reader can't access. The reader sees fewer doors, never a locked door.
+
+Safety rail: a content-validator check that fails if `minLevel` is set on a node whose predecessor has only one outgoing choice — that would create an unreachable path for lower-level readers and break the story flow.
+
+### Probable gates on the western wall path
+
+- **`lichen_grid`** — Bloom+ candidate. The "world has instructions in it" beat is abstract and rewards close attention. Skippable: `wall_lunch → old_well` flows fine without it. Cost: Seed/Sprout readers miss a piece of the kingdom's theme. Probably worth it — they get the same theme delivered more concretely at `well_roots`.
+
+### Probable gates on unwritten paths
+
+- **Map-study path entirely** (`study_map → cartographer_story → pattern_lesson`) — Bloom+ candidate. Iris's backstory, the cartographer's notes, and the emergence lesson are heavy on abstraction and reading-density. A Seed reader at `garden_entrance` would see only 2 of the 3 path choices. Requires that the convergence at `garden_heart` doesn't *depend* on having taken the map-study path — needs verification when those nodes get written.
+- **Eastern grove path** — likely available to all levels, but `listening_post`'s "she knew without knowing how" intuition beat may need a more concrete Seed rendering rather than gating.
+
+### When to actually decide
+
+Defer real gating decisions until Seed + Sprout for the western wall exist. Once we've written down to Seed for one path, we'll have a feel for which beats genuinely don't translate down vs. which just need a different rendering. Gate based on evidence, not guesses.
+
+---
+
 ## Notes on the extraction
 
 A few judgment calls worth flagging:
