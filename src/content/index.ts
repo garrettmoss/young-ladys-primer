@@ -67,8 +67,8 @@ import { puzzleCollection } from './puzzles/index';
  */
 export interface ContentContext {
   readerName: string; // Reader's chosen name for personalization
+  currentLevel?: AdaptiveLevel; // Reader's adaptive tier (Phase 3a). Renderer falls back to fruit if absent.
   // Future adaptive learning variables can be added here without breaking existing content:
-  // readingLevel?: string;
   // choiceHistory?: string[];
   // completedStories?: string[];
   // multipleIntelligences?: Record<string, number>;
@@ -135,6 +135,42 @@ export interface StoryContent {
   title: string;
   content: string | ((context: ContentContext) => string);
   choices?: Choice[]; // Optional - some content may have no choices (endings, lessons)
+  // Adaptive-content fields (Phase 3a). Present on nodes in adaptive stories.
+  // The renderer prefers these when the parent Story has `adaptive: true`.
+  beat?: string;
+  feeling?: string;
+  adaptiveContent?: AdaptiveContent;
+  minLevel?: AdaptiveLevel;
+}
+
+/**
+ * Reader-developmental tiers for adaptive rendering. See OVERHAUL-PLAN.md
+ * for the band definitions and the writing discipline that pairs with them.
+ *
+ * The tuple is the single source of truth: the type and the ordering both
+ * derive from it. To add a new tier (e.g. a "sapling" between sprout and
+ * bloom), insert it here in the right position and the rest follows.
+ *
+ * Compare levels via `levelRank(level)`, not string equality.
+ */
+export const LEVELS = ['seed', 'sprout', 'bloom', 'fruit'] as const;
+export type AdaptiveLevel = typeof LEVELS[number];
+
+export function levelRank(level: AdaptiveLevel): number {
+  return LEVELS.indexOf(level);
+}
+
+/**
+ * Per-level renderings of a single story beat. The beat and feeling are
+ * constant across levels; only the prose changes. A level may be omitted
+ * if it doesn't yet exist — the renderer falls back to the nearest available
+ * level above the reader's tier.
+ */
+export interface AdaptiveContent {
+  seed?: string | ((context: ContentContext) => string);
+  sprout?: string | ((context: ContentContext) => string);
+  bloom?: string | ((context: ContentContext) => string);
+  fruit?: string | ((context: ContentContext) => string);
 }
 
 /**

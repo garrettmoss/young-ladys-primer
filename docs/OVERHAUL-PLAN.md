@@ -125,8 +125,8 @@ interface StoryBeat {
 interface AdaptiveContent {
   seed: string;    // Age 4-6
   sprout: string;  // Age 7-9
-  bloom: string;   // Age 10-13
-  fruit: string;   // Age 14-17
+  bloom: string;   // Age 10-12
+  fruit: string;   // Age 13-16
 }
 ```
 
