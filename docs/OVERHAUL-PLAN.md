@@ -136,14 +136,30 @@ The `beat` and `feeling` are the skeleton. They never change. They're written *f
 
 | Level | Name | Target reader | Words/page | What changes |
 |-------|------|---------------|-----------|--------------|
-| 1 | **Seed** | Age 4-6 | 30-60 (3-5 sentences) | Simple words, 1-2 sensory details, action-focused |
-| 2 | **Sprout** | Age 7-9 | 60-120 (1-2 short paragraphs) | Compound sentences, humor lands, some interiority |
-| 3 | **Bloom** | Age 10-13 | 120-200 (2-3 paragraphs) | Fuller descriptions, subtext, character voice |
-| 4 | **Fruit** | Age 14-17 | 200-350 (3-4 paragraphs) | Full voice, subtext carries theme, reader trusted |
+| 1 | **Seed** | Age 4-6 | 30-60 (3-5 sentences) | Simple words, 1-2 sensory details, action-focused. Bottom edge assumes read-aloud with an adult. |
+| 2 | **Sprout** | Age 7-9 | 60-120 (1-2 short paragraphs) | Compound sentences, humor lands, some interiority. Reading-to-learn transition. |
+| 3 | **Bloom** | Age 10-12 | 120-200 (2-3 paragraphs) | Fuller descriptions, subtext, character voice. Late middle childhood; early puberty often present. |
+| 4 | **Fruit** | Age 13-16 | 200-350 (3-4 paragraphs) | Full voice, subtext carries theme, reader trusted. Adolescence; abstract reasoning available. |
+
+Bands are anchored to cognitive transitions, not arbitrary ranges. The 7/10/13 boundaries are real shifts (independent reading → reading to learn → early adolescence). All bands are 3 years wide for clean math.
 
 Constant across all levels: the beat, the feeling, the choices, thematic depth, sensory grounding (≥1 concrete detail per page), humor when present in the beat.
 
 Scales up with level: word count, sentence complexity, sensory detail count, interior monologue, narrative aside, systems-thinking content, backstory depth.
+
+### Writing for young women specifically
+
+The Primer's audience is young women, and the bands above already account for it. Cognitive milestones track age, not gender, so the *boundaries* are the same as they'd be for a gender-neutral product. But the *content within* each band can trust slightly more emotional and social sophistication than a generic primer would, because:
+
+- Girls hit puberty 1-2 years earlier on average than boys (now ~8-10 for first signs).
+- Girls develop earlier theory of mind, emotional vocabulary, and social-cue reading.
+- Girls outperform boys on reading at every age in basically every country (modest but consistent).
+
+Practical implications:
+
+- **Sprout** can lean into interiority and social nuance earlier than a mixed-audience product would.
+- **Bloom** sits squarely on early puberty for many readers. If the Primer is a companion through that, Bloom needs to acknowledge it exists — body changes, identity, relational complexity — even if obliquely. Don't write Bloom as if it's just "older Sprout."
+- **Fruit** can trust subtext and ambiguity at the lower edge of the band.
 
 ### Example: `western_wall`
 
