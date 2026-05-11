@@ -52,6 +52,7 @@ import { dragonStoryCollection } from './stories/dragon-story/index';
 import { gardenStoryCollection } from './stories/garden-story/index';
 import { nanotechnologyLessons } from './lessons/nanotechnology/index';
 import { puzzleCollection } from './puzzles/index';
+import { getStoryForContentKey } from './kingdoms';
 
 // === TYPE DEFINITIONS ===
 
@@ -133,7 +134,9 @@ export type StoryArc = Story;
  */
 export interface StoryContent {
   title: string;
-  content: string | ((context: ContentContext) => string);
+  // `content` is the legacy plain-text field. Required for non-adaptive
+  // nodes; omitted on adaptive nodes (which use `adaptiveContent` instead).
+  content?: string | ((context: ContentContext) => string);
   choices?: Choice[]; // Optional - some content may have no choices (endings, lessons)
   // Adaptive-content fields (Phase 3a). Present on nodes in adaptive stories.
   // The renderer prefers these when the parent Story has `adaptive: true`.
@@ -231,15 +234,47 @@ export const getContent = (contentKey: string, context: ContentContext): Process
   const content = allContent[contentKey];
   if (!content) return null;
 
-  const rawContent = typeof content.content === 'function'
-    ? content.content(context)
-    : content.content;
+  const rawContent = resolveContentText(contentKey, content, context);
 
   return {
-    ...content,
-    content: formatContent(rawContent)
+    title: content.title,
+    content: formatContent(rawContent),
+    choices: content.choices,
   };
 };
+
+const MISSING_CONTENT_FALLBACK = 'This page hasn\'t grown yet.';
+
+/**
+ * Resolve a node's raw text. Adaptive stories read from `adaptiveContent` at
+ * the reader's current level; plain stories use the legacy `content` field.
+ *
+ * If an adaptive node is missing its requested level (a writing-discipline
+ * gap that the validator should catch), we render a polite in-world fallback
+ * rather than crash. Fruit is the assumed top tier when no level is set.
+ */
+function resolveContentText(
+  contentKey: string,
+  content: StoryContent,
+  context: ContentContext
+): string {
+  const story = getStoryForContentKey(contentKey);
+  const useAdaptive = story?.adaptive === true && content.adaptiveContent;
+
+  if (useAdaptive) {
+    const level: AdaptiveLevel = context.currentLevel ?? 'fruit';
+    const rendering = content.adaptiveContent![level];
+    if (rendering !== undefined) {
+      return typeof rendering === 'function' ? rendering(context) : rendering;
+    }
+    return MISSING_CONTENT_FALLBACK;
+  }
+
+  if (content.content === undefined) return MISSING_CONTENT_FALLBACK;
+  return typeof content.content === 'function'
+    ? content.content(context)
+    : content.content;
+}
 
 /**
  * Get all available content keys for debugging or content management

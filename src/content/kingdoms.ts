@@ -49,6 +49,18 @@ export function getKingdomForContentKey(key: string): Kingdom | undefined {
 }
 
 /**
+ * Find the Story (if any) that owns a given content key. Used by the renderer
+ * to decide between adaptive and plain rendering paths.
+ */
+export function getStoryForContentKey(key: string): Story | undefined {
+  for (const kingdom of kingdoms) {
+    const story = kingdom.stories.find(s => s.contentKeys.includes(key));
+    if (story) return story;
+  }
+  return undefined;
+}
+
+/**
  * Entry points across all kingdoms (active + legacy) for graph validation.
  */
 export function getKingdomEntryPoints(): string[] {
