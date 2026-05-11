@@ -1,6 +1,6 @@
 import React from 'react';
-import { Feather, Eclipse, BookMarked, Sprout } from 'lucide-react';
-import { AdaptiveLevel } from '../content';
+import { Feather, Eclipse, BookMarked, Bean, Sprout, Flower2, Cherry, LucideIcon } from 'lucide-react';
+import { AdaptiveLevel, LEVELS } from '../content';
 
 interface SettingsPanelProps {
   readerName: string;
@@ -14,14 +14,28 @@ interface SettingsPanelProps {
   onSettingsNameSave: () => void;
   onCancelNameEdit: () => void;
   onDarkModeToggle: () => void;
-  onReaderLevelCycle: () => void;
+  onReaderLevelSelect: (level: AdaptiveLevel) => void;
 }
 
 const LEVEL_LABELS: Record<AdaptiveLevel, string> = {
-  seed: 'Seed (age 4–6)',
-  sprout: 'Sprout (age 7–9)',
-  bloom: 'Bloom (age 10–12)',
-  fruit: 'Fruit (age 13–16)',
+  seed: 'Seed',
+  sprout: 'Sprout',
+  bloom: 'Bloom',
+  fruit: 'Fruit',
+};
+
+const LEVEL_AGES: Record<AdaptiveLevel, string> = {
+  seed: 'age 4–6',
+  sprout: 'age 7–9',
+  bloom: 'age 10–12',
+  fruit: 'age 13–16',
+};
+
+const LEVEL_ICONS: Record<AdaptiveLevel, LucideIcon> = {
+  seed: Bean,
+  sprout: Sprout,
+  bloom: Flower2,
+  fruit: Cherry,
 };
 
 export function SettingsPanel({
@@ -36,7 +50,7 @@ export function SettingsPanel({
   onSettingsNameSave,
   onCancelNameEdit,
   onDarkModeToggle,
-  onReaderLevelCycle
+  onReaderLevelSelect
 }: SettingsPanelProps) {
   return (
     <div className="space-y-4 mt-6">
@@ -108,20 +122,34 @@ export function SettingsPanel({
 
       {/* Reader Level Setting */}
       <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Sprout className="w-5 h-5 text-amber-700" />
-            <div>
-              <strong className="text-amber-900">Reading Level:</strong>
-              <span className="ml-2 text-amber-800">{LEVEL_LABELS[readerLevel]}</span>
-            </div>
-          </div>
-          <button
-            onClick={onReaderLevelCycle}
-            className="py-1 px-4 text-sm bg-amber-600 text-amber-50 rounded hover:bg-amber-700 transition-colors font-serif"
-          >
-            Change
-          </button>
+        <div className="mb-3">
+          <strong className="text-amber-900">Reading Level:</strong>
+          <span className="ml-2 text-amber-800">
+            {LEVEL_LABELS[readerLevel]} <span className="text-amber-600 text-sm">({LEVEL_AGES[readerLevel]})</span>
+          </span>
+        </div>
+        <div className="flex gap-2" role="radiogroup" aria-label="Reading level">
+          {LEVELS.map(level => {
+            const Icon = LEVEL_ICONS[level];
+            const isActive = level === readerLevel;
+            return (
+              <button
+                key={level}
+                role="radio"
+                aria-checked={isActive}
+                aria-label={`${LEVEL_LABELS[level]}, ${LEVEL_AGES[level]}`}
+                onClick={() => onReaderLevelSelect(level)}
+                className={`flex-1 flex flex-col items-center gap-1 py-3 px-2 rounded border transition-colors font-serif ${
+                  isActive
+                    ? 'bg-amber-600 text-amber-50 border-amber-700'
+                    : 'bg-amber-50/40 text-amber-800 border-amber-200 hover:bg-amber-100/60'
+                }`}
+              >
+                <Icon className="w-6 h-6" />
+                <span className="text-xs">{LEVEL_LABELS[level]}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

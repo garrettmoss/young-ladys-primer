@@ -47,7 +47,7 @@ function YoungLadysPrimer() {
     handleNameSubmit,
     handleChooseLater,
     handleDarkModeToggle,
-    handleReaderLevelCycle,
+    handleReaderLevelSelect,
     handleEditNameClick,
     handleSettingsNameSave,
     handleCancelNameEdit,
@@ -202,7 +202,7 @@ function YoungLadysPrimer() {
                 onSettingsNameSave={handleSettingsNameSave}
                 onCancelNameEdit={handleCancelNameEdit}
                 onDarkModeToggle={handleDarkModeToggle}
-                onReaderLevelCycle={handleReaderLevelCycle}
+                onReaderLevelSelect={handleReaderLevelSelect}
               />
             )}
 

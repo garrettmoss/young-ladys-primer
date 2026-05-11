@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocalStorage } from './useLocalStorage';
-import { AdaptiveLevel, LEVELS } from '../content';
+import { AdaptiveLevel } from '../content';
 
 interface ReaderPreferences {
   readerName: string;
@@ -9,6 +9,7 @@ interface ReaderPreferences {
   setIsDarkMode: (isDark: boolean) => void;
   readerLevel: AdaptiveLevel;
   setReaderLevel: (level: AdaptiveLevel) => void;
+  handleReaderLevelSelect: (level: AdaptiveLevel) => void;
   showNameInput: boolean;
   setShowNameInput: (show: boolean) => void;
   settingsNameInput: string;
@@ -18,7 +19,6 @@ interface ReaderPreferences {
   handleNameSubmit: () => void;
   handleChooseLater: () => void;
   handleDarkModeToggle: () => void;
-  handleReaderLevelCycle: () => void;
   handleEditNameClick: () => void;
   handleSettingsNameSave: () => void;
   handleCancelNameEdit: () => void;
@@ -75,13 +75,12 @@ export function useReaderPreferences(): ReaderPreferences {
   };
 
   /**
-   * Cycle through reader levels: seed → sprout → bloom → fruit → seed.
-   * Manual selector for now; auto-detection comes later.
+   * Direct-select handler for the level radio group in settings. Thin
+   * wrapper around setReaderLevel so the parent component imports one
+   * handler name consistent with the rest of the hook's surface.
    */
-  const handleReaderLevelCycle = (): void => {
-    const currentIndex = LEVELS.indexOf(readerLevel);
-    const nextIndex = (currentIndex + 1) % LEVELS.length;
-    setReaderLevel(LEVELS[nextIndex]);
+  const handleReaderLevelSelect = (level: AdaptiveLevel): void => {
+    setReaderLevel(level);
   };
 
   /**
@@ -118,6 +117,7 @@ export function useReaderPreferences(): ReaderPreferences {
     setIsDarkMode,
     readerLevel,
     setReaderLevel,
+    handleReaderLevelSelect,
     showNameInput,
     setShowNameInput,
     settingsNameInput,
@@ -127,7 +127,6 @@ export function useReaderPreferences(): ReaderPreferences {
     handleNameSubmit,
     handleChooseLater,
     handleDarkModeToggle,
-    handleReaderLevelCycle,
     handleEditNameClick,
     handleSettingsNameSave,
     handleCancelNameEdit,
