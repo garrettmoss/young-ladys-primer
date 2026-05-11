@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useLocalStorage } from './useLocalStorage';
+import { AdaptiveLevel, LEVELS } from '../content';
 
 interface ReaderPreferences {
   readerName: string;
   setReaderName: (name: string) => void;
   isDarkMode: boolean;
   setIsDarkMode: (isDark: boolean) => void;
+  readerLevel: AdaptiveLevel;
+  setReaderLevel: (level: AdaptiveLevel) => void;
   showNameInput: boolean;
   setShowNameInput: (show: boolean) => void;
   settingsNameInput: string;
@@ -15,6 +18,7 @@ interface ReaderPreferences {
   handleNameSubmit: () => void;
   handleChooseLater: () => void;
   handleDarkModeToggle: () => void;
+  handleReaderLevelCycle: () => void;
   handleEditNameClick: () => void;
   handleSettingsNameSave: () => void;
   handleCancelNameEdit: () => void;
@@ -28,6 +32,7 @@ export function useReaderPreferences(): ReaderPreferences {
   // Core preferences stored in localStorage
   const [readerName, setReaderName] = useLocalStorage<string>('young-ladys-primer-reader-name', '');
   const [isDarkMode, setIsDarkMode] = useLocalStorage<boolean>('young-ladys-primer-dark-mode', false);
+  const [readerLevel, setReaderLevel] = useLocalStorage<AdaptiveLevel>('young-ladys-primer-reader-level', 'fruit');
 
   // UI state for name input and editing
   const [showNameInput, setShowNameInput] = useState<boolean>(false);
@@ -70,6 +75,16 @@ export function useReaderPreferences(): ReaderPreferences {
   };
 
   /**
+   * Cycle through reader levels: seed → sprout → bloom → fruit → seed.
+   * Manual selector for now; auto-detection comes later.
+   */
+  const handleReaderLevelCycle = (): void => {
+    const currentIndex = LEVELS.indexOf(readerLevel);
+    const nextIndex = (currentIndex + 1) % LEVELS.length;
+    setReaderLevel(LEVELS[nextIndex]);
+  };
+
+  /**
    * Handle edit button click in settings - enter edit mode
    */
   const handleEditNameClick = (): void => {
@@ -101,6 +116,8 @@ export function useReaderPreferences(): ReaderPreferences {
     setReaderName,
     isDarkMode,
     setIsDarkMode,
+    readerLevel,
+    setReaderLevel,
     showNameInput,
     setShowNameInput,
     settingsNameInput,
@@ -110,6 +127,7 @@ export function useReaderPreferences(): ReaderPreferences {
     handleNameSubmit,
     handleChooseLater,
     handleDarkModeToggle,
+    handleReaderLevelCycle,
     handleEditNameClick,
     handleSettingsNameSave,
     handleCancelNameEdit,

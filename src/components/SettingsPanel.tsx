@@ -1,5 +1,6 @@
 import React from 'react';
-import { Feather, Eclipse, BookMarked } from 'lucide-react';
+import { Feather, Eclipse, BookMarked, Sprout } from 'lucide-react';
+import { AdaptiveLevel } from '../content';
 
 interface SettingsPanelProps {
   readerName: string;
@@ -7,12 +8,21 @@ interface SettingsPanelProps {
   setSettingsNameInput: (value: string) => void;
   isEditingName: boolean;
   isDarkMode: boolean;
+  readerLevel: AdaptiveLevel;
   contentProgressCount: number;
   onEditNameClick: () => void;
   onSettingsNameSave: () => void;
   onCancelNameEdit: () => void;
   onDarkModeToggle: () => void;
+  onReaderLevelCycle: () => void;
 }
+
+const LEVEL_LABELS: Record<AdaptiveLevel, string> = {
+  seed: 'Seed (age 4–6)',
+  sprout: 'Sprout (age 7–9)',
+  bloom: 'Bloom (age 10–12)',
+  fruit: 'Fruit (age 13–16)',
+};
 
 export function SettingsPanel({
   readerName,
@@ -20,11 +30,13 @@ export function SettingsPanel({
   setSettingsNameInput,
   isEditingName,
   isDarkMode,
+  readerLevel,
   contentProgressCount,
   onEditNameClick,
   onSettingsNameSave,
   onCancelNameEdit,
-  onDarkModeToggle
+  onDarkModeToggle,
+  onReaderLevelCycle
 }: SettingsPanelProps) {
   return (
     <div className="space-y-4 mt-6">
@@ -90,6 +102,25 @@ export function SettingsPanel({
             className="py-1 px-4 text-sm bg-amber-600 text-amber-50 rounded hover:bg-amber-700 transition-colors font-serif"
           >
             Toggle
+          </button>
+        </div>
+      </div>
+
+      {/* Reader Level Setting */}
+      <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Sprout className="w-5 h-5 text-amber-700" />
+            <div>
+              <strong className="text-amber-900">Reading Level:</strong>
+              <span className="ml-2 text-amber-800">{LEVEL_LABELS[readerLevel]}</span>
+            </div>
+          </div>
+          <button
+            onClick={onReaderLevelCycle}
+            className="py-1 px-4 text-sm bg-amber-600 text-amber-50 rounded hover:bg-amber-700 transition-colors font-serif"
+          >
+            Change
           </button>
         </div>
       </div>

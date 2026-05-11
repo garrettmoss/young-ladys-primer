@@ -37,6 +37,7 @@ function YoungLadysPrimer() {
     readerName,
     setReaderName,
     isDarkMode,
+    readerLevel,
     showNameInput,
     setShowNameInput,
     settingsNameInput,
@@ -46,6 +47,7 @@ function YoungLadysPrimer() {
     handleNameSubmit,
     handleChooseLater,
     handleDarkModeToggle,
+    handleReaderLevelCycle,
     handleEditNameClick,
     handleSettingsNameSave,
     handleCancelNameEdit,
@@ -68,11 +70,12 @@ function YoungLadysPrimer() {
   // Also guard reader name and dark mode with hydration check to prevent SSR mismatch
   const effectiveReaderName = isHydrated ? (readerName || 'Aria') : 'Aria';
   const effectiveDarkMode = isHydrated ? isDarkMode : false;
+  const effectiveReaderLevel = isHydrated ? readerLevel : 'fruit';
 
   // Build context object for content personalization
   const contentContext: ContentContext = {
-    readerName: effectiveReaderName
-    // Future variables like readingLevel, choiceHistory, etc. can be added here
+    readerName: effectiveReaderName,
+    currentLevel: effectiveReaderLevel,
   };
 
   const currentContent = getContent(contentKey, contentContext) || getContent('welcome', contentContext)!;
@@ -193,11 +196,13 @@ function YoungLadysPrimer() {
                 setSettingsNameInput={setSettingsNameInput}
                 isEditingName={isEditingName}
                 isDarkMode={effectiveDarkMode}
+                readerLevel={effectiveReaderLevel}
                 contentProgressCount={Object.keys(contentProgress).length}
                 onEditNameClick={handleEditNameClick}
                 onSettingsNameSave={handleSettingsNameSave}
                 onCancelNameEdit={handleCancelNameEdit}
                 onDarkModeToggle={handleDarkModeToggle}
+                onReaderLevelCycle={handleReaderLevelCycle}
               />
             )}
 
