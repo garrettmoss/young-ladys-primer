@@ -59,7 +59,11 @@ export function SettingsPanel({
   onReaderLevelSelect
 }: SettingsPanelProps) {
   return (
-    <div className="space-y-4 mt-6">
+    <div className="space-y-8 mt-6">
+      <section className="space-y-4">
+        <h3 className="settings-section-header">
+          Reader
+        </h3>
       {/* Reader Name Setting */}
       <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
         {!isEditingName ? (
@@ -126,25 +130,6 @@ export function SettingsPanel({
         </div>
       )}
 
-      {/* Illumination Setting */}
-      <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Eclipse className="w-5 h-5 text-amber-700" />
-            <div>
-              <strong className="text-amber-900">Illumination:</strong>
-              <span className="ml-2 text-amber-800">{isDarkMode ? 'Dark Mode' : 'Light Mode'}</span>
-            </div>
-          </div>
-          <button
-            onClick={onDarkModeToggle}
-            className="py-1 px-4 text-sm bg-amber-600 text-amber-50 rounded hover:bg-amber-700 transition-colors font-serif"
-          >
-            Toggle
-          </button>
-        </div>
-      </div>
-
       {/* Reader Level Setting */}
       <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
         <div className="mb-4">
@@ -187,6 +172,31 @@ export function SettingsPanel({
           </div>
         </div>
       </div>
+      </section>
+
+      <section className="space-y-4">
+        <h3 className="settings-section-header">
+          Appearance
+        </h3>
+        {/* Illumination Setting */}
+        <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Eclipse className="w-5 h-5 text-amber-700" />
+              <div>
+                <strong className="text-amber-900">Illumination:</strong>
+                <span className="ml-2 text-amber-800">{isDarkMode ? 'Dark Mode' : 'Light Mode'}</span>
+              </div>
+            </div>
+            <button
+              onClick={onDarkModeToggle}
+              className="py-1 px-4 text-sm bg-amber-600 text-amber-50 rounded hover:bg-amber-700 transition-colors font-serif"
+            >
+              Toggle
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

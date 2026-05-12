@@ -606,6 +606,18 @@
     font-family: Baskerville, serif;
   }
 
+  /* === SETTINGS SECTION HEADER === */
+
+  .settings-section-header {
+    font-family: Baskerville, serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--line-faint);
+    padding-bottom: 0.25rem;
+  }
+
   /* === READER LEVEL SLIDER === */
 
   .level-slider {
