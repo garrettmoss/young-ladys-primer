@@ -2,6 +2,119 @@
 @tailwind components;
 @tailwind utilities;
 
+/* === PRIMER DESIGN SYSTEM ===
+ *
+ * Two layers:
+ *
+ *  1. PALETTE — raw color values. Names describe the *color*, not its job.
+ *     Components should NOT reference these directly — use semantic tokens.
+ *
+ *  2. SEMANTIC TOKENS — names describe the *role* (--text-body, --bg-panel).
+ *     Components reference these. Dark mode redefines tokens inside
+ *     `.dark-mode {}` so components don't need paired light/dark rules.
+ *
+ * Migration is incremental. Existing rules still hardcode hex values;
+ * migrate opportunistically as you touch them. New rules should always
+ * use semantic tokens.
+ */
+
+:root {
+  /* --- PALETTE: warm light/cream tones (light backgrounds, warm text in dark mode) --- */
+  --amber-paper:     #fffbeb; /* near-white, faint amber tint (Tailwind amber-50) */
+  --amber-cream:     #fef3c7; /* pale cream */
+  --amber-parchment: #e5d5c1; /* warm parchment — dark-mode body text */
+  --paper-light:     #f9f6f0; /* lightest page background (light mode) */
+  --paper-mid:       #f5f1e6; /* mid page background */
+  --paper-warm:      #ede8db; /* warm-tan page background */
+
+  /* --- PALETTE: ambers and golds (accents, active states, text on light) --- */
+  --amber-gold:      #fbbf24; /* bright gold — accents, active labels in dark mode */
+  --amber-glow:      #f59e0b; /* warm gold-orange — illuminated letter glow */
+  --amber-warm:      #d97706; /* burnt amber — settings span text, secondary */
+  --amber-burnt:     #b45309; /* deep amber — active backgrounds */
+  --amber-shadow:    #92400e; /* dark amber — borders, light-mode labels */
+  --amber-deep:      #78350f; /* near-brown — light-mode active label text */
+  --amber-coffee:    #451a03; /* near-black amber — deepest text */
+
+  /* --- PALETTE: dark-mode neutrals (charcoal-amber gradient stops) --- */
+  --charcoal-deep:   #1a1612; /* deepest dark-mode bg */
+  --charcoal-mid:    #1f1b15; /* mid dark-mode bg */
+  --charcoal-warm:   #2d2419; /* warm-charcoal panel bg */
+  --charcoal-paper:  #392e20; /* slightly lighter charcoal */
+
+  /* --- PALETTE: translucent panel surfaces (dark mode) ---
+       Same charcoal-warm/paper hues at varying opacity. Named so rules
+       don't have to spell out the rgba(). */
+  --panel-charcoal-50:  rgba(45, 36, 25, 0.5);  /* dark panel bg, default */
+  --panel-charcoal-60:  rgba(45, 36, 25, 0.6);  /* dark choice-button base */
+  --panel-charcoal-70:  rgba(45, 36, 25, 0.7);  /* level-stop inactive bg */
+  --panel-paper-50:     rgba(57, 46, 32, 0.5);  /* lighter charcoal — gradient stops */
+  --panel-paper-60:     rgba(57, 46, 32, 0.6);
+  --panel-paper-70:     rgba(57, 46, 32, 0.7);
+  --panel-paper-80:     rgba(57, 46, 32, 0.8);  /* hover state */
+  --panel-light-70:     rgba(69, 56, 42, 0.7);  /* lightest panel charcoal — far hover */
+  --panel-light-80:     rgba(69, 56, 42, 0.8);
+
+  /* --- PALETTE: neutrals (grays for stats, muted UI) --- */
+  --gray-warm:       #78716c; /* warm gray — secondary text in light mode */
+  --gray-stone:      #57534e; /* darker warm gray */
+
+  /* --- PALETTE: alerts --- */
+  --alert-red:       #b91c1c; /* destructive action — clear-all warning */
+  --alert-orange:    #ea580c; /* moderate warning — reset-user */
+
+  /* --- SEMANTIC TOKENS (light mode defaults) ---
+       Components use these. Dark mode redefines them below.            */
+
+  /* Page surfaces */
+  --bg-page:         var(--paper-light);     /* main background gradient start */
+  --bg-page-mid:     var(--paper-mid);
+  --bg-page-end:     var(--paper-warm);
+  --bg-panel:        rgba(255, 251, 235, 0.3); /* settings rows, manuscript page */
+  --bg-panel-border: rgba(180, 83, 9, 0.2);
+
+  /* Text */
+  --text-body:       var(--amber-deep);      /* main reading text */
+  --text-strong:     var(--amber-coffee);    /* headers, strong labels */
+  --text-muted:      var(--amber-warm);      /* secondary text, captions */
+  --text-faint:      var(--gray-warm);       /* tertiary, footer stats */
+
+  /* Active / accent */
+  --bg-active:       var(--amber-burnt);     /* solid-filled active button bg */
+  --text-on-active:  var(--amber-paper);     /* text/icon on bg-active */
+  --border-active:   var(--amber-shadow);    /* border on active elements */
+  --accent-glow:     var(--amber-glow);      /* illuminated letter, highlights */
+
+  /* Connecting lines / separators */
+  --line-faint:      rgba(180, 83, 9, 0.25);
+  --line-strong:     rgba(180, 83, 9, 0.4);
+}
+
+.dark-mode {
+  /* Page surfaces */
+  --bg-page:         var(--charcoal-deep);
+  --bg-page-mid:     var(--charcoal-warm);
+  --bg-page-end:     var(--charcoal-mid);
+  --bg-panel:        var(--panel-charcoal-50);
+  --bg-panel-border: rgba(217, 119, 6, 0.3);
+
+  /* Text */
+  --text-body:       var(--amber-parchment); /* warm cream on dark */
+  --text-strong:     var(--amber-gold);      /* bright gold for headers */
+  --text-muted:      var(--amber-warm);      /* unchanged — already works on dark */
+  --text-faint:      rgba(217, 119, 6, 0.7);
+
+  /* Active / accent */
+  --bg-active:       var(--amber-burnt);     /* unchanged — burnt amber works both modes */
+  --text-on-active:  var(--amber-parchment); /* warm cream on burnt, not stark white */
+  --border-active:   var(--amber-gold);      /* gold ring around active */
+  --accent-glow:     var(--amber-gold);
+
+  /* Connecting lines / separators */
+  --line-faint:      rgba(217, 119, 6, 0.3);
+  --line-strong:     rgba(217, 119, 6, 0.4);
+}
+
 @layer base {
   * {
     text-rendering: optimizeLegibility;
