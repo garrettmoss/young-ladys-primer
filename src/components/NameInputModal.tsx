@@ -5,6 +5,8 @@ interface NameInputModalProps {
   showNameInput: boolean;
   readerName: string;
   setReaderName: (name: string) => void;
+  readerAgeInput: string;
+  setReaderAgeInput: (age: string) => void;
   onSubmit: () => void;
   onChooseLater: () => void;
 }
@@ -13,10 +15,18 @@ export function NameInputModal({
   showNameInput,
   readerName,
   setReaderName,
+  readerAgeInput,
+  setReaderAgeInput,
   onSubmit,
   onChooseLater
 }: NameInputModalProps) {
   if (!showNameInput) return null;
+
+  const MIN_AGE = 4;
+  const MAX_AGE = 16;
+  const parsedAge = parseInt(readerAgeInput, 10);
+  const ageValid = Number.isFinite(parsedAge) && parsedAge >= MIN_AGE && parsedAge <= MAX_AGE;
+  const canSubmit = readerName.trim().length > 0 && ageValid;
 
   return (
     <div className="modal-overlay">
@@ -44,12 +54,29 @@ export function NameInputModal({
               onChange={(e) => setReaderName(e.target.value)}
               placeholder="Enter your name..."
               className="name-input"
-              onKeyDown={(e) => e.key === 'Enter' && onSubmit()}
+              onKeyDown={(e) => e.key === 'Enter' && canSubmit && onSubmit()}
             />
+            <div className="space-y-2">
+              <p className="modal-subtitle text-center">
+                And how many years have you walked the earth?
+              </p>
+              <input
+                type="number"
+                inputMode="numeric"
+                min={MIN_AGE}
+                max={MAX_AGE}
+                value={readerAgeInput}
+                onChange={(e) => setReaderAgeInput(e.target.value)}
+                placeholder={`Your age (${MIN_AGE}–${MAX_AGE})...`}
+                className="name-input"
+                onKeyDown={(e) => e.key === 'Enter' && canSubmit && onSubmit()}
+              />
+            </div>
             <div className="space-y-3">
               <button
                 onClick={onSubmit}
-                className="submit-button"
+                disabled={!canSubmit}
+                className="submit-button disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Begin Your Journey
               </button>

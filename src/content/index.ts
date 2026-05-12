@@ -164,6 +164,19 @@ export function levelRank(level: AdaptiveLevel): number {
 }
 
 /**
+ * Map a reader's age to the appropriate adaptive level. Ages below the
+ * seed range are clamped up; ages above fruit are clamped down. The bands
+ * mirror the labels shown in Settings (seed 4–6, sprout 7–9, bloom 10–12,
+ * fruit 13+).
+ */
+export function levelForAge(age: number): AdaptiveLevel {
+  if (age <= 6) return 'seed';
+  if (age <= 9) return 'sprout';
+  if (age <= 12) return 'bloom';
+  return 'fruit';
+}
+
+/**
  * Per-level renderings of a single story beat. The beat and feeling are
  * constant across levels; only the prose changes. A level may be omitted
  * if it doesn't yet exist — the renderer falls back to the nearest available

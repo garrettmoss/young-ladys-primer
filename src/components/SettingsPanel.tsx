@@ -1,5 +1,5 @@
 import React from 'react';
-import { Feather, Eclipse, BookMarked, Bean, Sprout, Flower, Apple, LucideIcon } from 'lucide-react';
+import { Feather, Eclipse, BookMarked, Bean, Sprout, Flower, Apple, Cake, LucideIcon } from 'lucide-react';
 import { AdaptiveLevel, LEVELS } from '../content';
 
 interface SettingsPanelProps {
@@ -9,6 +9,9 @@ interface SettingsPanelProps {
   isEditingName: boolean;
   isDarkMode: boolean;
   readerLevel: AdaptiveLevel;
+  readerStartAge: number | null;
+  readerStartDate: string | null;
+  currentAge: number | null;
   contentProgressCount: number;
   onEditNameClick: () => void;
   onSettingsNameSave: () => void;
@@ -45,6 +48,9 @@ export function SettingsPanel({
   isEditingName,
   isDarkMode,
   readerLevel,
+  readerStartAge,
+  readerStartDate,
+  currentAge,
   contentProgressCount,
   onEditNameClick,
   onSettingsNameSave,
@@ -100,6 +106,25 @@ export function SettingsPanel({
           </div>
         )}
       </div>
+
+      {/* Reader Age (read-only, derived from start age + start date) */}
+      {readerStartAge != null && (
+        <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
+          <div className="flex items-center gap-3">
+            <Cake className="w-5 h-5 text-amber-700" />
+            <div>
+              <strong className="text-amber-900">Age:</strong>
+              <span className="ml-2 text-amber-800">{currentAge ?? readerStartAge}</span>
+              {currentAge != null && currentAge !== readerStartAge && (
+                <span className="ml-2 text-amber-600 text-sm">
+                  (started at {readerStartAge}
+                  {readerStartDate ? ` on ${readerStartDate}` : ''})
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Illumination Setting */}
       <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
