@@ -29,8 +29,8 @@ interface ReaderPreferences {
   readerStartAge: number | null;
   readerStartDate: string | null;
   currentAge: number | null;
-  showNameInput: boolean;
-  setShowNameInput: (show: boolean) => void;
+  showWelcome: boolean;
+  setShowWelcome: (show: boolean) => void;
   settingsNameInput: string;
   setSettingsNameInput: (name: string) => void;
   isEditingName: boolean;
@@ -80,8 +80,8 @@ export function useReaderPreferences(): ReaderPreferences {
   const [readerStartAge, setReaderStartAge] = useLocalStorage<number | null>('young-ladys-primer-reader-start-age', null);
   const [readerStartDate, setReaderStartDate] = useLocalStorage<string | null>('young-ladys-primer-reader-start-date', null);
 
-  // UI state for name input and editing
-  const [showNameInput, setShowNameInput] = useState<boolean>(false);
+  // UI state for welcome modal and inline name editing in Settings
+  const [showWelcome, setShowWelcome] = useState<boolean>(false);
   const [settingsNameInput, setSettingsNameInput] = useState<string>('');
   const [isEditingName, setIsEditingName] = useState<boolean>(false);
   const [readerAgeInput, setReaderAgeInput] = useState<string>('');
@@ -91,7 +91,7 @@ export function useReaderPreferences(): ReaderPreferences {
   // setup (e.g. a pre-age-tracking install).
   useEffect(() => {
     if (!readerName || readerStartAge == null) {
-      setShowNameInput(true);
+      setShowWelcome(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -102,7 +102,8 @@ export function useReaderPreferences(): ReaderPreferences {
       : null;
 
   /**
-   * Handle name input submission - saves name and closes modal
+   * Handle welcome-modal submission - saves name, start age, start date,
+   * and the derived initial level, then closes the modal.
    */
   const handleNameSubmit = (): void => {
     const trimmedName = readerName.trim();
@@ -113,7 +114,7 @@ export function useReaderPreferences(): ReaderPreferences {
     setReaderStartAge(parsedAge);
     setReaderStartDate(todayIso());
     setReaderLevel(levelForAge(parsedAge));
-    setShowNameInput(false);
+    setShowWelcome(false);
   };
 
   /**
@@ -123,7 +124,7 @@ export function useReaderPreferences(): ReaderPreferences {
    */
   const handleChooseLater = (): void => {
     setReaderName('Aria');
-    setShowNameInput(false);
+    setShowWelcome(false);
   };
 
   const handleDarkModeToggle = (): void => {
@@ -167,8 +168,8 @@ export function useReaderPreferences(): ReaderPreferences {
     readerStartAge,
     readerStartDate,
     currentAge,
-    showNameInput,
-    setShowNameInput,
+    showWelcome,
+    setShowWelcome,
     settingsNameInput,
     setSettingsNameInput,
     isEditingName,

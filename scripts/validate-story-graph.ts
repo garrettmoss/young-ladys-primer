@@ -52,7 +52,6 @@ const PLACEHOLDER_PREFIXES = [
  * Special actions that don't point to content nodes
  */
 const SPECIAL_ACTIONS = [
-  'change-name',
   'settings'
 ];
 

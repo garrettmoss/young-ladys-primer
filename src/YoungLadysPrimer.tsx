@@ -26,7 +26,7 @@ import { getKingdomById } from './content/kingdoms';
 import { useContentNavigation } from './hooks/useContentNavigation';
 import { useHydration } from './hooks/useHydration';
 import { useReaderPreferences } from './hooks/useReaderPreferences';
-import { Header, Footer, NameInputModal, ChoiceButton, NavigationButtons, SettingsPanel } from './components';
+import { Header, Footer, WelcomeModal, ChoiceButton, NavigationButtons, SettingsPanel } from './components';
 
 function YoungLadysPrimer() {
   // Hydration state for SSR compatibility
@@ -38,8 +38,8 @@ function YoungLadysPrimer() {
     setReaderName,
     isDarkMode,
     readerLevel,
-    showNameInput,
-    setShowNameInput,
+    showWelcome,
+    setShowWelcome,
     settingsNameInput,
     setSettingsNameInput,
     isEditingName,
@@ -119,9 +119,7 @@ function YoungLadysPrimer() {
    * @param action - The story identifier to navigate to
    */
   const handleChoice = (action: string) => {
-    if (action === 'change-name') {
-      setShowNameInput(true);
-    } else if (action === 'debug_confirm_clear_all') {
+    if (action === 'debug_confirm_clear_all') {
       // Debug action: Clear all localStorage and reload
       if (typeof window !== 'undefined') {
         localStorage.clear();
@@ -158,9 +156,9 @@ function YoungLadysPrimer() {
         {/* Ornate Header */}
         <Header contentKey={contentKey} isDarkMode={effectiveDarkMode} />
 
-        {/* Name Input Modal */}
-        <NameInputModal
-          showNameInput={showNameInput}
+        {/* Welcome Modal (first-time onboarding: name + age) */}
+        <WelcomeModal
+          showWelcome={showWelcome}
           readerName={readerName}
           setReaderName={setReaderName}
           readerAgeInput={readerAgeInput}
@@ -232,9 +230,7 @@ function YoungLadysPrimer() {
                   </p>
                 )}
                 {currentContent.choices.map((choice: Choice, index: number) => {
-                  // Special actions that don't need story content
-                  const isSpecialAction = choice.action === 'change-name';
-                  const isActionAvailable = isSpecialAction || getContent(choice.action, contentContext);
+                  const isActionAvailable = getContent(choice.action, contentContext);
                   let IconComponent = null;
                   if (contentKey === 'welcome') {
                     IconComponent = getWelcomeIcon(choice.action);

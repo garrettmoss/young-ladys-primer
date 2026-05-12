@@ -1,8 +1,8 @@
 import React from 'react';
 import { Feather } from 'lucide-react';
 
-interface NameInputModalProps {
-  showNameInput: boolean;
+interface WelcomeModalProps {
+  showWelcome: boolean;
   readerName: string;
   setReaderName: (name: string) => void;
   readerAgeInput: string;
@@ -11,16 +11,16 @@ interface NameInputModalProps {
   onChooseLater: () => void;
 }
 
-export function NameInputModal({
-  showNameInput,
+export function WelcomeModal({
+  showWelcome,
   readerName,
   setReaderName,
   readerAgeInput,
   setReaderAgeInput,
   onSubmit,
   onChooseLater
-}: NameInputModalProps) {
-  if (!showNameInput) return null;
+}: WelcomeModalProps) {
+  if (!showWelcome) return null;
 
   const MIN_AGE = 4;
   const MAX_AGE = 16;

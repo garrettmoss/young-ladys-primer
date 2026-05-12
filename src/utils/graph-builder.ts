@@ -19,7 +19,7 @@ const ENTRY_POINTS = ['welcome', 'story_princess'];
 /**
  * Special actions that don't point to content nodes
  */
-const SPECIAL_ACTIONS = ['change-name', 'settings'];
+const SPECIAL_ACTIONS = ['settings'];
 
 /**
  * Special utility pages accessed outside the normal story flow
