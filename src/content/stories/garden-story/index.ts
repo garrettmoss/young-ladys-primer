@@ -24,7 +24,7 @@ const cartographersGarden: Story = {
   entryPoint: 'garden_entrance',
   contentKeys: Object.keys(gardenStoryCollection),
   status: 'active',
-  adaptive: false
+  adaptive: true
 };
 
 export const gardenKingdom: Kingdom = {

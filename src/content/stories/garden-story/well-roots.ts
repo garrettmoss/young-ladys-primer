@@ -1,7 +1,10 @@
 export const wellRootsContent = {
   well_roots: {
     title: "What Grows Below",
-    content: ({ readerName }: { readerName: string }) => `Roots. Hundreds of them — pale, fine as thread — had broken through the well wall and hung in the air like a frozen waterfall. They pushed through cracks in the mortar, threaded between stones, reached inward and down. Every single one pointed the same way. Toward the center of the garden.
+    beat: "Halfway down she finds hundreds of warm, pale roots breaking through the well wall, all pointing toward the garden's center, pulsing with a slow rhythm she can feel in her chest — and the beetle, which has followed her down, sets its pebble at the bottom step as if marking the way.",
+    feeling: "Something has been working here for a very long time, and it has been waiting for someone to notice.",
+    adaptiveContent: {
+      fruit: ({ readerName }: { readerName: string }) => `Roots. Hundreds of them — pale, fine as thread — had broken through the well wall and hung in the air like a frozen waterfall. They pushed through cracks in the mortar, threaded between stones, reached inward and down. Every single one pointed the same way. Toward the center of the garden.
 
 ${readerName} touched one, gently. It was warm. Not sun-warm — alive-warm, the way a wrist is warm when you press your thumb to it.
 
@@ -15,7 +18,8 @@ Something moved on the step above her. The beetle. It had followed her down all 
 
 ${readerName} looked at the beetle and its pebble. She looked at the roots, all pointing the same way. She thought about the lichen grid on the wall, and the map in her pocket, and the slow pulse she could feel like a second heartbeat.
 
-Something at the center of this garden had been working for a very long time. And it had been waiting, patiently, for someone to notice.`,
+Something at the center of this garden had been working for a very long time. And it had been waiting, patiently, for someone to notice.`
+    },
     choices: [
       { text: "Follow the roots to the heart of the garden", action: "garden_heart" }
     ]

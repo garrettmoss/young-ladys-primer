@@ -1,7 +1,10 @@
 export const westernWallPath = {
   western_wall: {
     title: "The Overgrown Wall",
-    content: ({ readerName }: { readerName: string }) => `The western wall was easy to find and hard to reach.
+    beat: "She fights through brambles to reach a crumbling sandstone wall and finds a beetle watching her and a rusted iron gate behind the thorns.",
+    feeling: "Hard work gets you to interesting places.",
+    adaptiveContent: {
+      fruit: ({ readerName }: { readerName: string }) => `The western wall was easy to find and hard to reach.
 
 Brambles had swallowed it — a century of thorns growing over and through the old sandstone until the wall was more plant than stone. ${readerName} had to turn sideways and push through the last stretch with her arms over her head, which meant the thorns got her ribs instead of her hands. A fair trade, she decided, though her ribs disagreed.
 
@@ -13,7 +16,8 @@ A fat black beetle sat on the wall at eye level, perfectly still. It watched her
 
 Behind the thickest knot of brambles, she could just make out the shape of an iron gate. Rusted completely shut. The hinges had fused into solid lumps of orange.
 
-She looked at the gate. She looked at the brambles. She pushed her sleeves up, which was optimistic given the thorns, and got to work.`,
+She looked at the gate. She looked at the brambles. She pushed her sleeves up, which was optimistic given the thorns, and got to work.`
+    },
     choices: [
       { text: "Clear the brambles and open the gate", action: "clearing_path" }
     ]

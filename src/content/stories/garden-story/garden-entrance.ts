@@ -1,7 +1,10 @@
 export const gardenEntrance = {
   garden_entrance: {
     title: "The Map Inside the Primer",
-    content: ({ readerName }: { readerName: string }) => `Between two pages ${readerName} had read a dozen times before, something new appeared: a folded piece of paper, brown at the edges, soft as cloth from years of being pressed flat.
+    beat: "A folded map appears between pages of the Primer she's read before, smelling of soil, with a note saying the garden has been waiting long enough.",
+    feeling: "Some invitations find you before you know you were looking for them.",
+    adaptiveContent: {
+      fruit: ({ readerName }: { readerName: string }) => `Between two pages ${readerName} had read a dozen times before, something new appeared: a folded piece of paper, brown at the edges, soft as cloth from years of being pressed flat.
 
 It smelled like soil. That was the first strange thing — a page that smelled like outside.
 
@@ -13,7 +16,8 @@ In the bottom margin, in handwriting so small she had to squint:
 
 ${readerName} read that twice. She had the strangest feeling — not that she'd found the map, but that the map had found her. Which was ridiculous, obviously. Maps don't find people. They just sit there, being maps, until someone picks them up.
 
-She picked it up anyway.`,
+She picked it up anyway.`
+    },
     choices: [
       { text: "Start at the crumbling western wall", action: "western_wall" },
       { text: "Follow the map to the eastern grove", action: "eastern_grove" },
