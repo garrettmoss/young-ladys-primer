@@ -19,7 +19,8 @@ import { gardenStoryCollection } from '../src/content/stories/garden-story/index
 import { nanotechnologyLessons } from '../src/content/lessons/nanotechnology/index';
 import { puzzleCollection } from '../src/content/puzzles/index';
 import { getKingdomEntryPoints } from '../src/content/kingdoms';
-import type { StoryContent, Choice } from '../src/content/index';
+import { LEVELS, levelRank } from '../src/content/index';
+import type { StoryContent, Choice, AdaptiveLevel } from '../src/content/index';
 
 // === CONFIGURATION ===
 
@@ -90,6 +91,7 @@ interface ValidationReport {
   orphanDetection: ValidationIssue[];
   deadEndDetection: ValidationIssue[];
   reachabilityAnalysis: ValidationIssue[];
+  gatingValidation: ValidationIssue[];
 }
 
 // === CONTENT GRAPH BUILDER ===
@@ -270,6 +272,55 @@ function analyzeReachability(contentGraph: ContentRegistry): ValidationIssue[] {
   return issues;
 }
 
+/**
+ * Check 5: Level-Gating Validation
+ *
+ * For each adaptive level, simulate the runtime choice filter (drop any
+ * choice whose target has a minLevel above the reader's tier) and verify
+ * every reachable non-ending node still has at least one forward path.
+ *
+ * Catches the original "only-choice-points-to-gated-node" case AND the
+ * subtler "all choices gated for this level" case in one pass. Without
+ * this check, a lower-level reader could land on a non-ending node with
+ * zero outgoing choices and have no way to continue.
+ *
+ * Nodes whose own minLevel excludes the current reader aren't checked —
+ * they were already filtered out at the parent. Endings (no choices to
+ * begin with) are skipped.
+ */
+function validateGating(contentGraph: ContentRegistry): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+
+  for (const level of LEVELS) {
+    const readerRank = levelRank(level);
+
+    for (const [contentId, content] of Object.entries(contentGraph)) {
+      // Skip endings (no choices to filter)
+      if (!content.choices || content.choices.length === 0) continue;
+
+      // Skip nodes the reader can't see in the first place
+      if (content.minLevel && levelRank(content.minLevel) > readerRank) continue;
+
+      const survivingChoices = content.choices.filter(choice => {
+        const target = contentGraph[choice.action];
+        if (!target?.minLevel) return true;
+        return levelRank(target.minLevel) <= readerRank;
+      });
+
+      if (survivingChoices.length === 0) {
+        issues.push({
+          type: 'error',
+          message: `Node '${contentId}' has no surviving choices at level '${level}' — every outgoing path is gated above the reader's tier`,
+          contentId,
+          location: contentId
+        });
+      }
+    }
+  }
+
+  return issues;
+}
+
 // === OUTPUT FORMATTING ===
 
 /**
@@ -359,8 +410,20 @@ function printReport(report: ValidationReport): void {
   }
   console.log();
 
+  // Level-Gating Validation
+  const gatingErrors = report.gatingValidation.filter(i => i.type === 'error');
+  if (gatingErrors.length === 0) {
+    console.log(colors.green + '✓' + colors.reset + ' Level-Gating Validation: PASSED');
+  } else {
+    console.log(colors.red + '✗' + colors.reset + ' Level-Gating Validation: ' + colors.red + gatingErrors.length + ' ERRORS' + colors.reset);
+    gatingErrors.forEach(issue => console.log(formatIssue(issue)));
+  }
+  console.log();
+
   // Summary
-  const totalErrors = report.referenceValidation.filter(i => i.type === 'error').length;
+  const totalErrors =
+    report.referenceValidation.filter(i => i.type === 'error').length +
+    report.gatingValidation.filter(i => i.type === 'error').length;
   const totalWarnings =
     report.referenceValidation.filter(i => i.type === 'warning').length +
     report.orphanDetection.length +
@@ -386,13 +449,16 @@ function main() {
     referenceValidation: validateReferences(contentGraph),
     orphanDetection: detectOrphans(contentGraph),
     deadEndDetection: detectDeadEnds(contentGraph),
-    reachabilityAnalysis: analyzeReachability(contentGraph)
+    reachabilityAnalysis: analyzeReachability(contentGraph),
+    gatingValidation: validateGating(contentGraph)
   };
 
   printReport(report);
 
-  // Exit with error code if there are errors
-  const hasErrors = report.referenceValidation.some(i => i.type === 'error');
+  // Exit with error code if there are errors in any check
+  const hasErrors =
+    report.referenceValidation.some(i => i.type === 'error') ||
+    report.gatingValidation.some(i => i.type === 'error');
   process.exit(hasErrors ? 1 : 0);
 }
 
