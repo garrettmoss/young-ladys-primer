@@ -252,9 +252,31 @@ export const getContent = (contentKey: string, context: ContentContext): Process
   return {
     title: content.title,
     content: formatContent(rawContent),
-    choices: content.choices,
+    choices: filterChoicesByLevel(content.choices, context.currentLevel),
   };
 };
+
+/**
+ * Drop any choices whose target node has a minLevel above the reader's
+ * current tier. The reader sees fewer doors, never a locked one — the
+ * gated path simply isn't visible. Choices to keys that don't exist in
+ * the registry pass through (validator catches those).
+ *
+ * If currentLevel isn't set we treat the reader as `fruit` (the top tier),
+ * which sees every door — matches the renderer's fall-through default.
+ */
+function filterChoicesByLevel(
+  choices: Choice[] | undefined,
+  currentLevel: AdaptiveLevel | undefined
+): Choice[] | undefined {
+  if (!choices) return choices;
+  const readerRank = levelRank(currentLevel ?? 'fruit');
+  return choices.filter(choice => {
+    const target = allContent[choice.action];
+    if (!target?.minLevel) return true;
+    return levelRank(target.minLevel) <= readerRank;
+  });
+}
 
 const MISSING_CONTENT_FALLBACK = 'This page hasn\'t grown yet.';
 
