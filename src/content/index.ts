@@ -177,6 +177,29 @@ export function levelForAge(age: number): AdaptiveLevel {
 }
 
 /**
+ * Signals the adaptive engine uses to recommend a reader level.
+ * Today: just age. Future: reading speed, choice patterns, time-on-page,
+ * recent confusion signals, etc. Add fields here as the engine grows.
+ */
+export interface ReaderSignals {
+  age: number;
+}
+
+/**
+ * Recommend an adaptive level for a reader given the current signals.
+ * Hooks should call this rather than levelForAge directly — it's the
+ * single source of truth for "what level should this reader be on?"
+ * and it'll grow smarter over time without changing its call sites.
+ *
+ * DESIGN: age is the anchor; level is the dial. This function maps
+ * anchor → suggested dial. The reverse coupling does not exist — manual
+ * level overrides in Settings do not propagate back to age.
+ */
+export function recommendLevel(signals: ReaderSignals): AdaptiveLevel {
+  return levelForAge(signals.age);
+}
+
+/**
  * Per-level renderings of a single story beat. The beat and feeling are
  * constant across levels; only the prose changes. A level may be omitted
  * if it doesn't yet exist — the renderer falls back to the nearest available

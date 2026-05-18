@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocalStorage } from './useLocalStorage';
-import { AdaptiveLevel, levelForAge } from '../content';
+import { AdaptiveLevel, recommendLevel } from '../content';
 
 /**
  * The Primer tracks the reader along three independent axes:
@@ -142,7 +142,7 @@ export function useReaderPreferences(): ReaderPreferences {
     setReaderStartAge(parsedAge);
     setReaderStartDate(today);
     setAgeRevisedDate(today);
-    setReaderLevel(levelForAge(parsedAge));
+    setReaderLevel(recommendLevel({ age: parsedAge }));
     setShowWelcome(false);
   };
 
@@ -203,6 +203,7 @@ export function useReaderPreferences(): ReaderPreferences {
     if (!Number.isFinite(parsedAge) || parsedAge < MIN_READER_AGE || parsedAge > MAX_READER_AGE) return;
     setReaderStartAge(parsedAge);
     setAgeRevisedDate(todayIso());
+    setReaderLevel(recommendLevel({ age: parsedAge }));
     setIsEditingAge(false);
   };
 
