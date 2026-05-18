@@ -48,7 +48,14 @@ function YoungLadysPrimer() {
     setReaderAgeInput,
     readerStartAge,
     readerStartDate,
+    ageRevisedDate,
     currentAge,
+    settingsAgeInput,
+    setSettingsAgeInput,
+    isEditingAge,
+    handleEditAgeClick,
+    handleSettingsAgeSave,
+    handleCancelAgeEdit,
     handleNameSubmit,
     handleChooseLater,
     handleDarkModeToggle,
@@ -204,11 +211,18 @@ function YoungLadysPrimer() {
                 readerLevel={effectiveReaderLevel}
                 readerStartAge={readerStartAge}
                 readerStartDate={readerStartDate}
+                ageRevisedDate={ageRevisedDate}
                 currentAge={currentAge}
+                settingsAgeInput={settingsAgeInput}
+                setSettingsAgeInput={setSettingsAgeInput}
+                isEditingAge={isEditingAge}
                 contentProgressCount={Object.keys(contentProgress).length}
                 onEditNameClick={handleEditNameClick}
                 onSettingsNameSave={handleSettingsNameSave}
                 onCancelNameEdit={handleCancelNameEdit}
+                onEditAgeClick={handleEditAgeClick}
+                onSettingsAgeSave={handleSettingsAgeSave}
+                onCancelAgeEdit={handleCancelAgeEdit}
                 onDarkModeToggle={handleDarkModeToggle}
                 onReaderLevelSelect={handleReaderLevelSelect}
               />

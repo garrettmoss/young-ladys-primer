@@ -1,6 +1,7 @@
 import React from 'react';
 import { Feather, Eclipse, BookMarked, Bean, Sprout, Flower, Apple, Cake, LucideIcon } from 'lucide-react';
 import { AdaptiveLevel, LEVELS } from '../content';
+import { MIN_READER_AGE, MAX_READER_AGE } from '../hooks/useReaderPreferences';
 
 interface SettingsPanelProps {
   readerName: string;
@@ -11,11 +12,18 @@ interface SettingsPanelProps {
   readerLevel: AdaptiveLevel;
   readerStartAge: number | null;
   readerStartDate: string | null;
+  ageRevisedDate: string | null;
   currentAge: number | null;
+  settingsAgeInput: string;
+  setSettingsAgeInput: (value: string) => void;
+  isEditingAge: boolean;
   contentProgressCount: number;
   onEditNameClick: () => void;
   onSettingsNameSave: () => void;
   onCancelNameEdit: () => void;
+  onEditAgeClick: () => void;
+  onSettingsAgeSave: () => void;
+  onCancelAgeEdit: () => void;
   onDarkModeToggle: () => void;
   onReaderLevelSelect: (level: AdaptiveLevel) => void;
 }
@@ -50,11 +58,18 @@ export function SettingsPanel({
   readerLevel,
   readerStartAge,
   readerStartDate,
+  ageRevisedDate,
   currentAge,
+  settingsAgeInput,
+  setSettingsAgeInput,
+  isEditingAge,
   contentProgressCount,
   onEditNameClick,
   onSettingsNameSave,
   onCancelNameEdit,
+  onEditAgeClick,
+  onSettingsAgeSave,
+  onCancelAgeEdit,
   onDarkModeToggle,
   onReaderLevelSelect
 }: SettingsPanelProps) {
@@ -111,22 +126,64 @@ export function SettingsPanel({
         )}
       </div>
 
-      {/* Reader Age (read-only, derived from start age + start date) */}
+      {/* Reader Age — editable. Saving overwrites readerStartAge and resets
+          ageRevisedDate; readerStartDate (onboarding date) is preserved. */}
       {readerStartAge != null && (
         <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
-          <div className="flex items-center gap-3">
-            <Cake className="w-5 h-5 text-amber-700" />
-            <div>
-              <strong className="text-amber-900">Age:</strong>
-              <span className="ml-2 text-amber-800">{currentAge ?? readerStartAge}</span>
-              {currentAge != null && currentAge !== readerStartAge && (
-                <span className="ml-2 text-amber-600 text-sm">
-                  (started at {readerStartAge}
-                  {readerStartDate ? ` on ${readerStartDate}` : ''})
-                </span>
-              )}
+          {!isEditingAge ? (
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Cake className="w-5 h-5 text-amber-700" />
+                <div>
+                  <strong className="text-amber-900">Age:</strong>
+                  <span className="ml-2 text-amber-800">{currentAge ?? readerStartAge}</span>
+                  {currentAge != null && currentAge !== readerStartAge && ageRevisedDate && (
+                    <span className="ml-2 text-amber-600 text-sm">
+                      (last set at {readerStartAge} on {ageRevisedDate})
+                    </span>
+                  )}
+                </div>
+              </div>
+              <button
+                onClick={onEditAgeClick}
+                className="py-1 px-4 text-sm bg-amber-600 text-amber-50 rounded hover:bg-amber-700 transition-colors font-serif"
+              >
+                Edit
+              </button>
             </div>
-          </div>
+          ) : (
+            <div className="flex items-center gap-3">
+              <strong className="text-amber-900 whitespace-nowrap">Age:</strong>
+              <input
+                type="number"
+                inputMode="numeric"
+                min={MIN_READER_AGE}
+                max={MAX_READER_AGE}
+                value={settingsAgeInput}
+                onChange={(e) => setSettingsAgeInput(e.target.value)}
+                placeholder={`${MIN_READER_AGE}–${MAX_READER_AGE}`}
+                className="name-input flex-1"
+                onKeyDown={(e) => e.key === 'Enter' && onSettingsAgeSave()}
+              />
+              <button
+                onClick={onSettingsAgeSave}
+                className="py-2 px-4 bg-amber-700 text-amber-50 rounded hover:bg-amber-800 transition-colors font-serif whitespace-nowrap"
+              >
+                Save
+              </button>
+              <button
+                onClick={onCancelAgeEdit}
+                className="py-2 px-4 border border-amber-300 text-amber-700 bg-transparent rounded hover:bg-amber-50/20 transition-colors font-serif whitespace-nowrap"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+          {!isEditingAge && readerStartDate && (
+            <div className="mt-2 ml-8 text-xs text-amber-600 italic">
+              First met the Primer on {readerStartDate}
+            </div>
+          )}
         </div>
       )}
 

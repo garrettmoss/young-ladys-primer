@@ -3,20 +3,24 @@ import { useLocalStorage } from './useLocalStorage';
 import { AdaptiveLevel, levelForAge } from '../content';
 
 /**
- * The Primer models three distinct things about the reader, intentionally
- * decoupled so they can evolve independently:
+ * The Primer tracks the reader along three independent axes:
  *
- *   readerStartAge   — age at onboarding. Anchor. Never changes.
- *   readerStartDate  — ISO date (YYYY-MM-DD) of onboarding. Combined with
- *                      start age, lets us derive current age as time passes.
+ *   readerStartAge   — the age value last asserted by the reader. Set at
+ *                      onboarding and overwritten if they later edit it.
+ *   readerStartDate  — ISO date the reader first met the Primer. Set once
+ *                      at onboarding, never changes. Sentimental + historical
+ *                      ("you've been reading the Primer for 2 years").
+ *   ageRevisedDate   — ISO date the age was last asserted. Equal to
+ *                      readerStartDate at onboarding; diverges if the reader
+ *                      edits their age in Settings. The current-age math
+ *                      anchors here, NOT to start date — so a 6-year-old who
+ *                      corrects their age to 8 a year later will be treated
+ *                      as 8 today and bump to 9 a year from that correction.
  *   readerLevel      — active adaptive tier. Initially derived from start
  *                      age, but the reader (or future adaptive engine) may
- *                      shift it freely without touching the start values.
+ *                      shift it freely without touching the age values.
  *
- * `currentAge` is derived, not stored — if start age and start date exist,
- * we add elapsed full years. This way a reader who joins at 6 will see the
- * Primer treat them as 7 once a year has passed, even if their level has
- * been manually overridden.
+ * `currentAge` is derived: readerStartAge + yearsSince(ageRevisedDate).
  */
 interface ReaderPreferences {
   readerName: string;
@@ -28,6 +32,7 @@ interface ReaderPreferences {
   handleReaderLevelSelect: (level: AdaptiveLevel) => void;
   readerStartAge: number | null;
   readerStartDate: string | null;
+  ageRevisedDate: string | null;
   currentAge: number | null;
   showWelcome: boolean;
   setShowWelcome: (show: boolean) => void;
@@ -37,12 +42,19 @@ interface ReaderPreferences {
   setIsEditingName: (isEditing: boolean) => void;
   readerAgeInput: string;
   setReaderAgeInput: (age: string) => void;
+  settingsAgeInput: string;
+  setSettingsAgeInput: (age: string) => void;
+  isEditingAge: boolean;
+  setIsEditingAge: (isEditing: boolean) => void;
   handleNameSubmit: () => void;
   handleChooseLater: () => void;
   handleDarkModeToggle: () => void;
   handleEditNameClick: () => void;
   handleSettingsNameSave: () => void;
   handleCancelNameEdit: () => void;
+  handleEditAgeClick: () => void;
+  handleSettingsAgeSave: () => void;
+  handleCancelAgeEdit: () => void;
 }
 
 export const MIN_READER_AGE = 4;
@@ -79,12 +91,15 @@ export function useReaderPreferences(): ReaderPreferences {
   const [readerLevel, setReaderLevel] = useLocalStorage<AdaptiveLevel>('young-ladys-primer-reader-level', 'seed');
   const [readerStartAge, setReaderStartAge] = useLocalStorage<number | null>('young-ladys-primer-reader-start-age', null);
   const [readerStartDate, setReaderStartDate] = useLocalStorage<string | null>('young-ladys-primer-reader-start-date', null);
+  const [ageRevisedDate, setAgeRevisedDate] = useLocalStorage<string | null>('young-ladys-primer-age-revised-date', null);
 
-  // UI state for welcome modal and inline name editing in Settings
+  // UI state for welcome modal and inline editing in Settings
   const [showWelcome, setShowWelcome] = useState<boolean>(false);
   const [settingsNameInput, setSettingsNameInput] = useState<string>('');
   const [isEditingName, setIsEditingName] = useState<boolean>(false);
   const [readerAgeInput, setReaderAgeInput] = useState<string>('');
+  const [settingsAgeInput, setSettingsAgeInput] = useState<string>('');
+  const [isEditingAge, setIsEditingAge] = useState<boolean>(false);
 
   // Re-prompt if either name or start age is missing. The two are set
   // together at onboarding, so a missing start age means an incomplete
@@ -96,9 +111,14 @@ export function useReaderPreferences(): ReaderPreferences {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Anchor age math to ageRevisedDate so edits in Settings restart the
+  // year clock. Fall back to readerStartDate for installs that predate
+  // ageRevisedDate (it gets filled in next time the reader edits or
+  // re-onboards).
+  const ageAnchor = ageRevisedDate ?? readerStartDate;
   const currentAge: number | null =
-    readerStartAge != null && readerStartDate
-      ? readerStartAge + yearsSince(readerStartDate)
+    readerStartAge != null && ageAnchor
+      ? readerStartAge + yearsSince(ageAnchor)
       : null;
 
   /**
@@ -110,9 +130,11 @@ export function useReaderPreferences(): ReaderPreferences {
     if (!trimmedName) return;
     const parsedAge = parseInt(readerAgeInput, 10);
     if (!Number.isFinite(parsedAge) || parsedAge < MIN_READER_AGE || parsedAge > MAX_READER_AGE) return;
+    const today = todayIso();
     setReaderName(trimmedName);
     setReaderStartAge(parsedAge);
-    setReaderStartDate(todayIso());
+    setReaderStartDate(today);
+    setAgeRevisedDate(today);
     setReaderLevel(levelForAge(parsedAge));
     setShowWelcome(false);
   };
@@ -157,6 +179,31 @@ export function useReaderPreferences(): ReaderPreferences {
     setSettingsNameInput('');
   };
 
+  const handleEditAgeClick = (): void => {
+    // Seed the input with the reader's current displayed age, not their
+    // original start age — that's what they see and what they're correcting.
+    setSettingsAgeInput(String(currentAge ?? readerStartAge ?? ''));
+    setIsEditingAge(true);
+  };
+
+  /**
+   * Saving an edited age overwrites readerStartAge and resets
+   * ageRevisedDate to today. readerStartDate is intentionally left alone
+   * — that's the "first met the Primer" anchor and never changes.
+   */
+  const handleSettingsAgeSave = (): void => {
+    const parsedAge = parseInt(settingsAgeInput, 10);
+    if (!Number.isFinite(parsedAge) || parsedAge < MIN_READER_AGE || parsedAge > MAX_READER_AGE) return;
+    setReaderStartAge(parsedAge);
+    setAgeRevisedDate(todayIso());
+    setIsEditingAge(false);
+  };
+
+  const handleCancelAgeEdit = (): void => {
+    setIsEditingAge(false);
+    setSettingsAgeInput('');
+  };
+
   return {
     readerName,
     setReaderName,
@@ -167,6 +214,7 @@ export function useReaderPreferences(): ReaderPreferences {
     handleReaderLevelSelect,
     readerStartAge,
     readerStartDate,
+    ageRevisedDate,
     currentAge,
     showWelcome,
     setShowWelcome,
@@ -176,11 +224,18 @@ export function useReaderPreferences(): ReaderPreferences {
     setIsEditingName,
     readerAgeInput,
     setReaderAgeInput,
+    settingsAgeInput,
+    setSettingsAgeInput,
+    isEditingAge,
+    setIsEditingAge,
     handleNameSubmit,
     handleChooseLater,
     handleDarkModeToggle,
     handleEditNameClick,
     handleSettingsNameSave,
     handleCancelNameEdit,
+    handleEditAgeClick,
+    handleSettingsAgeSave,
+    handleCancelAgeEdit,
   };
 }
