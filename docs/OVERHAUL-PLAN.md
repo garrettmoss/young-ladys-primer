@@ -30,11 +30,26 @@ Added `content/core/story-select.ts` — an intermediate screen between welcome 
 - `garden_entrance` tone-check node written and approved (2026-04-04).
 - Western wall path written: 6 nodes (`western_wall`, `clearing_path`, `wall_lunch`, `lichen_grid`, `old_well`, `well_roots`) (2026-04-10).
 
-**Known issue with the western wall prose**: written at Fruit-level (~150–200 words per node) rather than the short page-turner beats intended. An earlier session was asked to "split into 6 shorter pages" and instead produced 6 longer pages. This prose will be replaced, not trimmed — see Phase 2 below.
+**Known issue with the western wall prose**: written at Fruit-level (~150–200 words per node) rather than the short page-turner beats intended. An earlier session was asked to "split into 6 shorter pages" and instead produced 6 longer pages. The prose has been wrapped into the adaptive shape (`adaptiveContent: { fruit }`) and the beat + feeling for each node have been extracted into [docs/implementations/garden-rewrite.md](implementations/garden-rewrite.md), so the rewrite-from-Seed work can begin. See Phase 2 below.
 
 ### ✅ Phase 0d: Adaptive content architecture design (2026-04-10)
 
 Designed the Seed → Sprout → Bloom → Fruit adaptive content model. Theme is the heart, not decoration. See Phase 3 below for implementation.
+
+### ✅ Phase 3a: Adaptive types, renderer, selector, filter, validator (2026-05-18)
+
+Shipped the full adaptive-content infrastructure. The garden kingdom now runs on adaptive rails; existing Fruit-level prose plays unchanged, and Seed/Sprout/Bloom slots are ready to be filled in Phase 2.
+
+**Delivered:**
+- `AdaptiveLevel` tuple + `levelRank()` helper, `AdaptiveContent` interface, and `beat`/`feeling`/`adaptiveContent`/`minLevel` fields on `StoryContent` in `src/content/index.ts`.
+- `getContent()` routes through `resolveContentText()`: adaptive stories read `adaptiveContent[level]`; plain stories use the legacy `content` field. Polite in-world fallback (`"This page hasn't grown yet."`) when a level is missing.
+- `useReaderPreferences` persists `readerLevel` (default seeded from onboarding age via `levelForAge`). New `SettingsPanel` slider control with plant-stage icons (Bean / Sprout / Flower / Apple) and dark-mode styling.
+- Welcome modal collects reader age and derives initial level. Settings allows editing age with a separate revised-date anchor for current-age math.
+- `filterChoicesByLevel()` silently drops choices whose target node has `minLevel` above the reader's tier — the Primer reveals without highlighting what it withholds.
+- New validator check (`validateGating`) simulates the runtime filter at every level and fails if any non-ending node ends up with zero forward paths for some reader tier.
+- 7 garden nodes (entrance + western wall path) wrapped: each declares `beat` + `feeling` and moves prose into `adaptiveContent: { fruit }`. `cartographers-garden` story flipped to `adaptive: true`.
+
+Phase 2 (Seed + Sprout prose for the 7 nodes) and Phase 3b (Bloom + Fruit fill-in) build on top of this.
 
 ### ✅ Phase 1: Kingdoms and Stories (2026-04-16)
 
@@ -53,9 +68,9 @@ Both kingdoms still playable with no prose changes. Pre-existing `garden_heart` 
 
 ## Phase 2: Rewrite Garden From Seed
 
-**Status**: Not started
+**Status**: Ready to start (skeletons extracted, adaptive shape in place)
 **Estimated effort**: 1 session
-**Dependencies**: Phase 1
+**Dependencies**: Phase 1, Phase 3a (both ✅)
 
 ### The problem
 
@@ -71,7 +86,7 @@ For each existing garden node:
 
 This is deliberately destructive to current prose. You've said you're not attached to it, and the discipline of Seed-first ("if the beat doesn't work in 4 sentences, the beat is wrong") is what we're trying to build.
 
-This phase depends on Phase 3a (adaptive types) being wired up — so technically Phase 2 runs *after* Phase 3a. Keeping it numbered 2 because it's scoped to existing garden content; Phase 3b extends the same work to Bloom/Fruit and remaining nodes.
+Phase 3a (adaptive types + renderer + selector + filter + validator) is already wired up. Each of the 7 nodes has a `beat`, `feeling`, and an `adaptiveContent: { fruit }` slot waiting for `seed` and `sprout` keys to be added. Skeletons live in [docs/implementations/garden-rewrite.md](implementations/garden-rewrite.md).
 
 ### Existing nodes to rewrite (all in garden kingdom)
 
@@ -100,9 +115,9 @@ This phase depends on Phase 3a (adaptive types) being wired up — so technicall
 
 ## Phase 3: Adaptive Content (Seed → Fruit)
 
-**Status**: Designed (Phase 0d), implementation not started
-**Estimated effort**: 2 sessions (types + POC, then remaining renderings)
-**Dependencies**: Phase 1
+**Status**: Phase 3a ✅ shipped (2026-05-18). Phase 3b pending Phase 2.
+**Estimated effort**: 1 more session (Phase 3b: Bloom + remaining Fruit, after Phase 2 Seed + Sprout).
+**Dependencies**: Phase 1 ✅
 
 ### Core principle
 
@@ -184,14 +199,10 @@ Practical implications:
 
 ### Implementation sub-phases
 
-**Phase 3a — Types + renderer + legacy fallback (1 session):**
-- Add `StoryBeat` and `AdaptiveContent` interfaces to `src/content/index.ts`.
-- Build renderer that switches on `story.adaptive`: true → pick level from `AdaptiveContent`, false → use plain `content` field (dragon kingdom keeps working).
-- Add level selector to reader settings (manual for now).
-- Scope: garden kingdom only. Dragon kingdom renders via fallback path.
+**Phase 3a ✅ shipped (2026-05-18)** — see the completed-work entry above for the full list. Headline: adaptive types, level-aware renderer with polite fallback, slider-style settings selector (icons + dark mode), age-aware onboarding, silent choice filtering, and a 5th validator check for gating-induced dead ends. The 7 western-wall nodes were wrapped into adaptive shape with their existing Fruit prose preserved.
 
-**Phase 3b — Fill in Bloom + Fruit for existing garden nodes (1 session):**
-- After Phase 2 (Seed + Sprout for the 7 existing nodes), layer up to Bloom and Fruit.
+**Phase 3b — Fill in Bloom + remaining levels for existing garden nodes (1 session):**
+- After Phase 2 (Seed + Sprout for the 7 existing nodes), layer up to Bloom. Fruit already exists from the original prose.
 - Not every node needs all four levels if the beat doesn't warrant it — be honest about when Fruit adds genuine value vs. just more words.
 
 ### Writing workflow (the discipline)
@@ -419,11 +430,11 @@ Maps to **DPO (Direct Preference Optimization)** — retraining with reader enga
 | Order | Phase | Sessions | Dependencies |
 |-------|-------|----------|-------------|
 | 1 | ✅ Phase 1: Kingdoms + Stories | 1 | None |
-| 2 | Phase 3a: Adaptive types + renderer | 1 | Phase 1 |
-| 3 | Phase 2: Rewrite garden from Seed | 1 | Phase 3a |
-| 4 | Phase 4: Library screen | 1 | Phase 1 |
-| 5 | Phase 3b: Bloom + Fruit for existing nodes | 1 | Phase 2 |
-| 6 | Phase 5: Write remaining garden nodes | 2-3 | Phases 3b + 4 |
+| 2 | ✅ Phase 3a: Adaptive types + renderer + selector + filter + validator | 1 | Phase 1 |
+| 3 | ✅ Phase 4: Library screen | 1 | Phase 1 |
+| 4 | Phase 2: Rewrite garden from Seed (Seed + Sprout for 7 nodes) | 1 | Phase 3a |
+| 5 | Phase 3b: Bloom for existing nodes | 1 | Phase 2 |
+| 6 | Phase 5: Write remaining garden nodes (eastern grove, map study, convergence, philosophical, resolution) | 2-3 | Phases 3b + 4 |
 | 7 | Phase 6: Flow visualizer | 2 | Phases 1-5 |
 | 8 | Phase 7: Context expansion | 1 | Phase 5 |
 | 9 | Phase 8: ML pipeline | Ongoing | Phases 3 + 5 complete |

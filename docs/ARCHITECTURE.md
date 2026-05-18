@@ -103,7 +103,10 @@ export const storyName = {
 **Context Destructuring Pattern:**
 - Functions destructure only the variables they need from ContentContext
 - Static content can use empty arrow functions: `content: () => "Static text"`
-- Future adaptive variables (readingLevel, choiceHistory, etc.) can be added without changing existing content
+- ContentContext currently carries `readerName` and `currentLevel` (the adaptive tier). Future variables (`choiceHistory`, etc.) can be added without breaking existing content.
+
+**Adaptive Content:**
+Stories marked `adaptive: true` use the `adaptiveContent: { seed?, sprout?, bloom?, fruit? }` shape instead of the legacy single `content` string. Each node also carries a `beat` (one sentence: what happens) and `feeling` (one sentence: why it matters) that stay constant across levels. See [OVERHAUL-PLAN.md](OVERHAUL-PLAN.md) Phase 3 for the full model. Optional `minLevel` gates a node above a reader's tier; the renderer silently filters such choices.
 
 ### Content Registration
 All content is registered in `src/content/index.js`:

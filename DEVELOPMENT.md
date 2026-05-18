@@ -71,10 +71,10 @@ export const storyName = {
 
 **Key Points:**
 - Functions destructure variables from `ContentContext` object
-- Only extract what's needed: `({ readerName })` or `({ readerName, readingLevel })`
+- Only extract what's needed: `({ readerName })` or `({ readerName, currentLevel })`
 - Static content uses empty function: `content: () => "Static text"`
-- Future variables (readingLevel, choiceHistory, completedStories) can be added to ContentContext without changing existing content
-- See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for complete examples
+- ContentContext currently carries `readerName` and `currentLevel` (the adaptive tier: `'seed' | 'sprout' | 'bloom' | 'fruit'`). Future variables (`choiceHistory`, `completedStories`, etc.) can be added without breaking existing content.
+- For adaptive stories, the node uses `adaptiveContent: { seed?, sprout?, bloom?, fruit? }` instead of a single `content` string. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for complete examples.
 
 ## Versioning
 

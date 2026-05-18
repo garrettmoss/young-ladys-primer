@@ -23,7 +23,7 @@ Before any prose gets written:
 ## Next steps after review
 
 1. You sign off (or revise) these skeletons.
-2. Follow-up session: introduce `StoryBeat` / `AdaptiveContent` types (Phase 3a), then write Seed + Sprout for these 7 nodes (Phase 2). Bloom and Fruit come later (Phase 3b).
+2. Phase 3a shipped (2026-05-18): types, renderer, level-aware settings selector, choice filter, validator, and the 7 nodes wrapped into adaptive shape with their existing prose preserved as `fruit`. Next session: write Seed + Sprout for these 7 nodes (Phase 2). Bloom comes later (Phase 3b).
 3. Same beat + feeling discipline applied to the unwritten paths (eastern grove, map study, convergence, philosophical paths, resolution) when they get written.
 
 ---
@@ -83,9 +83,9 @@ Before any prose gets written:
 
 Some beats in this story may not exist for all readers — see [OVERHAUL-PLAN.md:193](../OVERHAUL-PLAN.md#L193) for the original "do some beats exist only at higher levels?" question. The answer we've landed on: **yes, and that's the point**. Different readers should get genuinely different stories that are each cohesive, not the same story dumbed down.
 
-Mechanism (to be added in Phase 3a): a `minLevel?: AdaptiveLevel` field on `StoryBeat`. The renderer filters out choices that lead to nodes the reader can't access. The reader sees fewer doors, never a locked door.
+Mechanism (shipped in Phase 3a): a `minLevel?: AdaptiveLevel` field on `StoryContent`. The renderer filters out choices that lead to nodes the reader can't access. The reader sees fewer doors, never a locked door.
 
-Safety rail: a content-validator check that fails if `minLevel` is set on a node whose predecessor has only one outgoing choice — that would create an unreachable path for lower-level readers and break the story flow.
+Safety rail (shipped in Phase 3a): the content validator's `validateGating` check simulates the filter at every level and fails if any non-ending node ends up with zero forward paths for some reader tier.
 
 ### Probable gates on the western wall path
 
