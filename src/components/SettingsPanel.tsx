@@ -1,7 +1,7 @@
 import React from 'react';
 import { Feather, Eclipse, BookMarked, Bean, Sprout, Flower, Apple, Cake, LucideIcon } from 'lucide-react';
 import { AdaptiveLevel, LEVELS } from '../content';
-import { MIN_READER_AGE, MAX_READER_AGE } from '../hooks/useReaderPreferences';
+import { MIN_READER_AGE, MAX_READER_AGE, RECOMMENDED_MIN_AGE, RECOMMENDED_MAX_AGE } from '../hooks/useReaderPreferences';
 
 interface SettingsPanelProps {
   readerName: string;
@@ -161,7 +161,7 @@ export function SettingsPanel({
                 max={MAX_READER_AGE}
                 value={settingsAgeInput}
                 onChange={(e) => setSettingsAgeInput(e.target.value)}
-                placeholder={`${MIN_READER_AGE}–${MAX_READER_AGE}`}
+                placeholder={`${RECOMMENDED_MIN_AGE}–${RECOMMENDED_MAX_AGE}`}
                 className="name-input flex-1"
                 onKeyDown={(e) => e.key === 'Enter' && onSettingsAgeSave()}
               />
@@ -179,9 +179,12 @@ export function SettingsPanel({
               </button>
             </div>
           )}
-          {!isEditingAge && readerStartDate && (
-            <div className="mt-2 ml-8 text-xs text-amber-600 italic">
-              First met the Primer on {readerStartDate}
+          {!isEditingAge && (
+            <div className="mt-2 ml-8 text-sm text-amber-600 italic space-y-0.5">
+              <div>Recommended for ages {RECOMMENDED_MIN_AGE}–{RECOMMENDED_MAX_AGE}.</div>
+              {readerStartDate && (
+                <div>First met the Primer on {readerStartDate}</div>
+              )}
             </div>
           )}
         </div>

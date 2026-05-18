@@ -57,8 +57,15 @@ interface ReaderPreferences {
   handleCancelAgeEdit: () => void;
 }
 
-export const MIN_READER_AGE = 4;
-export const MAX_READER_AGE = 16;
+// Hard bounds: rejected by validation. Wide enough to accept curious
+// toddlers and adults, narrow enough to catch obvious typos.
+export const MIN_READER_AGE = 1;
+export const MAX_READER_AGE = 120;
+
+// Soft bounds: the design's intended audience. Used for advisory copy,
+// not enforcement. Out-of-range readers still get a level via levelForAge().
+export const RECOMMENDED_MIN_AGE = 4;
+export const RECOMMENDED_MAX_AGE = 16;
 
 /**
  * Compute full years elapsed between an ISO date string and today.

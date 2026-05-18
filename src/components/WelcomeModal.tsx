@@ -1,5 +1,6 @@
 import React from 'react';
 import { Feather } from 'lucide-react';
+import { MIN_READER_AGE, MAX_READER_AGE, RECOMMENDED_MIN_AGE, RECOMMENDED_MAX_AGE } from '../hooks/useReaderPreferences';
 
 interface WelcomeModalProps {
   showWelcome: boolean;
@@ -22,10 +23,9 @@ export function WelcomeModal({
 }: WelcomeModalProps) {
   if (!showWelcome) return null;
 
-  const MIN_AGE = 4;
-  const MAX_AGE = 16;
   const parsedAge = parseInt(readerAgeInput, 10);
-  const ageValid = Number.isFinite(parsedAge) && parsedAge >= MIN_AGE && parsedAge <= MAX_AGE;
+  const ageValid = Number.isFinite(parsedAge) && parsedAge >= MIN_READER_AGE && parsedAge <= MAX_READER_AGE;
+  const ageOutsideRecommended = ageValid && (parsedAge < RECOMMENDED_MIN_AGE || parsedAge > RECOMMENDED_MAX_AGE);
   const canSubmit = readerName.trim().length > 0 && ageValid;
 
   return (
@@ -63,14 +63,19 @@ export function WelcomeModal({
               <input
                 type="number"
                 inputMode="numeric"
-                min={MIN_AGE}
-                max={MAX_AGE}
+                min={MIN_READER_AGE}
+                max={MAX_READER_AGE}
                 value={readerAgeInput}
                 onChange={(e) => setReaderAgeInput(e.target.value)}
-                placeholder={`Your age (${MIN_AGE}–${MAX_AGE})...`}
+                placeholder={`Your age (${RECOMMENDED_MIN_AGE}–${RECOMMENDED_MAX_AGE})...`}
                 className="name-input"
                 onKeyDown={(e) => e.key === 'Enter' && canSubmit && onSubmit()}
               />
+              {ageOutsideRecommended && (
+                <p className="text-base text-amber-700 italic text-center pt-1">
+                  Recommended for ages {RECOMMENDED_MIN_AGE}–{RECOMMENDED_MAX_AGE}.
+                </p>
+              )}
             </div>
             <div className="space-y-3">
               <button
