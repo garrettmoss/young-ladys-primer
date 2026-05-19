@@ -133,7 +133,7 @@ export type StoryArc = Story;
  * Content can be static string or personalized function that receives context
  */
 export interface StoryContent {
-  title: string;
+  title: string | AdaptiveTitle;
   // `content` is the legacy plain-text field. Required for non-adaptive
   // nodes; omitted on adaptive nodes (which use `adaptiveContent` instead).
   content?: string | ((context: ContentContext) => string);
@@ -213,6 +213,23 @@ export interface AdaptiveContent {
 }
 
 /**
+ * Per-level renderings of a node title. Unlike `AdaptiveContent`, every
+ * level is required — titles are short and authoring all four is cheap, and
+ * the redundancy keeps each reader's experience explicit at the page level.
+ * Use a plain string for non-adaptive content (welcome, hubs, lessons).
+ *
+ * The renderer still applies a polite fallback at runtime if a level is
+ * somehow missing (e.g. dynamic content, future AI rendering); the type is
+ * the first line of defense, the fallback is the second.
+ */
+export interface AdaptiveTitle {
+  seed: string;
+  sprout: string;
+  bloom: string;
+  fruit: string;
+}
+
+/**
  * Processed story content ready for UI consumption
  * Content is always a string after processing
  */
@@ -273,11 +290,27 @@ export const getContent = (contentKey: string, context: ContentContext): Process
   const rawContent = resolveContentText(contentKey, content, context);
 
   return {
-    title: content.title,
+    title: resolveTitle(content.title, context),
     content: formatContent(rawContent),
     choices: filterChoicesByLevel(content.choices, context.currentLevel),
   };
 };
+
+const MISSING_TITLE_FALLBACK = 'An unwritten page';
+
+/**
+ * Resolve a node's title. Plain string titles pass through; AdaptiveTitle
+ * objects are keyed by the reader's current level. The type requires all
+ * four levels, but we still fall back politely if one is missing somehow.
+ */
+function resolveTitle(
+  title: string | AdaptiveTitle,
+  context: ContentContext
+): string {
+  if (typeof title === 'string') return title;
+  const level: AdaptiveLevel = context.currentLevel ?? 'fruit';
+  return title[level] ?? MISSING_TITLE_FALLBACK;
+}
 
 /**
  * Drop any choices whose target node has a minLevel above the reader's

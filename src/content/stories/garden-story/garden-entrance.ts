@@ -1,6 +1,11 @@
 export const gardenEntrance = {
   garden_entrance: {
-    title: "The Map Inside the Primer",
+    title: {
+      seed: "A Map in the Book",
+      sprout: "A Map in the Primer",
+      bloom: "The Map Inside the Primer",
+      fruit: "The Map Inside the Primer",
+    },
     beat: "A folded map appears between pages of the Primer she's read before, smelling of soil, with a note saying the garden has been waiting long enough.",
     feeling: "Some invitations find you before you know you were looking for them.",
     adaptiveContent: {

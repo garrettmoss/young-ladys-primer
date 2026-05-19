@@ -192,7 +192,7 @@ export function contentRegistryToFlowGraph(
     nodes.push({
       id,
       data: {
-        label: content.title,
+        label: typeof content.title === 'string' ? content.title : content.title.fruit,
         contentPreview: getContentPreview(content),
         nodeType,
         choiceCount: content.choices?.length || 0,
