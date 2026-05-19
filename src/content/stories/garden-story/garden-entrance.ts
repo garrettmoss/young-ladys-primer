@@ -4,6 +4,15 @@ export const gardenEntrance = {
     beat: "A folded map appears between pages of the Primer she's read before, smelling of soil, with a note saying the garden has been waiting long enough.",
     feeling: "Some invitations find you before you know you were looking for them.",
     adaptiveContent: {
+      seed: ({ readerName }: { readerName: string }) => `Something new was tucked between the pages. A folded paper map.
+
+It smelled like dirt — like outside.
+
+Tiny words in the corner said: *The garden has been waiting long enough.*
+
+${readerName} felt funny, like the map had been waiting for her. That was silly. Maps don't wait.
+
+She picked it up anyway.`,
       fruit: ({ readerName }: { readerName: string }) => `Between two pages ${readerName} had read a dozen times before, something new appeared: a folded piece of paper, brown at the edges, soft as cloth from years of being pressed flat.
 
 It smelled like soil. That was the first strange thing — a page that smelled like outside.
