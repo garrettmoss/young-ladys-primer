@@ -55,6 +55,7 @@ Icons that fit the candlelit manuscript aesthetic:
 - `Lamp` - Gas lamps, enlightenment, learning
 - `Microscope` - Scientific discovery, observation
 - `Telescope` - Exploration, discovery
+- `Hourglass` - Time, age, the passing of years
 - `Brain` - Learning, knowledge, introspection
 - `GraduationCap` - Formal education
 

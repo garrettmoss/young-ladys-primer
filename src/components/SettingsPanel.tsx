@@ -1,5 +1,5 @@
 import React from 'react';
-import { Feather, Eclipse, BookMarked, Bean, Sprout, Flower, Apple, Cake, LucideIcon } from 'lucide-react';
+import { Feather, Eclipse, BookMarked, Bean, Sprout, Flower, Apple, Hourglass, Leaf, LucideIcon } from 'lucide-react';
 import { AdaptiveLevel, LEVELS } from '../content';
 import { MIN_READER_AGE, MAX_READER_AGE, RECOMMENDED_MIN_AGE, RECOMMENDED_MAX_AGE } from '../hooks/useReaderPreferences';
 
@@ -87,7 +87,7 @@ export function SettingsPanel({
             <div className="flex items-center gap-3">
               <Feather className="w-5 h-5 text-amber-700" />
               <div>
-                <strong className="text-amber-900">Reader Name:</strong>
+                <strong className="text-amber-900">Name:</strong>
                 <span className="ml-2 text-amber-800">{readerName}</span>
               </div>
             </div>
@@ -101,7 +101,7 @@ export function SettingsPanel({
         ) : (
           // Edit mode
           <div className="flex items-center gap-3">
-            <strong className="text-amber-900 whitespace-nowrap">Reader Name:</strong>
+            <strong className="text-amber-900 whitespace-nowrap">Name:</strong>
             <input
               type="text"
               value={settingsNameInput}
@@ -133,7 +133,7 @@ export function SettingsPanel({
           {!isEditingAge ? (
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Cake className="w-5 h-5 text-amber-700" />
+                <Hourglass className="w-5 h-5 text-amber-700" />
                 <div>
                   <strong className="text-amber-900">Age:</strong>
                   <span className="ml-2 text-amber-800">{currentAge ?? readerStartAge}</span>
@@ -192,11 +192,14 @@ export function SettingsPanel({
 
       {/* Reader Level Setting */}
       <div className="p-4 border border-amber-200 bg-amber-50/30 rounded">
-        <div className="mb-4">
-          <strong className="text-amber-900">Reading Level:</strong>
-          <span className="ml-2 text-amber-800">
-            {LEVEL_LABELS[readerLevel]} <span className="text-amber-600 text-sm">({LEVEL_AGES[readerLevel]})</span>
-          </span>
+        <div className="flex items-center gap-3 mb-4">
+          <Leaf className="w-5 h-5 text-amber-700" />
+          <div>
+            <strong className="text-amber-900">Reading Level:</strong>
+            <span className="ml-2 text-amber-800">
+              {LEVEL_LABELS[readerLevel]} <span className="text-amber-600 text-sm">({LEVEL_AGES[readerLevel]})</span>
+            </span>
+          </div>
         </div>
         <div className="level-slider" role="radiogroup" aria-label="Reading level">
           <div className="level-slider-track" aria-hidden="true" />
