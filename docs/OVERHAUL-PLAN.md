@@ -36,6 +36,19 @@ Added `content/core/story-select.ts` — an intermediate screen between welcome 
 
 Designed the Seed → Sprout → Bloom → Fruit adaptive content model. Theme is the heart, not decoration. See Phase 3 below for implementation.
 
+### ✅ Phase 1: Kingdoms and Stories (2026-04-16)
+
+Split the single-tier `StoryArc` concept into a two-tier Kingdom/Story model. A **Kingdom** is a self-contained world (tone, setting, lessons, puzzles); a **Story** is one narrative arc within a kingdom. Today's single-story-per-kingdom reality fits cleanly; future second stories slot in without a schema change.
+
+**Delivered:**
+- `Kingdom` and `Story` interfaces in `src/content/index.ts`. `StoryArc` kept as a deprecated type alias for `Story` (one migration cycle).
+- New `src/content/kingdoms.ts` registry with `getAllKingdoms`, `getActiveKingdoms`, `getKingdomById`, `getStoryById`, `getKingdomForContentKey`, `getKingdomEntryPoints`.
+- `dragonKingdom` (`status: 'legacy'`, story `adaptive: false`) and `gardenKingdom` (`status: 'active'`) exported from their respective story folders.
+- Renames: `src/content/arcs.ts` removed; `garden-arc/` → `garden-story/`; `garden-arc.md` → `garden-story.md`.
+- `story-select` and `validate-story-graph` updated to read from the kingdom registry.
+
+Both kingdoms still playable with no prose changes. Pre-existing `garden_heart` placeholder error is unchanged (tracked for Phase 5).
+
 ### ✅ Phase 3a: Adaptive types, renderer, selector, filter, validator (2026-05-18)
 
 Shipped the full adaptive-content infrastructure. The garden kingdom now runs on adaptive rails; existing Fruit-level prose plays unchanged, and Seed/Sprout/Bloom slots are ready to be filled in Phase 2.
@@ -51,19 +64,6 @@ Shipped the full adaptive-content infrastructure. The garden kingdom now runs on
 
 Phase 2 (Seed + Sprout prose for the 7 nodes) and Phase 3b (Bloom + Fruit fill-in) build on top of this.
 
-### ✅ Phase 1: Kingdoms and Stories (2026-04-16)
-
-Split the single-tier `StoryArc` concept into a two-tier Kingdom/Story model. A **Kingdom** is a self-contained world (tone, setting, lessons, puzzles); a **Story** is one narrative arc within a kingdom. Today's single-story-per-kingdom reality fits cleanly; future second stories slot in without a schema change.
-
-**Delivered:**
-- `Kingdom` and `Story` interfaces in `src/content/index.ts`. `StoryArc` kept as a deprecated type alias for `Story` (one migration cycle).
-- New `src/content/kingdoms.ts` registry with `getAllKingdoms`, `getActiveKingdoms`, `getKingdomById`, `getStoryById`, `getKingdomForContentKey`, `getKingdomEntryPoints`.
-- `dragonKingdom` (`status: 'legacy'`, story `adaptive: false`) and `gardenKingdom` (`status: 'active'`) exported from their respective story folders.
-- Renames: `src/content/arcs.ts` removed; `garden-arc/` → `garden-story/`; `garden-arc.md` → `garden-story.md`.
-- `story-select` and `validate-story-graph` updated to read from the kingdom registry.
-
-Both kingdoms still playable with no prose changes. Pre-existing `garden_heart` placeholder error is unchanged (tracked for Phase 5).
-
 ---
 
 ## Phase 2: Rewrite Garden From Seed
@@ -76,17 +76,21 @@ Both kingdoms still playable with no prose changes. Pre-existing `garden_heart` 
 
 Current garden prose (7 nodes: entrance + western wall path) is Fruit-length but wasn't written adaptive-first. It needs to be extracted down to beat + feeling skeletons, then rewritten starting from Seed.
 
+### State going in
+
+- **Beats + feelings are already extracted** for all 7 nodes — they live on each `StoryContent` object in [src/content/stories/garden-story/](../src/content/stories/garden-story/) AND in [docs/implementations/garden-rewrite.md](implementations/garden-rewrite.md). They're the same values; the doc has the additional "Notes on the extraction" section worth reading before writing prose (judgment calls about `well_roots` doing too much, the beetle as through-line, Iris staying off-screen on this path).
+- **Adaptive shape is in place.** Each node has an `adaptiveContent: { fruit }` slot. Phase 2 adds `seed` and `sprout` keys alongside.
+- **Existing Fruit prose stays.** It's already wrapped — don't delete it. Phase 3b will revise/trim Fruit later if needed; Phase 2 only adds the lower tiers.
+
 ### Approach
 
-For each existing garden node:
-1. Extract the **beat** (one sentence: what happens).
-2. Extract the **feeling** (one sentence: why it matters).
-3. Archive the current prose (keep in git history; not preserved in the file).
-4. Rewrite from Seed up — this phase only gets to Seed + Sprout. Bloom and Fruit come in Phase 3b.
+For each of the 7 nodes:
+1. Read the beat + feeling on the node (and re-read the rewrite-doc notes for context).
+2. Write **Seed** first. If the beat doesn't work in 4 sentences, the beat is wrong — revise the beat, don't pad the prose.
+3. Write **Sprout** as a layer-up from Seed (60–120 words; see [OVERHAUL-PLAN.md adaptive levels table](#adaptive-levels)).
+4. Verify with `npm run validate-content` and a manual playthrough at each level via Settings.
 
-This is deliberately destructive to current prose. You've said you're not attached to it, and the discipline of Seed-first ("if the beat doesn't work in 4 sentences, the beat is wrong") is what we're trying to build.
-
-Phase 3a (adaptive types + renderer + selector + filter + validator) is already wired up. Each of the 7 nodes has a `beat`, `feeling`, and an `adaptiveContent: { fruit }` slot waiting for `seed` and `sprout` keys to be added. Skeletons live in [docs/implementations/garden-rewrite.md](implementations/garden-rewrite.md).
+Seed-first discipline is the whole point. Don't write Sprout first and "compress down to Seed" — that produces the exact bloat we just spent a phase removing.
 
 ### Existing nodes to rewrite (all in garden kingdom)
 
@@ -116,8 +120,8 @@ Phase 3a (adaptive types + renderer + selector + filter + validator) is already 
 ## Phase 3: Adaptive Content (Seed → Fruit)
 
 **Status**: Phase 3a ✅ shipped (2026-05-18). Phase 3b pending Phase 2.
-**Estimated effort**: 1 more session (Phase 3b: Bloom + remaining Fruit, after Phase 2 Seed + Sprout).
-**Dependencies**: Phase 1 ✅
+**Estimated effort**: 1 more session (Phase 3b: Bloom for existing nodes, after Phase 2 Seed + Sprout).
+**Dependencies**: Phase 1 ✅, Phase 3a ✅
 
 ### Core principle
 
