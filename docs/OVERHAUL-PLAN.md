@@ -76,8 +76,8 @@ Phase 2 (Seed + Sprout prose for the 7 nodes) and Phase 3b (Bloom + Fruit fill-i
 
 - ✅ `garden_entrance` Seed prose written (commit `b9cba7d`, ~52 words).
 - ✅ `AdaptiveTitle` interface added — titles can be per-level (commit `afc6a41`). `garden_entrance` is the first node using it. **All adaptive nodes from here on need adaptive titles** — all four levels required by the type. Runtime fallback is `"An unwritten page"`.
-- ⏳ Adaptive choice text — discussed, not yet built. Phase 2 can't really finish without it: Seed prose with Fruit-level choice buttons is half-done. Same shape as `AdaptiveTitle` is the plan (all four levels required, plain `string` for non-adaptive). Apply to `garden_entrance` first, then roll forward through the other 6 nodes.
-- ⏳ Refactor `src/content/index.ts` into `types.ts` / `adaptive.ts` / `index.ts` — pure reorganization, no behavior change. Do this *between* the choice work landing on `garden_entrance` and rolling it out to the other 6 nodes, so the rollout reads against the cleaner module shape.
+- ✅ Refactor `src/content/index.ts` into `types.ts` / `adaptive.ts` / `index.ts` (commit `c439f6d`). External imports unchanged — `'@/content'` still resolves everything via re-exports.
+- ⏳ Adaptive choice text — discussed, not yet built. Phase 2 can't really finish without it: Seed prose with Fruit-level choice buttons is half-done. Same shape as `AdaptiveTitle` is the plan (all four levels required, plain `string` for non-adaptive). The resolver will land in `src/content/adaptive.ts` alongside `resolveTitle`. Apply to `garden_entrance` first, then roll forward through the other 6 nodes.
 - ⏳ Remaining 6 nodes: `western_wall`, `clearing_path`, `wall_lunch`, `lichen_grid`, `old_well`, `well_roots` — Seed + Sprout prose, adaptive titles, adaptive choices.
 
 ### In-flight scope additions
@@ -96,10 +96,11 @@ Phase 2 grew beyond "Seed + Sprout prose" once `garden_entrance` Seed was on scr
    // Choice.text: string | AdaptiveChoiceText
    ```
    Open question to decide when implementing: where does the resolver live (current `getContent` flow, or pushed into `filterChoicesByLevel`)? Probably a new `resolveChoices()` step alongside `resolveTitle()`.
-3. **Module split** (pending). `src/content/index.ts` is 373 lines and roughly half adaptive-engine. Planned split:
-   - `src/content/types.ts` — `StoryContent`, `Choice`, `Story`, `Kingdom`, `ContentContext`, `ProcessedStoryContent`. Pure types.
-   - `src/content/adaptive.ts` — `AdaptiveLevel`, `AdaptiveContent`, `AdaptiveTitle`, `LEVELS`, `levelRank`, `levelForAge`, `recommendLevel`, `ReaderSignals`, resolvers, fallback constants. The adaptive engine.
-   - `src/content/index.ts` — registry (`allContent`), `getContent`, `getAllContentKeys`. Orchestration only.
+3. **Module split** (✅ shipped). `src/content/index.ts` was 373 lines and roughly half adaptive-engine. Now split:
+   - `src/content/types.ts` — pure type definitions (106 lines).
+   - `src/content/adaptive.ts` — the adaptive engine: level math, per-level shapes, resolvers, fallbacks (176 lines).
+   - `src/content/index.ts` — registry, `getContent`, `getAllContentKeys`, `formatContent`, public re-exports (165 lines).
+   `filterChoicesByLevel` now takes a `lookup` function instead of importing `allContent`, keeping `adaptive.ts` free of runtime registry coupling.
 
 ### The problem
 
