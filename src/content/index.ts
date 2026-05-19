@@ -1,22 +1,75 @@
 /**
  * Content Management System - Young Lady's Primer
- * 
- * This module manages all story content, lessons, and interactive choices for the primer.
- * Content is organized modularly by theme (stories, lessons, puzzles) and supports
- * personalization through template functions.
- * 
- * Architecture:
- * - Modular content organization in separate folders
- * - TypeScript interfaces for type safety and validation
- * - Personalization support via function-based content templates
- * - Centralized content registry for easy expansion
- * 
+ *
+ * This module is the public entry point for the content layer. It owns the
+ * master content registry (`allContent`) and the `getContent` orchestration
+ * function that ties everything together.
+ *
+ * The content layer is split into three files:
+ *
+ *   - `./types`    — pure type definitions (StoryContent, Kingdom, etc.)
+ *   - `./adaptive` — the adaptive engine: level math, per-level shapes,
+ *                    resolvers, runtime fallbacks
+ *   - `./index`    — registry + getContent + getAllContentKeys (this file)
+ *
+ * All public types and adaptive helpers are re-exported from here, so
+ * external code can keep importing from `'@/content'` or `'../content'`
+ * without caring about the internal split.
+ *
  * Adding New Content:
  * 1. Create content files in appropriate subfolder (stories/, lessons/, puzzles/)
  * 2. Export content objects following the StoryContent interface
  * 3. Import and spread into allContent registry below
  * 4. Content will automatically be available throughout the app
  */
+
+import { welcomeContent } from './core/welcome';
+import { buildAllKingdomHubs } from './core/kingdom-hub';
+import { getSettingsContent } from './core/settings';
+import { devToolsContent } from './core/dev-tools';
+import { dragonStoryCollection } from './stories/dragon-story/index';
+import { gardenStoryCollection } from './stories/garden-story/index';
+import { nanotechnologyLessons } from './lessons/nanotechnology/index';
+import { puzzleCollection } from './puzzles/index';
+import { getStoryForContentKey } from './kingdoms';
+
+import type { ContentContext, ProcessedStoryContent, StoryContent } from './types';
+import {
+  filterChoicesByLevel,
+  resolveContentText,
+  resolveTitle,
+} from './adaptive';
+
+// === Re-exports (public API) ===
+
+export type {
+  Choice,
+  ContentContext,
+  Kingdom,
+  ProcessedStoryContent,
+  Story,
+  StoryArc,
+  StoryContent,
+} from './types';
+
+export {
+  LEVELS,
+  levelForAge,
+  levelRank,
+  recommendLevel,
+  resolveTitle,
+  resolveContentText,
+  filterChoicesByLevel,
+} from './adaptive';
+
+export type {
+  AdaptiveContent,
+  AdaptiveLevel,
+  AdaptiveTitle,
+  ReaderSignals,
+} from './adaptive';
+
+// === Content formatting ===
 
 /**
  * Format raw content string into HTML for display.
@@ -44,213 +97,15 @@ function formatContent(raw: string): string {
     .join('\n');
 }
 
-import { welcomeContent } from './core/welcome';
-import { buildAllKingdomHubs } from './core/kingdom-hub';
-import { getSettingsContent } from './core/settings';
-import { devToolsContent } from './core/dev-tools';
-import { dragonStoryCollection } from './stories/dragon-story/index';
-import { gardenStoryCollection } from './stories/garden-story/index';
-import { nanotechnologyLessons } from './lessons/nanotechnology/index';
-import { puzzleCollection } from './puzzles/index';
-import { getStoryForContentKey } from './kingdoms';
+// === Content Registry ===
 
-// === TYPE DEFINITIONS ===
-
-/**
- * Context object passed to content functions for personalization
- * This allows content to access reader information and app state for adaptive content.
- *
- * Future expansion ready for Phase 3 adaptive learning features:
- * - readingLevel: Adapt difficulty to reader's ability
- * - choiceHistory: Enable narrative branching based on past decisions
- * - completedStories: Progress-based content unlocking
- * - preferences: Reader co-creation and customization
- */
-export interface ContentContext {
-  readerName: string; // Reader's chosen name for personalization
-  currentLevel?: AdaptiveLevel; // Reader's adaptive tier (Phase 3a). Renderer falls back to fruit if absent.
-  // Future adaptive learning variables can be added here without breaking existing content:
-  // choiceHistory?: string[];
-  // completedStories?: string[];
-  // multipleIntelligences?: Record<string, number>;
-  // preferences?: Record<string, any>;
-}
-
-/**
- * Represents a user choice in an interactive story
- */
-export interface Choice {
-  text: string;   // Display text shown to the user
-  action: string; // Story key to navigate to when selected
-  tag?: string;   // Optional italic suffix label (e.g. "legacy") — rendered separately from text
-}
-
-/**
- * One narrative arc within a Kingdom. A Story owns a set of content keys
- * and an entry point; most kingdoms today have exactly one story, but the
- * schema leaves room for multiple.
- *
- * `adaptive: false` signals the renderer to use the plain `content` field on
- * each node (legacy behavior). Adaptive stories (Phase 3) will read from the
- * Seed/Sprout/Bloom/Fruit renderings instead.
- */
-export interface Story {
-  id: string;
-  title: string;
-  kingdomId: string;
-  entryPoint: string;
-  contentKeys: string[];
-  status: 'active' | 'legacy' | 'draft';
-  adaptive?: boolean;
-}
-
-/**
- * A self-contained world: tone, setting, lessons, puzzles, and one or more
- * Stories. Kingdoms are the top tier of the content library.
- */
-export interface Kingdom {
-  id: string;
-  title: string;
-  description: string;
-  hubIntro?: string | ((context: ContentContext) => string);
-  entryStoryId: string;
-  stories: Story[];
-  lessons: string[];
-  lessonEntry?: string;
-  puzzles: string[];
-  puzzleEntry?: string;
-  icon?: string;
-  status: 'active' | 'legacy' | 'draft';
-}
-
-/**
- * @deprecated Use `Story` instead. Kept for one migration cycle.
- */
-export type StoryArc = Story;
-
-/**
- * Raw story content as stored in content files
- * Content can be static string or personalized function that receives context
- */
-export interface StoryContent {
-  title: string | AdaptiveTitle;
-  // `content` is the legacy plain-text field. Required for non-adaptive
-  // nodes; omitted on adaptive nodes (which use `adaptiveContent` instead).
-  content?: string | ((context: ContentContext) => string);
-  choices?: Choice[]; // Optional - some content may have no choices (endings, lessons)
-  // Adaptive-content fields (Phase 3a). Present on nodes in adaptive stories.
-  // The renderer prefers these when the parent Story has `adaptive: true`.
-  beat?: string;
-  feeling?: string;
-  adaptiveContent?: AdaptiveContent;
-  minLevel?: AdaptiveLevel;
-}
-
-/**
- * Reader-developmental tiers for adaptive rendering. See OVERHAUL-PLAN.md
- * for the band definitions and the writing discipline that pairs with them.
- *
- * The tuple is the single source of truth: the type and the ordering both
- * derive from it. To add a new tier (e.g. a "sapling" between sprout and
- * bloom), insert it here in the right position and the rest follows.
- *
- * Compare levels via `levelRank(level)`, not string equality.
- */
-export const LEVELS = ['seed', 'sprout', 'bloom', 'fruit'] as const;
-export type AdaptiveLevel = typeof LEVELS[number];
-
-export function levelRank(level: AdaptiveLevel): number {
-  return LEVELS.indexOf(level);
-}
-
-/**
- * Map a reader's age to the appropriate adaptive level. Ages below the
- * seed range are clamped up; ages above fruit are clamped down. The bands
- * mirror the labels shown in Settings (seed 4–6, sprout 7–9, bloom 10–12,
- * fruit 13+).
- */
-export function levelForAge(age: number): AdaptiveLevel {
-  if (age <= 6) return 'seed';
-  if (age <= 9) return 'sprout';
-  if (age <= 12) return 'bloom';
-  return 'fruit';
-}
-
-/**
- * Signals the adaptive engine uses to recommend a reader level.
- * Today: just age. Future: reading speed, choice patterns, time-on-page,
- * recent confusion signals, etc. Add fields here as the engine grows.
- */
-export interface ReaderSignals {
-  age: number;
-}
-
-/**
- * Recommend an adaptive level for a reader given the current signals.
- * Hooks should call this rather than levelForAge directly — it's the
- * single source of truth for "what level should this reader be on?"
- * and it'll grow smarter over time without changing its call sites.
- *
- * DESIGN: age is the anchor; level is the dial. This function maps
- * anchor → suggested dial. The reverse coupling does not exist — manual
- * level overrides in Settings do not propagate back to age.
- */
-export function recommendLevel(signals: ReaderSignals): AdaptiveLevel {
-  return levelForAge(signals.age);
-}
-
-/**
- * Per-level renderings of a single story beat. The beat and feeling are
- * constant across levels; only the prose changes. A level may be omitted
- * if it doesn't yet exist — the renderer falls back to the nearest available
- * level above the reader's tier.
- */
-export interface AdaptiveContent {
-  seed?: string | ((context: ContentContext) => string);
-  sprout?: string | ((context: ContentContext) => string);
-  bloom?: string | ((context: ContentContext) => string);
-  fruit?: string | ((context: ContentContext) => string);
-}
-
-/**
- * Per-level renderings of a node title. Unlike `AdaptiveContent`, every
- * level is required — titles are short and authoring all four is cheap, and
- * the redundancy keeps each reader's experience explicit at the page level.
- * Use a plain string for non-adaptive content (welcome, hubs, lessons).
- *
- * The renderer still applies a polite fallback at runtime if a level is
- * somehow missing (e.g. dynamic content, future AI rendering); the type is
- * the first line of defense, the fallback is the second.
- */
-export interface AdaptiveTitle {
-  seed: string;
-  sprout: string;
-  bloom: string;
-  fruit: string;
-}
-
-/**
- * Processed story content ready for UI consumption
- * Content is always a string after processing
- */
-export interface ProcessedStoryContent {
-  title: string;
-  content: string; // Always string after processing personalization
-  choices?: Choice[];
-}
-
-/**
- * Registry interface for organizing all content by unique keys
- */
 interface ContentRegistry {
   [key: string]: StoryContent;
 }
 
-// === CONTENT REGISTRY ===
-
 /**
- * Master content registry that combines all content modules
- * 
+ * Master content registry that combines all content modules.
+ *
  * This is the single source of truth for all interactive content.
  * New content modules should be imported above and added here.
  */
@@ -264,18 +119,18 @@ export const allContent: ContentRegistry = {
   ...puzzleCollection          // Interactive logic puzzles and challenges
 };
 
-// === CONTENT ACCESS FUNCTIONS ===
+// === Content access ===
 
 /**
- * Retrieve and process content for display
+ * Retrieve and process content for display.
  *
- * Handles personalization by calling content functions with context object
- * containing reader information and app state for adaptive content.
- *
- * Works with all content types: stories, lessons, puzzles, settings, debug pages, etc.
+ * Handles personalization by calling content functions with a context
+ * object containing reader information and app state for adaptive content.
+ * Works with all content types: stories, lessons, puzzles, settings,
+ * debug pages, etc.
  *
  * @param contentKey - Unique identifier for the content block
- * @param context - Context object with reader info and app state for personalization
+ * @param context - Context object with reader info and app state
  * @returns Processed content ready for UI, or null if not found
  */
 export const getContent = (contentKey: string, context: ContentContext): ProcessedStoryContent | null => {
@@ -287,88 +142,24 @@ export const getContent = (contentKey: string, context: ContentContext): Process
   const content = allContent[contentKey];
   if (!content) return null;
 
-  const rawContent = resolveContentText(contentKey, content, context);
+  const story = getStoryForContentKey(contentKey);
+  const useAdaptive = story?.adaptive === true;
+
+  const rawContent = resolveContentText(content, context, useAdaptive);
 
   return {
     title: resolveTitle(content.title, context),
     content: formatContent(rawContent),
-    choices: filterChoicesByLevel(content.choices, context.currentLevel),
+    choices: filterChoicesByLevel(
+      content.choices,
+      context.currentLevel,
+      (key) => allContent[key],
+    ),
   };
 };
 
-const MISSING_TITLE_FALLBACK = 'An unwritten page';
-
-/**
- * Resolve a node's title. Plain string titles pass through; AdaptiveTitle
- * objects are keyed by the reader's current level. The type requires all
- * four levels, but we still fall back politely if one is missing somehow.
- */
-function resolveTitle(
-  title: string | AdaptiveTitle,
-  context: ContentContext
-): string {
-  if (typeof title === 'string') return title;
-  const level: AdaptiveLevel = context.currentLevel ?? 'fruit';
-  return title[level] ?? MISSING_TITLE_FALLBACK;
-}
-
-/**
- * Drop any choices whose target node has a minLevel above the reader's
- * current tier. The reader sees fewer doors, never a locked one — the
- * gated path simply isn't visible. Choices to keys that don't exist in
- * the registry pass through (validator catches those).
- *
- * If currentLevel isn't set we treat the reader as `fruit` (the top tier),
- * which sees every door — matches the renderer's fall-through default.
- */
-function filterChoicesByLevel(
-  choices: Choice[] | undefined,
-  currentLevel: AdaptiveLevel | undefined
-): Choice[] | undefined {
-  if (!choices) return choices;
-  const readerRank = levelRank(currentLevel ?? 'fruit');
-  return choices.filter(choice => {
-    const target = allContent[choice.action];
-    if (!target?.minLevel) return true;
-    return levelRank(target.minLevel) <= readerRank;
-  });
-}
-
-const MISSING_CONTENT_FALLBACK = 'This page hasn\'t grown yet.';
-
-/**
- * Resolve a node's raw text. Adaptive stories read from `adaptiveContent` at
- * the reader's current level; plain stories use the legacy `content` field.
- *
- * If an adaptive node is missing its requested level (a writing-discipline
- * gap that the validator should catch), we render a polite in-world fallback
- * rather than crash. Fruit is the assumed top tier when no level is set.
- */
-function resolveContentText(
-  contentKey: string,
-  content: StoryContent,
-  context: ContentContext
-): string {
-  const story = getStoryForContentKey(contentKey);
-  const useAdaptive = story?.adaptive === true && content.adaptiveContent;
-
-  if (useAdaptive) {
-    const level: AdaptiveLevel = context.currentLevel ?? 'fruit';
-    const rendering = content.adaptiveContent![level];
-    if (rendering !== undefined) {
-      return typeof rendering === 'function' ? rendering(context) : rendering;
-    }
-    return MISSING_CONTENT_FALLBACK;
-  }
-
-  if (content.content === undefined) return MISSING_CONTENT_FALLBACK;
-  return typeof content.content === 'function'
-    ? content.content(context)
-    : content.content;
-}
-
 /**
  * Get all available content keys for debugging or content management
- * @returns Array of all content identifiers in the registry (stories, lessons, puzzles, etc.)
+ * @returns Array of all content identifiers in the registry
  */
 export const getAllContentKeys = (): string[] => Object.keys(allContent);
