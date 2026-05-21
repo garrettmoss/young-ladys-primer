@@ -115,6 +115,29 @@ const MISSING_TITLE_FALLBACK = 'An unwritten page';
 const MISSING_CONTENT_FALLBACK = 'This page hasn\'t grown yet.';
 const MISSING_CHOICE_TEXT_FALLBACK = '…';
 
+// === Markdown formatting (private helper) ===
+
+/**
+ * Format raw body text into HTML.
+ * - Double-newlines → <p> paragraph tags
+ * - Single newlines within a paragraph → <br> line breaks
+ * - **bold** → <strong>
+ * - *italic* → <em>
+ * - Existing HTML passes through untouched
+ */
+function formatMarkdown(raw: string): string {
+  return raw
+    .split(/\n\n+/)
+    .map(para => {
+      let html = para.trim();
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+      html = html.replace(/\n/g, '<br>');
+      return `<p>${html}</p>`;
+    })
+    .join('\n');
+}
+
 // === Resolvers ===
 
 /**
@@ -146,17 +169,27 @@ export function resolveChoiceText(
 }
 
 /**
- * Resolve a node's raw text. Adaptive stories read from `adaptiveContent` at
- * the reader's current level; plain stories use the legacy `content` field.
+ * Resolve a node's body to render-ready HTML. Picks the right source
+ * (adaptive variant for the reader's level, or the legacy `content` field),
+ * evaluates any template function, then formats markdown to HTML.
  *
  * If an adaptive node is missing its requested level (a writing-discipline
- * gap that the validator should catch), we render a polite in-world fallback
- * rather than crash. Fruit is the assumed top tier when no level is set.
+ * gap the validator should catch), renders a polite in-world fallback rather
+ * than crash. Fruit is the assumed top tier when no level is set.
  *
- * Whether to use the adaptive path is decided by the caller (it depends on
- * the parent Story's `adaptive` flag, which lives in the kingdom registry).
+ * The caller decides whether to use the adaptive path (it depends on the
+ * parent Story's `adaptive` flag from the kingdom registry).
  */
-export function resolveContentText(
+export function resolveBody(
+  content: StoryContent,
+  context: ContentContext,
+  useAdaptive: boolean
+): string {
+  const raw = pickRawBody(content, context, useAdaptive);
+  return formatMarkdown(raw);
+}
+
+function pickRawBody(
   content: StoryContent,
   context: ContentContext,
   useAdaptive: boolean
@@ -189,7 +222,7 @@ export function resolveContentText(
  * in (rather than imported) so this module stays free of a runtime
  * dependency on the content registry.
  */
-export function filterChoicesByLevel(
+export function filterChoices(
   choices: Choice[] | undefined,
   currentLevel: AdaptiveLevel | undefined,
   lookup: (key: string) => StoryContent | undefined

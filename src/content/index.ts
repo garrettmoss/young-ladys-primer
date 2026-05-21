@@ -35,9 +35,9 @@ import { getStoryForContentKey } from './kingdoms';
 
 import type { ContentContext, ResolvedContent, StoryContent } from './types';
 import {
-  filterChoicesByLevel,
+  filterChoices,
+  resolveBody,
   resolveChoiceText,
-  resolveContentText,
   resolveTitle,
 } from './adaptive';
 
@@ -61,8 +61,8 @@ export {
   recommendLevel,
   resolveTitle,
   resolveChoiceText,
-  resolveContentText,
-  filterChoicesByLevel,
+  resolveBody,
+  filterChoices,
 } from './adaptive';
 
 export type {
@@ -72,34 +72,6 @@ export type {
   AdaptiveTitle,
   ReaderSignals,
 } from './adaptive';
-
-// === Content formatting ===
-
-/**
- * Format raw content string into HTML for display.
- * Runs on all content body text (not titles or button labels).
- *
- * Handles:
- * - Double-newlines → <p> paragraph tags
- * - Single newlines within a paragraph → <br> line breaks
- * - **bold** → <strong>
- * - *italic* → <em>
- * - Existing HTML passes through untouched
- */
-function formatContent(raw: string): string {
-  return raw
-    .split(/\n\n+/)
-    .map(para => {
-      let html = para.trim();
-      // Bold first (** before *), then italic
-      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-      html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-      // Single newlines → line breaks
-      html = html.replace(/\n/g, '<br>');
-      return `<p>${html}</p>`;
-    })
-    .join('\n');
-}
 
 // === Content Registry ===
 
@@ -149,9 +121,7 @@ export const getContent = (contentKey: string, context: ContentContext): Resolve
   const story = getStoryForContentKey(contentKey);
   const useAdaptive = story?.adaptive === true;
 
-  const rawContent = resolveContentText(content, context, useAdaptive);
-
-  const filteredChoices = filterChoicesByLevel(
+  const filteredChoices = filterChoices(
     content.choices,
     context.currentLevel,
     (key) => allContent[key],
@@ -159,7 +129,7 @@ export const getContent = (contentKey: string, context: ContentContext): Resolve
 
   return {
     title: resolveTitle(content.title, context),
-    content: formatContent(rawContent),
+    content: resolveBody(content, context, useAdaptive),
     choices: filteredChoices?.map(choice => ({
       ...choice,
       text: resolveChoiceText(choice.text, context),
