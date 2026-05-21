@@ -184,14 +184,17 @@ function YoungLadysPrimer() {
           
           <div className="manuscript-page p-10">
             
-            {/* Title with illuminated first letter */}
             <h2 className="primer-title text-4xl font-serif text-amber-900 mb-8 text-center relative">
-              <span className="inline-block">
-                <span className="illuminated-letter">
-                  {currentContent.title[0]}
+              {contentKey === 'welcome' ? (
+                <span className="inline-block">
+                  <span className="illuminated-letter">
+                    {currentContent.title[0]}
+                  </span>
+                  {currentContent.title.slice(1)}
                 </span>
-                {currentContent.title.slice(1)}
-              </span>
+              ) : (
+                currentContent.title
+              )}
             </h2>
             
             {/* Story content with vintage typography */}
