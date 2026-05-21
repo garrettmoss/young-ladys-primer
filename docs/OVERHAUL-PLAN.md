@@ -76,31 +76,25 @@ Phase 2 (Seed + Sprout prose for the 7 nodes) and Phase 3b (Bloom + Fruit fill-i
 
 - ✅ `garden_entrance` Seed prose written (commit `b9cba7d`, ~52 words).
 - ✅ `AdaptiveTitle` interface added — titles can be per-level (commit `afc6a41`). `garden_entrance` is the first node using it. **All adaptive nodes from here on need adaptive titles** — all four levels required by the type. Runtime fallback is `"An unwritten page"`.
-- ✅ Refactor `src/content/index.ts` into `types.ts` / `adaptive.ts` / `index.ts` (commit `c439f6d`). External imports unchanged — `'@/content'` still resolves everything via re-exports.
-- ⏳ Adaptive choice text — discussed, not yet built. Phase 2 can't really finish without it: Seed prose with Fruit-level choice buttons is half-done. Same shape as `AdaptiveTitle` is the plan (all four levels required, plain `string` for non-adaptive). The resolver will land in `src/content/adaptive.ts` alongside `resolveTitle`. Apply to `garden_entrance` first, then roll forward through the other 6 nodes.
-- ⏳ Remaining 6 nodes: `western_wall`, `clearing_path`, `wall_lunch`, `lichen_grid`, `old_well`, `well_roots` — Seed + Sprout prose, adaptive titles, adaptive choices.
+- ✅ Refactor `src/content/index.ts` into `types.ts` / `adaptive.ts` / `index.ts` (commit `c439f6d`). External imports unchanged.
+- ✅ `AdaptiveChoiceText` interface + `resolveChoiceText` resolver (commit `f877cf3`). New `ResolvedChoice` type — UI components consume that, text guaranteed string. Type system now enforces "anything reaching `ChoiceButton` has been through the resolver." Runtime fallback for missing levels is `"…"`. No nodes use the per-level form yet.
+- ✅ Resolver naming + pipeline consolidated (commit `5114d64`). All text-handling lives in `adaptive.ts`: `resolveTitle`, `resolveBody` (folds markdown), `resolveChoiceText`, `filterChoices`. Consistent `resolve*` verb; `filterChoices` kept separate because filtering and resolving are distinct concerns.
+- ⏳ Apply adaptive choices to `garden_entrance` (still has plain-string choices; title and Seed prose already done).
+- ⏳ Seed sweep across remaining 6 nodes: `western_wall`, `clearing_path`, `wall_lunch`, `lichen_grid`, `old_well`, `well_roots` — Seed prose + adaptive title + adaptive choices for each.
+- ⏳ Sprout sweep across all 7 nodes (only after the full Seed sweep is done).
 
 ### In-flight scope additions
 
 Phase 2 grew beyond "Seed + Sprout prose" once `garden_entrance` Seed was on screen and the title + choice buttons looked obviously wrong for a 5-year-old:
 
 1. **Adaptive titles** (✅ shipped). `AdaptiveTitle` requires all four levels — no fall-up between levels. The redundancy is the feature: each reader's experience is explicit at the page level. Runtime fallback for safety.
-2. **Adaptive choices** (pending). Same shape, same all-required rule. Type sketch:
-   ```typescript
-   interface AdaptiveChoiceText {
-     seed: string;
-     sprout: string;
-     bloom: string;
-     fruit: string;
-   }
-   // Choice.text: string | AdaptiveChoiceText
-   ```
-   Open question to decide when implementing: where does the resolver live (current `getContent` flow, or pushed into `filterChoicesByLevel`)? Probably a new `resolveChoices()` step alongside `resolveTitle()`.
+2. **Adaptive choices** (✅ shipped). `AdaptiveChoiceText` with the same all-required rule. `Choice.text: string | AdaptiveChoiceText`. New `ResolvedChoice` type guarantees UI consumers see resolved strings — type system enforces the resolver ran. Runtime fallback `"…"` for missing levels.
 3. **Module split** (✅ shipped). `src/content/index.ts` was 373 lines and roughly half adaptive-engine. Now split:
-   - `src/content/types.ts` — pure type definitions (106 lines).
-   - `src/content/adaptive.ts` — the adaptive engine: level math, per-level shapes, resolvers, fallbacks (176 lines).
-   - `src/content/index.ts` — registry, `getContent`, `getAllContentKeys`, `formatContent`, public re-exports (165 lines).
-   `filterChoicesByLevel` now takes a `lookup` function instead of importing `allContent`, keeping `adaptive.ts` free of runtime registry coupling.
+   - `src/content/types.ts` — pure type definitions.
+   - `src/content/adaptive.ts` — the adaptive engine: level math, per-level shapes, all four resolvers (`resolveTitle`, `resolveBody`, `resolveChoiceText`, `filterChoices`), fallbacks, private markdown formatter.
+   - `src/content/index.ts` — registry, `getContent`, `getAllContentKeys`, public re-exports.
+   `filterChoices` takes a `lookup` function instead of importing `allContent`, keeping `adaptive.ts` free of runtime registry coupling.
+4. **Pipeline naming consolidation** (✅ shipped). `formatContent` → private `formatMarkdown` inside `resolveBody`. `resolveContentText` → `resolveBody`. `filterChoicesByLevel` → `filterChoices`. Consistent `resolve*` verb across title/body/choice text; `filterChoices` stays as a separate verb because filtering and resolving are distinct concerns.
 
 ### The problem
 
