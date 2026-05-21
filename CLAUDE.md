@@ -135,7 +135,7 @@ When bugs are found in Claude Code itself, submit GitHub issues directly using t
 
 **Git commits**: Only create commits when explicitly requested. After completing work, wait for the user to ask for a commit rather than doing it automatically.
 
-**Commit messages**: Keep concise and focused. See [DEVELOPMENT.md](DEVELOPMENT.md#commit-message-standards) for detailed standards including conventional commit format and examples.
+**Commit messages**: Subject line does most of the work. Body is optional and, when present, is short bullets (one line each) — not paragraphs. Avoid recapping what the diff already shows. Don't match length to recent commits; resist style drift toward longer messages. See [DEVELOPMENT.md](DEVELOPMENT.md#commit-message-standards) for the conventional format and examples to mirror.
 
 ## Quick Reference
 
