@@ -33,7 +33,7 @@ import { nanotechnologyLessons } from './lessons/nanotechnology/index';
 import { puzzleCollection } from './puzzles/index';
 import { getStoryForContentKey } from './kingdoms';
 
-import type { ContentContext, ProcessedStoryContent, StoryContent } from './types';
+import type { ContentContext, ResolvedContent, StoryContent } from './types';
 import {
   filterChoicesByLevel,
   resolveContentText,
@@ -46,7 +46,7 @@ export type {
   Choice,
   ContentContext,
   Kingdom,
-  ProcessedStoryContent,
+  ResolvedContent,
   Story,
   StoryArc,
   StoryContent,
@@ -133,7 +133,7 @@ export const allContent: ContentRegistry = {
  * @param context - Context object with reader info and app state
  * @returns Processed content ready for UI, or null if not found
  */
-export const getContent = (contentKey: string, context: ContentContext): ProcessedStoryContent | null => {
+export const getContent = (contentKey: string, context: ContentContext): ResolvedContent | null => {
   // Handle special dynamic content like settings
   if (contentKey === 'settings') {
     return getSettingsContent(context);

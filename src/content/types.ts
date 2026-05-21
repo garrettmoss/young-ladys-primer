@@ -96,10 +96,16 @@ export interface StoryContent {
 }
 
 /**
- * Processed story content ready for UI consumption.
- * Content is always a string after processing.
+ * The shape returned by `getContent()`. All text fields are resolved
+ * strings ready to render: adaptive variants have been picked for the
+ * reader's level, function-templates have been called, markdown has been
+ * formatted to HTML.
+ *
+ * There is no "raw" companion type — the same `StoryContent` that lives
+ * in the registry is what the resolver consumes. `ResolvedContent` is
+ * just the narrowed, evaluated output shape the UI sees.
  */
-export interface ProcessedStoryContent {
+export interface ResolvedContent {
   title: string;
   content: string;
   choices?: Choice[];
