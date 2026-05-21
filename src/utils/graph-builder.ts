@@ -195,7 +195,7 @@ export function contentRegistryToFlowGraph(
         label: typeof content.title === 'string' ? content.title : content.title.fruit,
         contentPreview: getContentPreview(content),
         nodeType,
-        choiceCount: content.choices?.length || 0,
+        choiceCount: content.choices.length,
         incomingEdges
       },
       position: { x: 0, y: 0 }, // Will be calculated by layout algorithm
@@ -266,7 +266,7 @@ export function calculateGraphMetrics(contentGraph: ContentRegistry) {
   let entryNodes = 0;
 
   Object.entries(contentGraph).forEach(([id, content]) => {
-    const choiceCount = content.choices?.length || 0;
+    const choiceCount = content.choices.length;
     totalChoices += choiceCount;
 
     if (choiceCount === 0) endingNodes++;

@@ -236,7 +236,7 @@ function YoungLadysPrimer() {
             </div>
 
             {/* Choices with manuscript style */}
-            {currentContent.choices && currentContent.choices.length > 0 && (
+            {currentContent.choices.length > 0 && (
               <div className="space-y-3 mt-6">
                 {(contentKey === 'welcome' || contentKey.startsWith('hub_')) && (
                   <p className="choice-prompt">
@@ -268,7 +268,7 @@ function YoungLadysPrimer() {
             {/* Navigation buttons - only show when not on welcome page */}
             {contentKey !== 'welcome' && (
               <NavigationButtons
-                hasChoices={!!(currentContent.choices && currentContent.choices.length > 0)}
+                hasChoices={currentContent.choices.length > 0}
                 canGoBack={canGoBack()}
                 onBack={goBack}
                 onReturnToBeginning={resetToWelcome}

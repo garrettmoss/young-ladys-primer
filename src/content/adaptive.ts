@@ -223,11 +223,10 @@ function pickRawBody(
  * dependency on the content registry.
  */
 export function filterChoices(
-  choices: Choice[] | undefined,
+  choices: Choice[],
   currentLevel: AdaptiveLevel | undefined,
   lookup: (key: string) => StoryContent | undefined
-): Choice[] | undefined {
-  if (!choices) return choices;
+): Choice[] {
   const readerRank = levelRank(currentLevel ?? 'fruit');
   return choices.filter(choice => {
     const target = lookup(choice.action);

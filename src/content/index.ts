@@ -130,7 +130,7 @@ export const getContent = (contentKey: string, context: ContentContext): Resolve
   return {
     title: resolveTitle(content.title, context),
     content: resolveBody(content, context, useAdaptive),
-    choices: filteredChoices?.map(choice => ({
+    choices: filteredChoices.map(choice => ({
       ...choice,
       text: resolveChoiceText(choice.text, context),
     })),

@@ -147,7 +147,8 @@ This page provides debugging utilities for testing the Primer's behavior. It wil
     }
 
     return html.trim();
-  }
+  },
+  choices: []
 };
 
 /**

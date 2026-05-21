@@ -154,7 +154,7 @@ export function ContentSidebar({
           </section>
 
           {/* Outgoing choices */}
-          {content.choices && content.choices.length > 0 && (
+          {content.choices.length > 0 && (
             <section>
               <h3 className="font-serif text-sm font-semibold text-ink/80 mb-2 uppercase tracking-wide">
                 Choices ({content.choices.length})

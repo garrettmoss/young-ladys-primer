@@ -96,7 +96,7 @@ export interface StoryContent {
   // `content` is the legacy plain-text field. Required for non-adaptive
   // nodes; omitted on adaptive nodes (which use `adaptiveContent` instead).
   content?: string | ((context: ContentContext) => string);
-  choices?: Choice[]; // Optional - some content may have no choices (endings, lessons)
+  choices: Choice[]; // Empty array for endings/lessons that genuinely have none — never omit
   // Adaptive-content fields (Phase 3a). Present on nodes in adaptive stories.
   // The renderer prefers these when the parent Story has `adaptive: true`.
   beat?: string;
@@ -118,5 +118,5 @@ export interface StoryContent {
 export interface ResolvedContent {
   title: string;
   content: string;
-  choices?: ResolvedChoice[];
+  choices: ResolvedChoice[];
 }
