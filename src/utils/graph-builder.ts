@@ -221,9 +221,10 @@ export function contentRegistryToFlowGraph(
           id: `${sourceId}-${targetId}-${index}`,
           source: sourceId,
           target: targetId,
-          label: choice.text.length > 30
-            ? choice.text.substring(0, 30) + '...'
-            : choice.text,
+          label: (() => {
+            const text = typeof choice.text === 'string' ? choice.text : choice.text.fruit;
+            return text.length > 30 ? text.substring(0, 30) + '...' : text;
+          })(),
           animated: false // Can be enabled for highlighting paths
         });
       }

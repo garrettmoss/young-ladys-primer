@@ -7,7 +7,7 @@
  * orchestration.
  */
 
-import type { AdaptiveLevel, AdaptiveContent, AdaptiveTitle } from './adaptive';
+import type { AdaptiveLevel, AdaptiveContent, AdaptiveTitle, AdaptiveChoiceText } from './adaptive';
 
 /**
  * Context object passed to content functions for personalization.
@@ -29,9 +29,19 @@ export interface ContentContext {
  * Represents a user choice in an interactive story
  */
 export interface Choice {
-  text: string;   // Display text shown to the user
-  action: string; // Story key to navigate to when selected
-  tag?: string;   // Optional italic suffix label (e.g. "legacy") — rendered separately from text
+  text: string | AdaptiveChoiceText; // Display text — plain string, or per-level renderings
+  action: string;                    // Story key to navigate to when selected
+  tag?: string;                      // Optional italic suffix label (e.g. "legacy") — rendered separately from text
+}
+
+/**
+ * A Choice after the resolver has run. Text is guaranteed to be a
+ * plain string. UI components consume this shape, not the raw `Choice`.
+ */
+export interface ResolvedChoice {
+  text: string;
+  action: string;
+  tag?: string;
 }
 
 /**
@@ -108,5 +118,5 @@ export interface StoryContent {
 export interface ResolvedContent {
   title: string;
   content: string;
-  choices?: Choice[];
+  choices?: ResolvedChoice[];
 }

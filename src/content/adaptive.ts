@@ -96,10 +96,24 @@ export interface AdaptiveTitle {
   fruit: string;
 }
 
+/**
+ * Per-level renderings of a choice button's text. Same all-required
+ * rule as AdaptiveTitle — short strings, redundancy is cheap, each
+ * reader's experience is explicit. Use a plain string for non-adaptive
+ * buttons (welcome, hubs, settings).
+ */
+export interface AdaptiveChoiceText {
+  seed: string;
+  sprout: string;
+  bloom: string;
+  fruit: string;
+}
+
 // === Fallbacks ===
 
 const MISSING_TITLE_FALLBACK = 'An unwritten page';
 const MISSING_CONTENT_FALLBACK = 'This page hasn\'t grown yet.';
+const MISSING_CHOICE_TEXT_FALLBACK = '…';
 
 // === Resolvers ===
 
@@ -115,6 +129,20 @@ export function resolveTitle(
   if (typeof title === 'string') return title;
   const level: AdaptiveLevel = context.currentLevel ?? 'fruit';
   return title[level] ?? MISSING_TITLE_FALLBACK;
+}
+
+/**
+ * Resolve a choice button's text. Plain strings pass through;
+ * AdaptiveChoiceText objects are keyed by the reader's current level.
+ * Same fallback discipline as resolveTitle.
+ */
+export function resolveChoiceText(
+  text: string | AdaptiveChoiceText,
+  context: ContentContext
+): string {
+  if (typeof text === 'string') return text;
+  const level: AdaptiveLevel = context.currentLevel ?? 'fruit';
+  return text[level] ?? MISSING_CHOICE_TEXT_FALLBACK;
 }
 
 /**

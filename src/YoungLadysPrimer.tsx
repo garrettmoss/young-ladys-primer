@@ -21,7 +21,7 @@
 
 import React from 'react';
 import { Scroll, MoonStar, Cog, Castle, UserStar } from 'lucide-react';
-import { getContent, Choice, ContentContext } from './content/index';
+import { getContent, ResolvedChoice, ContentContext } from './content/index';
 import { getKingdomById } from './content/kingdoms';
 import { useContentNavigation } from './hooks/useContentNavigation';
 import { useHydration } from './hooks/useHydration';
@@ -243,7 +243,7 @@ function YoungLadysPrimer() {
                     Choose your path, dear reader...
                   </p>
                 )}
-                {currentContent.choices.map((choice: Choice, index: number) => {
+                {currentContent.choices.map((choice: ResolvedChoice, index: number) => {
                   const isActionAvailable = getContent(choice.action, contentContext);
                   let IconComponent = null;
                   if (contentKey === 'welcome') {

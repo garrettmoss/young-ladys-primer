@@ -171,7 +171,7 @@ export function ContentSidebar({
                       </span>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm text-ink font-medium leading-snug">
-                          {choice.text}
+                          {typeof choice.text === 'string' ? choice.text : choice.text.fruit}
                         </p>
                         <p className="text-xs text-ink/50 font-mono mt-1">
                           → {choice.action}

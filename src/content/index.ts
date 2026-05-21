@@ -36,6 +36,7 @@ import { getStoryForContentKey } from './kingdoms';
 import type { ContentContext, ResolvedContent, StoryContent } from './types';
 import {
   filterChoicesByLevel,
+  resolveChoiceText,
   resolveContentText,
   resolveTitle,
 } from './adaptive';
@@ -46,6 +47,7 @@ export type {
   Choice,
   ContentContext,
   Kingdom,
+  ResolvedChoice,
   ResolvedContent,
   Story,
   StoryArc,
@@ -58,11 +60,13 @@ export {
   levelRank,
   recommendLevel,
   resolveTitle,
+  resolveChoiceText,
   resolveContentText,
   filterChoicesByLevel,
 } from './adaptive';
 
 export type {
+  AdaptiveChoiceText,
   AdaptiveContent,
   AdaptiveLevel,
   AdaptiveTitle,
@@ -147,14 +151,19 @@ export const getContent = (contentKey: string, context: ContentContext): Resolve
 
   const rawContent = resolveContentText(content, context, useAdaptive);
 
+  const filteredChoices = filterChoicesByLevel(
+    content.choices,
+    context.currentLevel,
+    (key) => allContent[key],
+  );
+
   return {
     title: resolveTitle(content.title, context),
     content: formatContent(rawContent),
-    choices: filterChoicesByLevel(
-      content.choices,
-      context.currentLevel,
-      (key) => allContent[key],
-    ),
+    choices: filteredChoices?.map(choice => ({
+      ...choice,
+      text: resolveChoiceText(choice.text, context),
+    })),
   };
 };
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
-import { Choice } from '../content/index';
+import { ResolvedChoice } from '../content/index';
 
 interface ChoiceButtonProps {
-  choice: Choice;
+  choice: ResolvedChoice;
   icon?: React.ComponentType<{ className?: string }> | null;
   isAvailable: boolean;
   onClick: () => void;
