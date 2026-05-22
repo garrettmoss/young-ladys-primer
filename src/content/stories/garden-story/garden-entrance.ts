@@ -33,9 +33,31 @@ ${readerName} read that twice. She had the strangest feeling — not that she'd 
 She picked it up anyway.`
     },
     choices: [
-      { text: "Start at the crumbling western wall", action: "western_wall" },
-      { text: "Follow the map to the eastern grove", action: "eastern_grove" },
-      { text: "Study the map's strange margins", action: "study_map" }
+      {
+        text: {
+          seed: "Go to the old stone wall",
+          fruit: "Start at the crumbling western wall",
+        },
+        action: "western_wall",
+      },
+      {
+        text: {
+          seed: "Walk to the trees",
+          fruit: "Follow the map to the eastern grove",
+        },
+        action: "eastern_grove",
+      },
+      // TODO: gate this branch — see docs/implementations/garden-rewrite.md
+      // ("Map-study path entirely"). Seed definitely too young; Sprout likely
+      // too young. Exact boundary (Bloom vs. Fruit) decided once the prose
+      // exists. Until then the choice greys out as "(coming soon)".
+      {
+        text: {
+          seed: "Look at the map again",
+          fruit: "Study the map's strange margins",
+        },
+        action: "study_map",
+      },
     ]
   }
 };

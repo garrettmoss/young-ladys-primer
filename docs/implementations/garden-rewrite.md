@@ -93,7 +93,7 @@ Safety rail (shipped in Phase 3a): the content validator's `validateGating` chec
 
 ### Probable gates on unwritten paths
 
-- **Map-study path entirely** (`study_map → cartographer_story → pattern_lesson`) — Bloom+ candidate. Iris's backstory, the cartographer's notes, and the emergence lesson are heavy on abstraction and reading-density. A Seed reader at `garden_entrance` would see only 2 of the 3 path choices. Requires that the convergence at `garden_heart` doesn't *depend* on having taken the map-study path — needs verification when those nodes get written.
+- **Map-study path entirely** (`study_map → cartographer_story → pattern_lesson`) — gate at Bloom or Fruit; exact boundary TBD once the prose exists and we can judge density. Seed is definitely too young; Sprout is likely too young (Iris's backstory, cartographer's notes, and the emergence lesson lean abstract and reading-dense). A gated reader at `garden_entrance` simply sees fewer doors. Requires that the convergence at `garden_heart` doesn't *depend* on having taken this path — needs verification when those nodes get written.
 - **Eastern grove path** — likely available to all levels, but `listening_post`'s "she knew without knowing how" intuition beat may need a more concrete Seed rendering rather than gating.
 
 ### When to actually decide
