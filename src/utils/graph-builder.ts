@@ -5,9 +5,14 @@
  * Provides node type detection and convergence point identification.
  */
 
-import type { StoryContent, Choice } from '@/content';
+import type { StoryContent, Choice, ContentContext } from '@/content';
+import { resolveTitle, resolveChoiceText } from '@/content/adaptive';
 import type { Node, Edge } from 'reactflow';
 import { FLOW_COLORS } from '@/components/flow-visualizer/flow-constants';
+
+// Synthetic context for dev-time graph rendering. Prefers fruit-level
+// text but the resolvers walk to the nearest defined neighbor if missing.
+const GRAPH_CONTEXT: ContentContext = { readerName: 'Reader', currentLevel: 'fruit' };
 
 // === CONFIGURATION ===
 
@@ -192,7 +197,7 @@ export function contentRegistryToFlowGraph(
     nodes.push({
       id,
       data: {
-        label: typeof content.title === 'string' ? content.title : content.title.fruit,
+        label: resolveTitle(content.title, GRAPH_CONTEXT),
         contentPreview: getContentPreview(content),
         nodeType,
         choiceCount: content.choices.length,
@@ -222,7 +227,7 @@ export function contentRegistryToFlowGraph(
           source: sourceId,
           target: targetId,
           label: (() => {
-            const text = typeof choice.text === 'string' ? choice.text : choice.text.fruit;
+            const text = resolveChoiceText(choice.text, GRAPH_CONTEXT);
             return text.length > 30 ? text.substring(0, 30) + '...' : text;
           })(),
           animated: false // Can be enabled for highlighting paths
