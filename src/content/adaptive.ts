@@ -80,33 +80,30 @@ export interface AdaptiveContent {
 }
 
 /**
- * Per-level renderings of a node title. Unlike `AdaptiveContent`, every
- * level is required — titles are short and authoring all four is cheap, and
- * the redundancy keeps each reader's experience explicit at the page level.
+ * Per-level renderings of a node title. All levels optional so authors can
+ * fill in incrementally (Seed-first discipline). The resolver walks to the
+ * nearest defined neighbor if the requested level is missing — titles are
+ * short and meaning-stable across levels, so borrowing reads fine.
  * Use a plain string for non-adaptive content (welcome, hubs, lessons).
- *
- * The renderer still applies a polite fallback at runtime if a level is
- * somehow missing (e.g. dynamic content, future AI rendering); the type is
- * the first line of defense, the fallback is the second.
  */
 export interface AdaptiveTitle {
-  seed: string;
-  sprout: string;
-  bloom: string;
-  fruit: string;
+  seed?: string;
+  sprout?: string;
+  bloom?: string;
+  fruit?: string;
 }
 
 /**
- * Per-level renderings of a choice button's text. Same all-required
- * rule as AdaptiveTitle — short strings, redundancy is cheap, each
- * reader's experience is explicit. Use a plain string for non-adaptive
- * buttons (welcome, hubs, settings).
+ * Per-level renderings of a choice button's text. Same all-optional rule
+ * and nearest-neighbor fallback as AdaptiveTitle. Choice text is short
+ * and largely level-agnostic in meaning, so a borrowed neighbor is better
+ * than a cryptic placeholder.
  */
 export interface AdaptiveChoiceText {
-  seed: string;
-  sprout: string;
-  bloom: string;
-  fruit: string;
+  seed?: string;
+  sprout?: string;
+  bloom?: string;
+  fruit?: string;
 }
 
 // === Fallbacks ===
@@ -141,9 +138,29 @@ function formatMarkdown(raw: string): string {
 // === Resolvers ===
 
 /**
- * Resolve a node's title. Plain string titles pass through; AdaptiveTitle
- * objects are keyed by the reader's current level. The type requires all
- * four levels, but we still fall back politely if one is missing somehow.
+ * Pick the nearest defined level to the requested one. Walks outward by
+ * distance in the LEVELS tuple (1 away, then 2, then 3…), so a Sprout
+ * reader prefers Bloom over Fruit when Sprout itself is missing.
+ * Returns undefined only if every level is empty.
+ */
+function nearestDefinedLevel<T>(
+  bag: Partial<Record<AdaptiveLevel, T>>,
+  requested: AdaptiveLevel
+): T | undefined {
+  if (bag[requested] !== undefined) return bag[requested];
+  const startRank = levelRank(requested);
+  for (let distance = 1; distance < LEVELS.length; distance++) {
+    const below = LEVELS[startRank - distance];
+    const above = LEVELS[startRank + distance];
+    if (above !== undefined && bag[above] !== undefined) return bag[above];
+    if (below !== undefined && bag[below] !== undefined) return bag[below];
+  }
+  return undefined;
+}
+
+/**
+ * Resolve a node's title. Plain strings pass through; AdaptiveTitle objects
+ * use nearest-defined-neighbor lookup before falling back to a placeholder.
  */
 export function resolveTitle(
   title: string | AdaptiveTitle,
@@ -151,13 +168,12 @@ export function resolveTitle(
 ): string {
   if (typeof title === 'string') return title;
   const level: AdaptiveLevel = context.currentLevel ?? 'fruit';
-  return title[level] ?? MISSING_TITLE_FALLBACK;
+  return nearestDefinedLevel(title, level) ?? MISSING_TITLE_FALLBACK;
 }
 
 /**
  * Resolve a choice button's text. Plain strings pass through;
- * AdaptiveChoiceText objects are keyed by the reader's current level.
- * Same fallback discipline as resolveTitle.
+ * AdaptiveChoiceText objects use nearest-defined-neighbor lookup.
  */
 export function resolveChoiceText(
   text: string | AdaptiveChoiceText,
@@ -165,7 +181,7 @@ export function resolveChoiceText(
 ): string {
   if (typeof text === 'string') return text;
   const level: AdaptiveLevel = context.currentLevel ?? 'fruit';
-  return text[level] ?? MISSING_CHOICE_TEXT_FALLBACK;
+  return nearestDefinedLevel(text, level) ?? MISSING_CHOICE_TEXT_FALLBACK;
 }
 
 /**
