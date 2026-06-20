@@ -288,6 +288,14 @@ Per-kingdom voice comes from an optional `Kingdom.hubIntro` field; kingdoms with
 - Visual polish on the library page (kingdom cards vs. plain choice buttons?).
 - Per-kingdom icons on the library page (currently all `BookOpen`).
 
+### Design note: system chrome is intentionally non-adaptive
+Menus — welcome/library, kingdom hubs, settings — use plain `title`/`content` strings, **not** `adaptiveContent`. This is deliberate, not an unfinished gap. Do not wrap them in adaptive levels.
+
+- The resolver already passes plain strings straight through; non-adaptive chrome alongside adaptive story nodes is the intended split.
+- A pre-reader navigates chrome by **icon**, per the Icon → Label → Action principle — she recognizes the castle means *kingdom* and taps it; the menu prose doesn't need a Seed rendering. Icons are cheap on a handful of fixed menus and the right tool there. Per-choice icons across a 19-node story arc would be far too much — which is exactly why *story* text is adaptive and *menu* text is not.
+- Menu copy is already pitched at the read-aloud floor, and the read-aloud is a person (see VISION.md "The narrator's voice"), so adaptive menu text solves a problem the icon + adult already solve.
+- Adaptive content doubles as the Phase 8 training corpus; "Tell me a story" × 4 levels would be noise in a dataset meant to teach narrative voice.
+
 ### Verification
 - Library lists active kingdoms; legacy kingdoms appear inline with `(prototype)` suffix and remain playable.
 - Adding a new kingdom to `src/content/kingdoms.ts` automatically produces a hub and a library entry — no other code changes needed.
@@ -406,6 +414,15 @@ Extend signal capture before building ML pipeline.
 ### Approach
 
 Fine-tune a small open-source model on the Primer's writing style so it can render known beats at inferred reader levels. NOT training from scratch. NOT generating new beats — rendering existing skeletons.
+
+### Guardrail: the model renders, it does not manufacture
+
+This enforces VISION Principle 4 ("Make Space") at the one place the project is most tempted to break it. The whole appeal of an AI layer is that it generates fast and cheap — which is exactly why it's dangerous here. The Primer's value is restraint, not volume.
+
+- The model renders *between and around* a fixed, human-authored set of beats. It does **not** invent new beats, nodes, kingdoms, or storylines.
+- Abundance happens in *rendering* (tailoring known content to a reader), never in *content sprawl*.
+- Static adaptive content is always the fallback (see integration architecture below) — the system is whole without the model. The AI is an enhancement to a complete, bounded thing, not an engine for growing it.
+- If a future feature proposal amounts to "let the model write more story," that's a Principle 4 violation, not a roadmap item.
 
 ### Model & tooling
 - **Model**: Llama 3.2 3B or Phi-3-mini (3.8B) — small, good creative writing, permissive license.

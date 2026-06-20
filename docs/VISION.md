@@ -23,7 +23,24 @@ Like a caring father, the Primer provides structure while allowing freedom - off
 - Challenging but achievable progression
 - Support without coddling
 
-### 3. Safe Space for Play
+### 3. Learning Is Relational
+The Primer is a companion within a child's relationships, not a replacement for them. It begins beside an engaged adult and grows toward independence as the reader does — the early read-aloud is soil, not a crutch, and solo reading is where it's meant to lead.
+
+**Implementation:**
+- Designed to be read *with* a child, not only by one
+- No feature that quietly substitutes for adult presence where it still matters
+- Shared reflection alongside growing independence
+
+### 4. Make Space
+The Primer adds little and leaves room. The temptation of abundance — more content, more features, more generated stuff because it can be generated — is a trap; people need less, not more. The Primer is meant to be small enough to leave space for the world: for an adult's attention, for boredom, for sunlight and trees and the ordinary richness that fills an empty moment when nothing is competing for it. The empty space is not a gap to fill. It is the point.
+
+**Implementation:**
+- Subtraction as a discipline — if a beat works in fewer words, it is done
+- No content sprawl: a fixed, deliberate set of beats, not an ever-growing pile
+- Trust the space — don't fill every silence, every page, every moment
+- Wonder lives in restraint as much as in richness
+
+### 5. Safe Space for Play
 The Primer creates a protected environment where experimentation, curiosity, and joy are not just allowed but encouraged. Play is the natural language of learning.
 
 **Implementation:**
@@ -34,7 +51,7 @@ The Primer creates a protected environment where experimentation, curiosity, and
 - Humor and whimsy woven throughout serious learning
 - Encouragement to try again and explore alternatives
 
-### 4. Adaptive Growth
+### 6. Adaptive Growth
 The Primer meets readers where they are while gently challenging them to grow - never too comfortable, always reaching upward.
 
 **Implementation:**
@@ -43,7 +60,7 @@ The Primer meets readers where they are while gently challenging them to grow - 
 - Multi-dimensional intelligence recognition
 - Challenge calibrated to individual capacity
 
-### 5. Real-World Preparation
+### 7. Real-World Preparation
 This is not escapism but preparation - teaching lessons meant to be lived in the real world with real people.
 
 **Implementation:**
@@ -52,7 +69,7 @@ This is not escapism but preparation - teaching lessons meant to be lived in the
 - Connection between story choices and life skills
 - Bridge between digital learning and lived experience
 
-### 6. Integration of Knowledge
+### 8. Integration of Knowledge
 Weaving together art & science, mathematics & magic, technology & spirituality - showing the interconnected nature of all learning.
 
 **Implementation:**
@@ -61,7 +78,7 @@ Weaving together art & science, mathematics & magic, technology & spirituality -
 - Historical figures as inspiration (e.g. Ada Lovelace)
 - Music, language, and computation as unified studies
 
-### 7. Individual Recognition
+### 9. Individual Recognition
 Every reader is unique - different strengths, different paces, different interests. The Primer honors this individuality.
 
 **Implementation:**
@@ -70,7 +87,7 @@ Every reader is unique - different strengths, different paces, different interes
 - Strength-based learning progression
 - Interest-driven content recommendations
 
-### 8. Connection and Cooperation
+### 10. Connection and Cooperation
 While honoring individual growth, the Primer encourages building alliances with other young women and connecting with community.
 
 **Implementation:**
@@ -79,7 +96,7 @@ While honoring individual growth, the Primer encourages building alliances with 
 - Stories that model healthy relationships
 - Community contribution encouragement
 
-### 9. Privacy and Safety
+### 11. Privacy and Safety
 Especially critical when working with children - data protection and privacy are non-negotiable foundations.
 
 **Implementation:**
@@ -88,7 +105,7 @@ Especially critical when working with children - data protection and privacy are
 - Transparent privacy practices
 - Parent/guardian involvement in data decisions
 
-### 10. Embodiment, Simplicity, and Natural Rhythm
+### 12. Embodiment, Simplicity, and Natural Rhythm
 The Primer honors the reader's connection to physical reality and the natural world. In an age of constant digital stimulation, the Primer teaches appreciation for simple pleasures, concrete experiences, and the natural rhythm of life that includes both intensity and rest.
 
 **Why this matters:**
@@ -131,7 +148,7 @@ These are questions the project is actively sitting with, not gaps to be filled 
 
 **The frame story.** Stephenson's Primer had a quest: Princess Nell collecting twelve keys from twelve kingdoms to unlock Castle Turing at the heart of the land. Each key was not a collectible but a demonstration of mastery — the story acknowledging she had learned something. The current aspiration is a similar frame: perhaps seven kingdoms, seven keys, unlocking something at the Primer's heart (the "seven-dimensional crystal heart" nodded to in early dragon-story prose). This is a hypothesis, not a commitment. One complete kingdom must exist at adaptive quality before the frame is committed to. But the question *is the garden a kingdom of a larger whole, and if so what does it contribute to the heart?* is worth asking while writing it, even if the answer is not yet known.
 
-**The narrator's voice.** Stephenson's Primer was voiced by Miranda, a human ractor unknowingly performing it for Nell. The warmth of the book was her warmth. The current Primer has no Miranda. The voice is something in between — partly the author's, partly the AI's, and over time more emergently the Primer's own. Whether the Primer has an in-world narrator character, and who or what that voice belongs to, is an open question. Audio is not on the table yet — neither human-performed nor AI-synthesized. For now, the Primer's voice lives on the page, and its nature is being discovered through the writing rather than declared in advance.
+**The narrator's voice.** Stephenson's Primer was voiced by Miranda, a human ractor unknowingly performing it for Nell. The warmth of the book was her warmth. The current Primer has no Miranda. The voice is something in between — partly the author's, partly the AI's, and over time more emergently the Primer's own. Whether the Primer has an in-world narrator character, and who or what that voice belongs to, is an open question. Audio is not on the table yet — neither human-performed nor AI-synthesized. A growing conviction (see Principle 3) is that the reading-aloud is meant to be a person in the room, not a feature; the pre-reader's narrator is her parent. That leans against synthetic narration without quite closing the door — a voice that's genuinely part of the synthesis, rather than a substitute for presence, might still belong. For now, the Primer's voice lives on the page, and its nature is being discovered through the writing rather than declared in advance.
 
 **Cross-kingdom threading.** If there is no explicit frame story yet, there can still be recurring symbols, minor characters, or lines of verse that echo across kingdoms — "winks from God," nods that suggest the kingdoms share a world without forcing the architecture to say so. This is a writing practice, not a schema feature. When a second kingdom is written, the question will become: what from the garden should echo here?
 
