@@ -82,10 +82,15 @@ Real consequences exist. Life requires training. This is acknowledged, not sugar
 
 Quick reference for where content lives:
 
-- `content/core/` - Welcome screen and system navigation
-- `content/stories/dragon-story/` - Mechanical dragon story arc with multiple branches
-- `content/lessons/nanotechnology/` - Educational content about molecular science
-- `content/puzzles/` - Interactive molecular lock puzzle system
+All content lives under `src/content/`:
+
+- `src/content/core/` - Welcome/library screen, kingdom hubs, settings, dev tools
+- `src/content/stories/dragon-story/` - Legacy mechanical dragon arc (prototype kingdom)
+- `src/content/stories/garden-story/` - The Cartographer's Garden (active, adaptive-first)
+- `src/content/lessons/nanotechnology/` - Educational content about molecular science
+- `src/content/puzzles/` - Interactive molecular lock puzzle system
+
+**Active development** is the Primer overhaul — see [docs/OVERHAUL-PLAN.md](docs/OVERHAUL-PLAN.md) for the phased plan and current front. Start there before picking up work.
 
 ### Narrative Structure Patterns
 

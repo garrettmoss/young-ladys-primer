@@ -62,33 +62,35 @@ Shipped the full adaptive-content infrastructure. The garden kingdom now runs on
 - New validator check (`validateGating`) simulates the runtime filter at every level and fails if any non-ending node ends up with zero forward paths for some reader tier.
 - 7 garden nodes (entrance + western wall path) wrapped: each declares `beat` + `feeling` and moves prose into `adaptiveContent: { fruit }`. `cartographers-garden` story flipped to `adaptive: true`.
 
-Phase 2 (Seed + Sprout prose for the 7 nodes) and Phase 3b (Bloom + Fruit fill-in) build on top of this.
+Phase 2 (Seed base for the 7 nodes) and Phase 3b (Sprout + Bloom fill-in; Fruit already exists) build on top of this.
 
 ---
 
 ## Phase 2: Rewrite Garden From Seed
 
-**Status**: 🟡 In progress (1/7 nodes done)
-**Estimated effort**: 1 session (scope expanded — see "In-flight scope additions" below)
+**Scope**: Get the **Seed** base solid across all 7 existing nodes — Seed prose, Seed title, Seed choice text. Seed only. Sprout and Bloom belong to Phase 3b; Fruit already exists from the original prose. All adaptive types (`AdaptiveContent`, `AdaptiveTitle`, `AdaptiveChoiceText`) have every level optional, and the resolver falls back to the nearest defined neighbor — so a node with only `seed` filled is valid and renders fine. Fill the `seed` key and nothing else.
+
+**Status**: 🟡 In progress (0/7 nodes *fully* done — `garden_entrance` has Seed prose + adaptive title but its choices still only carry `seed`/`fruit` keys, missing `sprout`/`bloom`)
+**Estimated effort**: 1 session
 **Dependencies**: Phase 1, Phase 3a (both ✅)
 
 ### Progress so far
 
-- ✅ `garden_entrance` Seed prose written (commit `b9cba7d`, ~52 words).
-- ✅ `AdaptiveTitle` interface added — titles can be per-level (commit `afc6a41`). `garden_entrance` is the first node using it. **All adaptive nodes from here on need adaptive titles** — all four levels required by the type. Runtime fallback is `"An unwritten page"`.
+- ✅ `garden_entrance` for Phase 2 purposes: Seed prose (commit `b9cba7d`, ~52 words), title with a `seed` key, choices with `seed` keys. The upper-level keys it happens to carry (`fruit` prose; `sprout`/`bloom` on the title) are Phase 3b's job to complete — not a Phase 2 gap. Missing levels fall back to the nearest neighbor, so it renders fine at every tier today.
+- ✅ `AdaptiveTitle` interface added — titles can be per-level (commit `afc6a41`). `garden_entrance` is the first node using it. All levels are optional (relaxed in commit `8f5bdd9`); the resolver falls back to the nearest defined neighbor, then to `"An unwritten page"` if none exist.
 - ✅ Refactor `src/content/index.ts` into `types.ts` / `adaptive.ts` / `index.ts` (commit `c439f6d`). External imports unchanged.
 - ✅ `AdaptiveChoiceText` interface + `resolveChoiceText` resolver (commit `f877cf3`). New `ResolvedChoice` type — UI components consume that, text guaranteed string. Type system now enforces "anything reaching `ChoiceButton` has been through the resolver." Runtime fallback for missing levels is `"…"`. No nodes use the per-level form yet.
 - ✅ Resolver naming + pipeline consolidated (commit `5114d64`). All text-handling lives in `adaptive.ts`: `resolveTitle`, `resolveBody` (folds markdown), `resolveChoiceText`, `filterChoices`. Consistent `resolve*` verb; `filterChoices` kept separate because filtering and resolving are distinct concerns.
-- ⏳ Apply adaptive choices to `garden_entrance` (still has plain-string choices; title and Seed prose already done).
-- ⏳ Seed sweep across remaining 6 nodes: `western_wall`, `clearing_path`, `wall_lunch`, `lichen_grid`, `old_well`, `well_roots` — Seed prose + adaptive title + adaptive choices for each.
-- ⏳ Sprout sweep across all 7 nodes (only after the full Seed sweep is done).
+- ⏳ Seed sweep across remaining 6 nodes: `western_wall`, `clearing_path`, `wall_lunch`, `lichen_grid`, `old_well`, `well_roots` — Seed prose + Seed title + Seed choice text for each.
+
+Sprout and Bloom for all 7 nodes (and any upper-level title/choice keys) are **Phase 3b**, not here.
 
 ### In-flight scope additions
 
-Phase 2 grew beyond "Seed + Sprout prose" once `garden_entrance` Seed was on screen and the title + choice buttons looked obviously wrong for a 5-year-old:
+Phase 2 picked up structural work once `garden_entrance` Seed was on screen and the title + choice buttons looked obviously wrong for a 5-year-old. (Sprout prose, originally lumped here, has since been moved to Phase 3b so Phase 2 stays purely about the Seed base.) The additions:
 
-1. **Adaptive titles** (✅ shipped). `AdaptiveTitle` requires all four levels — no fall-up between levels. The redundancy is the feature: each reader's experience is explicit at the page level. Runtime fallback for safety.
-2. **Adaptive choices** (✅ shipped). `AdaptiveChoiceText` with the same all-required rule. `Choice.text: string | AdaptiveChoiceText`. New `ResolvedChoice` type guarantees UI consumers see resolved strings — type system enforces the resolver ran. Runtime fallback `"…"` for missing levels.
+1. **Adaptive titles** (✅ shipped). `AdaptiveTitle` is per-level. Originally designed all-required, then relaxed (commit `8f5bdd9`) so every level is optional with nearest-neighbor fallback — that's what enables Seed-first authoring. Runtime fallback `"An unwritten page"` if no level exists.
+2. **Adaptive choices** (✅ shipped). `AdaptiveChoiceText`, same all-optional + nearest-neighbor rule as titles. `Choice.text: string | AdaptiveChoiceText`. New `ResolvedChoice` type guarantees UI consumers see resolved strings — type system enforces the resolver ran. Runtime fallback `"…"` if no level exists.
 3. **Module split** (✅ shipped). `src/content/index.ts` was 373 lines and roughly half adaptive-engine. Now split:
    - `src/content/types.ts` — pure type definitions.
    - `src/content/adaptive.ts` — the adaptive engine: level math, per-level shapes, all four resolvers (`resolveTitle`, `resolveBody`, `resolveChoiceText`, `filterChoices`), fallbacks, private markdown formatter.
@@ -103,18 +105,18 @@ Current garden prose (7 nodes: entrance + western wall path) is Fruit-length but
 ### State going in
 
 - **Beats + feelings are already extracted** for all 7 nodes — they live on each `StoryContent` object in [src/content/stories/garden-story/](../src/content/stories/garden-story/) AND in [docs/implementations/garden-rewrite.md](implementations/garden-rewrite.md). They're the same values; the doc has the additional "Notes on the extraction" section worth reading before writing prose (judgment calls about `well_roots` doing too much, the beetle as through-line, Iris staying off-screen on this path).
-- **Adaptive shape is in place.** Each node has an `adaptiveContent: { fruit }` slot. Phase 2 adds `seed` and `sprout` keys alongside.
+- **Adaptive shape is in place.** Each node has an `adaptiveContent: { fruit }` slot. Phase 2 adds the `seed` key alongside; `sprout` and `bloom` come in Phase 3b.
 - **Existing Fruit prose stays.** It's already wrapped — don't delete it. Phase 3b will revise/trim Fruit later if needed; Phase 2 only adds the lower tiers.
 
 ### Approach
 
 For each of the 7 nodes:
 1. Read the beat + feeling on the node (and re-read the rewrite-doc notes for context).
-2. Write **Seed** first. If the beat doesn't work in 4 sentences, the beat is wrong — revise the beat, don't pad the prose.
-3. Write **Sprout** as a layer-up from Seed (60–120 words; see [OVERHAUL-PLAN.md adaptive levels table](#adaptive-levels)).
-4. Verify with `npm run validate-content` and a manual playthrough at each level via Settings.
+2. Write **Seed** (prose). If the beat doesn't work in 4 sentences, the beat is wrong — revise the beat, don't pad the prose.
+3. Write the **Seed title** and **Seed choice text** (just the `seed` key on each — higher levels fall back to the nearest neighbor until 3b fills them).
+4. Verify with `npm run validate-content` and a manual playthrough at Seed level via Settings.
 
-Seed-first discipline is the whole point. Don't write Sprout first and "compress down to Seed" — that produces the exact bloat we just spent a phase removing.
+Seed-first discipline is the whole point — Phase 2 stops at Seed. Don't draft Sprout/Bloom here and "compress down to Seed"; that produces the exact bloat we just spent a phase removing. The upper levels are layered on in Phase 3b, from a solid Seed base.
 
 ### Existing nodes to rewrite (all in garden kingdom)
 
@@ -134,18 +136,20 @@ Seed-first discipline is the whole point. Don't write Sprout first and "compress
 
 ### Verification
 - All 7 nodes have beat + feeling fields.
-- All 7 nodes have Seed + Sprout renderings.
-- Sprout word counts logged in the commit message.
-- Garden playable end-to-end.
+- All 7 nodes have a Seed rendering, plus a Seed title and Seed choice text (the `seed` key on each).
+- Seed word counts logged in the commit message.
+- Garden playable end-to-end at Seed level.
 - `npm run validate-content` passes.
 
 ---
 
-## Phase 3: Adaptive Content (Seed → Fruit)
+## Phase 3: Adaptive Content (the level machinery + filling the levels)
 
 **Status**: Phase 3a ✅ shipped (2026-05-18). Phase 3b pending Phase 2.
-**Estimated effort**: 1 more session (Phase 3b: Bloom for existing nodes, after Phase 2 Seed + Sprout).
+**Estimated effort**: 1 more session (Phase 3b: Sprout + Bloom for the 7 existing nodes, after Phase 2's Seed base).
 **Dependencies**: Phase 1 ✅, Phase 3a ✅
+
+Level ownership across phases: **Seed** = Phase 2. **Sprout + Bloom** = Phase 3b. **Fruit** already exists from the original prose (Phase 3b trims/revises it if needed). Phase 3a built the machinery (types, resolvers, renderer, selector) that all of this runs on.
 
 ### Core principle
 
@@ -229,9 +233,10 @@ Practical implications:
 
 **Phase 3a ✅ shipped (2026-05-18)** — see the completed-work entry above for the full list. Headline: adaptive types, level-aware renderer with polite fallback, slider-style settings selector (icons + dark mode), age-aware onboarding, silent choice filtering, and a 5th validator check for gating-induced dead ends. The 7 western-wall nodes were wrapped into adaptive shape with their existing Fruit prose preserved.
 
-**Phase 3b — Fill in Bloom + remaining levels for existing garden nodes (1 session):**
-- After Phase 2 (Seed + Sprout for the 7 existing nodes), layer up to Bloom. Fruit already exists from the original prose.
-- Not every node needs all four levels if the beat doesn't warrant it — be honest about when Fruit adds genuine value vs. just more words.
+**Phase 3b — Fill Sprout + Bloom for the 7 existing garden nodes (1 session):**
+- After Phase 2 (Seed base for the 7 nodes), layer up: Sprout, then Bloom. Fruit already exists from the original prose.
+- Layer up from the Seed base — never draft a higher level and compress down.
+- Not every node needs all four prose levels if the beat doesn't warrant it — be honest about when an extra tier adds genuine value vs. just more words.
 
 ### Writing workflow (the discipline)
 
@@ -460,8 +465,8 @@ Maps to **DPO (Direct Preference Optimization)** — retraining with reader enga
 | 1 | ✅ Phase 1: Kingdoms + Stories | 1 | None |
 | 2 | ✅ Phase 3a: Adaptive types + renderer + selector + filter + validator | 1 | Phase 1 |
 | 3 | ✅ Phase 4: Library screen | 1 | Phase 1 |
-| 4 | Phase 2: Rewrite garden from Seed (Seed + Sprout for 7 nodes) | 1 | Phase 3a |
-| 5 | Phase 3b: Bloom for existing nodes | 1 | Phase 2 |
+| 4 | Phase 2: Rewrite garden from Seed (Seed base for 7 nodes: prose + adaptive titles + adaptive choices) | 1 | Phase 3a |
+| 5 | Phase 3b: Sprout + Bloom for the 7 existing nodes | 1 | Phase 2 |
 | 6 | Phase 5: Write remaining garden nodes (eastern grove, map study, convergence, philosophical, resolution) | 2-3 | Phases 3b + 4 |
 | 7 | Phase 6: Flow visualizer | 2 | Phases 1-5 |
 | 8 | Phase 7: Context expansion | 1 | Phase 5 |
