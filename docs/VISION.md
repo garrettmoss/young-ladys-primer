@@ -32,13 +32,13 @@ The Primer is a companion within a child's relationships, not a replacement for 
 - Shared reflection alongside growing independence
 
 ### 4. Make Space
-The Primer adds little and leaves room. The temptation of abundance — more content, more features, more generated stuff because it can be generated — is a trap; people need less, not more. The Primer is meant to be small enough to leave space for the world: for an adult's attention, for boredom, for sunlight and trees and the ordinary richness that fills an empty moment when nothing is competing for it. The empty space is not a gap to fill. It is the point.
+The Primer adds little and leaves room — small enough to leave space for the world, because the empty space is not a gap to fill but the point.
 
 **Implementation:**
 - Subtraction as a discipline — if a beat works in fewer words, it is done
 - No content sprawl: a fixed, deliberate set of beats, not an ever-growing pile
 - Trust the space — don't fill every silence, every page, every moment
-- Wonder lives in restraint as much as in richness
+- Wonder lives in poverty as much as in richness
 
 ### 5. Safe Space for Play
 The Primer creates a protected environment where experimentation, curiosity, and joy are not just allowed but encouraged. Play is the natural language of learning.
@@ -106,28 +106,16 @@ Especially critical when working with children - data protection and privacy are
 - Parent/guardian involvement in data decisions
 
 ### 12. Embodiment, Simplicity, and Natural Rhythm
-The Primer honors the reader's connection to physical reality and the natural world. In an age of constant digital stimulation, the Primer teaches appreciation for simple pleasures, concrete experiences, and the natural rhythm of life that includes both intensity and rest.
-
-**Why this matters:**
-Young women growing up with advanced technology need grounding in their physical bodies and the earth. Real confidence comes from embodied experience - knowing what hunger feels like, how muscles work, how weather changes, what intuition feels like in your gut. The Primer prepares readers for a high-tech future by keeping them rooted in timeless human experience.
-
-**The human nervous system cannot handle constant intensity.** Like being on psychedelics perpetually, a story of unrelenting drama becomes unmooring rather than empowering. The Primer teaches that life has peaks and valleys, and both are necessary.
+The Primer keeps the reader rooted in her body and the physical world — and trusts that when you make space, the "mundane" reveals itself as miraculous. The simple world is not the absence of magic; it is where the magic actually lives. Real confidence comes from embodied experience, and a nervous system can't sustain constant intensity — life has peaks and valleys, and both are necessary.
 
 **Implementation:**
-- **Natural rhythm**: Stories include dramatic moments AND quiet breathing room - valleys as well as peaks
-- **Sensory grounding**: Rich descriptions engaging all senses, especially touch, smell, taste
-- **Physical consequences**: Actions have bodily effects (tiredness, hunger, dirt, warmth, satisfaction)
-- **Simple pleasures**: Characters find joy in small, concrete things - tea, sunshine, working with hands
-- **Earth connection**: Real nature, not mystical backdrop - soil, plants, weather, animals as physical beings
-- **Embodied intuition**: "Knowing without knowing how," gut feelings, feminine intuition as real information
-- **Humor and play**: Life isn't relentlessly serious - absurdity, wit, and levity are vital to thriving
-- **Practical magic**: Even wonder requires work - learning is embodied practice, not abstract revelation
+- Practical magic — wonder grounded in the body, the earth, and real work, not floating free of them
+- Intuition is real, and it is felt in the body — a knowing beneath words that is hers and can't be explained away
+- Rhythm over relentlessness — breathing room, rest, and quiet victories alongside drama
+- Stakes are real but handled with brevity, not melodrama
+- The mundane is the doorway: an ordinary moment, looked at closely, is full of infinite complexity
 
-**Balance:**
-- Real stakes and consequences (Grimm's fairy tale gravity) handled with brevity, not melodrama
-- Move through darkness toward light; don't dwell in shadow for its own sake
-- Profound moments exist but are used sparingly - peaks require valleys to have meaning
-- Training for a challenging world while celebrating life's beauty and simple pleasures
+*(Prose-level craft guidance — sensory detail, dosage, darkness, humor, plain narration — lives in [CLAUDE.md](../CLAUDE.md#content-writing-guidelines).)*
 
 ## Long-Term Vision
 
