@@ -103,7 +103,7 @@ Phase 2 picked up structural work once `garden_entrance` Seed was on screen and 
    - Choices leading to a page with no prose at or below the reader's level are greyed out as "(Coming soon)" via `isContentAvailable()` (`d31ca17`).
    - A page reached anyway (dev tools, saved position) renders as a whole placeholder — "An unwritten page" / "This page hasn't grown yet." — with no forward choices, only the standard Go Back / Return to the Beginning (`358ef58`).
 
-   Open follow-up: `npm run validate-content` doesn't know about any of this. A warning for adaptive pages with plain-string titles/choices (which show at every level) plus a per-level list of reachable-but-unwritten pages would double as the Phase 2 to-do list.
+   `npm run validate-content` Check 6 (Adaptive Coverage, `aeb888b`) prints per-level coverage for each adaptive story — the Phase 2 to-do list — and warns when a page's title or button would show wrong text at a level its prose is written for (e.g. a plain-string title left over after adding Seed prose).
 
 ### The problem
 
