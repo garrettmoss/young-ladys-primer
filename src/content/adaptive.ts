@@ -69,8 +69,8 @@ export function recommendLevel(signals: ReaderSignals): AdaptiveLevel {
 /**
  * Per-level renderings of a single story beat. The beat and feeling are
  * constant across levels; only the prose changes. A level may be omitted
- * if it doesn't yet exist — the renderer falls back to a polite in-world
- * placeholder for missing levels.
+ * if it doesn't yet exist — the renderer uses the nearest level below, or
+ * a polite in-world placeholder if none exists.
  */
 export interface AdaptiveContent {
   seed?: string | ((context: ContentContext) => string);
@@ -81,9 +81,9 @@ export interface AdaptiveContent {
 
 /**
  * Per-level renderings of a node title. All levels optional so authors can
- * fill in incrementally (Seed-first discipline). The resolver walks to the
- * nearest defined neighbor if the requested level is missing — titles are
- * short and meaning-stable across levels, so borrowing reads fine.
+ * fill in incrementally (Seed-first discipline). If the requested level is
+ * missing, the resolver uses the nearest level below it — never above, so
+ * a young reader never sees text written for an older one.
  * Use a plain string for non-adaptive content (welcome, hubs, lessons).
  */
 export interface AdaptiveTitle {
@@ -95,9 +95,8 @@ export interface AdaptiveTitle {
 
 /**
  * Per-level renderings of a choice button's text. Same all-optional rule
- * and nearest-neighbor fallback as AdaptiveTitle. Choice text is short
- * and largely level-agnostic in meaning, so a borrowed neighbor is better
- * than a cryptic placeholder.
+ * and at-or-below fallback as AdaptiveTitle; "…" if nothing exists at or
+ * below the reader's level.
  */
 export interface AdaptiveChoiceText {
   seed?: string;
@@ -138,29 +137,25 @@ function formatMarkdown(raw: string): string {
 // === Resolvers ===
 
 /**
- * Pick the nearest defined level to the requested one. Walks outward by
- * distance in the LEVELS tuple (1 away, then 2, then 3…), so a Sprout
- * reader prefers Bloom over Fruit when Sprout itself is missing.
- * Returns undefined only if every level is empty.
+ * Pick the requested level, or the nearest defined level *below* it.
+ * Never borrows upward: a Seed reader must not see Fruit text. Returns
+ * undefined if nothing exists at or below the requested level — callers
+ * show their placeholder so the gap is obvious.
  */
-function nearestDefinedLevel<T>(
+function levelAtOrBelow<T>(
   bag: Partial<Record<AdaptiveLevel, T>>,
   requested: AdaptiveLevel
 ): T | undefined {
-  if (bag[requested] !== undefined) return bag[requested];
-  const startRank = levelRank(requested);
-  for (let distance = 1; distance < LEVELS.length; distance++) {
-    const below = LEVELS[startRank - distance];
-    const above = LEVELS[startRank + distance];
-    if (above !== undefined && bag[above] !== undefined) return bag[above];
-    if (below !== undefined && bag[below] !== undefined) return bag[below];
+  for (let rank = levelRank(requested); rank >= 0; rank--) {
+    const value = bag[LEVELS[rank]];
+    if (value !== undefined) return value;
   }
   return undefined;
 }
 
 /**
  * Resolve a node's title. Plain strings pass through; AdaptiveTitle objects
- * use nearest-defined-neighbor lookup before falling back to a placeholder.
+ * use at-or-below lookup before falling back to a placeholder.
  */
 export function resolveTitle(
   title: string | AdaptiveTitle,
@@ -168,12 +163,12 @@ export function resolveTitle(
 ): string {
   if (typeof title === 'string') return title;
   const level: AdaptiveLevel = context.currentLevel ?? 'fruit';
-  return nearestDefinedLevel(title, level) ?? MISSING_TITLE_FALLBACK;
+  return levelAtOrBelow(title, level) ?? MISSING_TITLE_FALLBACK;
 }
 
 /**
  * Resolve a choice button's text. Plain strings pass through;
- * AdaptiveChoiceText objects use nearest-defined-neighbor lookup.
+ * AdaptiveChoiceText objects use at-or-below lookup.
  */
 export function resolveChoiceText(
   text: string | AdaptiveChoiceText,
@@ -181,7 +176,7 @@ export function resolveChoiceText(
 ): string {
   if (typeof text === 'string') return text;
   const level: AdaptiveLevel = context.currentLevel ?? 'fruit';
-  return nearestDefinedLevel(text, level) ?? MISSING_CHOICE_TEXT_FALLBACK;
+  return levelAtOrBelow(text, level) ?? MISSING_CHOICE_TEXT_FALLBACK;
 }
 
 /**
@@ -189,9 +184,10 @@ export function resolveChoiceText(
  * (adaptive variant for the reader's level, or the legacy `content` field),
  * evaluates any template function, then formats markdown to HTML.
  *
- * If an adaptive node is missing its requested level (a writing-discipline
- * gap the validator should catch), renders a polite in-world fallback rather
- * than crash. Fruit is the assumed top tier when no level is set.
+ * If an adaptive node is missing its requested level, uses the nearest
+ * level below it (same rule as titles and choice text). If nothing exists
+ * at or below, renders a polite in-world fallback rather than borrowing
+ * higher-level prose. Fruit is the assumed top tier when no level is set.
  *
  * The caller decides whether to use the adaptive path (it depends on the
  * parent Story's `adaptive` flag from the kingdom registry).
@@ -212,7 +208,7 @@ function pickRawBody(
 ): string {
   if (useAdaptive && content.adaptiveContent) {
     const level: AdaptiveLevel = context.currentLevel ?? 'fruit';
-    const rendering = content.adaptiveContent[level];
+    const rendering = levelAtOrBelow(content.adaptiveContent, level);
     if (rendering !== undefined) {
       return typeof rendering === 'function' ? rendering(context) : rendering;
     }

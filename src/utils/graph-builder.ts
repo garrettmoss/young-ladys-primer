@@ -11,7 +11,7 @@ import type { Node, Edge } from 'reactflow';
 import { FLOW_COLORS } from '@/components/flow-visualizer/flow-constants';
 
 // Synthetic context for dev-time graph rendering. Prefers fruit-level
-// text but the resolvers walk to the nearest defined neighbor if missing.
+// text; fruit is the top level, so the resolvers fall back to any lower level.
 const GRAPH_CONTEXT: ContentContext = { readerName: 'Reader', currentLevel: 'fruit' };
 
 // === CONFIGURATION ===
