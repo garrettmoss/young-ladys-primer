@@ -7,6 +7,8 @@
  * - No orphaned content (unreferenced nodes)
  * - No unintentional dead ends (non-ending nodes without choices)
  * - All content is reachable from entry points
+ * - Level gating never strands a reader
+ * - Adaptive pages' titles and buttons match the levels their prose is written at
  *
  * Run with: npm run validate-content
  */
@@ -18,9 +20,10 @@ import { dragonStoryCollection } from '../src/content/stories/dragon-story/index
 import { gardenStoryCollection } from '../src/content/stories/garden-story/index';
 import { nanotechnologyLessons } from '../src/content/lessons/nanotechnology/index';
 import { puzzleCollection } from '../src/content/puzzles/index';
-import { getKingdomEntryPoints } from '../src/content/kingdoms';
+import { getAllKingdoms, getKingdomEntryPoints } from '../src/content/kingdoms';
 import { LEVELS, levelRank } from '../src/content/index';
-import type { StoryContent, Choice, AdaptiveLevel } from '../src/content/index';
+import { hasBodyAtOrBelow, levelAtOrBelow } from '../src/content/adaptive';
+import type { StoryContent, Choice, AdaptiveLevel, Story } from '../src/content/index';
 
 // === CONFIGURATION ===
 
@@ -92,6 +95,18 @@ interface ValidationReport {
   deadEndDetection: ValidationIssue[];
   reachabilityAnalysis: ValidationIssue[];
   gatingValidation: ValidationIssue[];
+  adaptiveCoverage: ValidationIssue[];
+}
+
+/**
+ * Per-story count of pages with their own prose at each level (not
+ * borrowed from below). Informational only — a writing to-do list.
+ */
+interface CoverageSummary {
+  story: Story;
+  total: number;
+  written: Record<AdaptiveLevel, number>;
+  missing: Record<AdaptiveLevel, string[]>;
 }
 
 // === CONTENT GRAPH BUILDER ===
@@ -321,6 +336,84 @@ function validateGating(contentGraph: ContentRegistry): ValidationIssue[] {
   return issues;
 }
 
+/**
+ * Check 6: Adaptive Coverage
+ *
+ * Coverage summary: for each adaptive story, how many pages have their own
+ * prose at each level. Gaps are expected mid-authoring, so this is info.
+ *
+ * Warnings fire only when a reader would see something wrong. At every
+ * level where a page's prose is written (own or via fallback from below),
+ * its title and each button must also resolve at or below that level:
+ * - A plain-string title or button shows the same text at every level. That
+ *   is fine on a Fruit-only page (below Fruit the whole page renders as
+ *   unwritten), but once prose exists below Fruit, the plain string leaks
+ *   Fruit text to a younger reader.
+ * - A per-level title or button with nothing at or below a written level
+ *   shows "An unwritten page" / "…" over real prose.
+ * Gaps the fallback covers (e.g. Seed title, no Sprout title) never warn.
+ */
+function adaptiveStories(): Story[] {
+  return getAllKingdoms()
+    .flatMap(kingdom => kingdom.stories)
+    .filter(story => story.adaptive === true);
+}
+
+function summarizeCoverage(contentGraph: ContentRegistry): CoverageSummary[] {
+  return adaptiveStories().map(story => {
+    const pages = story.contentKeys.filter(key => contentGraph[key]);
+    const written = {} as Record<AdaptiveLevel, number>;
+    const missing = {} as Record<AdaptiveLevel, string[]>;
+    for (const level of LEVELS) {
+      missing[level] = pages.filter(key => contentGraph[key].adaptiveContent?.[level] === undefined);
+      written[level] = pages.length - missing[level].length;
+    }
+    return { story, total: pages.length, written, missing };
+  });
+}
+
+function validateAdaptiveCoverage(contentGraph: ContentRegistry): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+
+  for (const story of adaptiveStories()) {
+    for (const contentId of story.contentKeys) {
+      const content = contentGraph[contentId];
+      if (!content) continue;
+
+      const writtenLevels = LEVELS.filter(level => hasBodyAtOrBelow(content, level));
+      const writtenBelowFruit = writtenLevels.filter(level => level !== 'fruit');
+
+      const checkText = (text: string | Partial<Record<AdaptiveLevel, string>>, part: string) => {
+        if (typeof text === 'string') {
+          if (writtenBelowFruit.length > 0) {
+            issues.push({
+              type: 'warning',
+              message: `[${writtenBelowFruit.join(', ')}] ${part} is a plain string (shows Fruit text to younger readers)`,
+              contentId,
+              location: contentId
+            });
+          }
+          return;
+        }
+        const broken = writtenLevels.filter(level => levelAtOrBelow(text, level) === undefined);
+        if (broken.length > 0) {
+          issues.push({
+            type: 'warning',
+            message: `[${broken.join(', ')}] ${part} has no text at or below this level (shows a placeholder over real prose)`,
+            contentId,
+            location: contentId
+          });
+        }
+      };
+
+      checkText(content.title, 'title');
+      content.choices.forEach(choice => checkText(choice.text, `button → ${choice.action}`));
+    }
+  }
+
+  return issues;
+}
+
 // === OUTPUT FORMATTING ===
 
 /**
@@ -363,7 +456,7 @@ function formatIssue(issue: ValidationIssue): string {
 /**
  * Print validation report to console
  */
-function printReport(report: ValidationReport): void {
+function printReport(report: ValidationReport, coverage: CoverageSummary[]): void {
   console.log('\n' + colors.bold + 'Story Graph Validation Report' + colors.reset);
   console.log('==============================\n');
 
@@ -420,6 +513,24 @@ function printReport(report: ValidationReport): void {
   }
   console.log();
 
+  // Adaptive Coverage
+  if (report.adaptiveCoverage.length === 0) {
+    console.log(colors.green + '✓' + colors.reset + ' Adaptive Coverage: PASSED');
+  } else {
+    console.log(colors.yellow + '⚠' + colors.reset + ' Adaptive Coverage: ' + colors.yellow + report.adaptiveCoverage.length + ' WARNINGS' + colors.reset);
+    report.adaptiveCoverage.forEach(issue => console.log(formatIssue(issue)));
+  }
+  for (const { story, total, written, missing } of coverage) {
+    console.log(colors.gray + `  ${story.title} (${total} pages):` + colors.reset);
+    for (const level of LEVELS) {
+      const gaps = missing[level].length > 0 && missing[level].length < total
+        ? `   missing: ${missing[level].join(', ')}`
+        : '';
+      console.log(colors.gray + `    ${level.padEnd(7)} ${written[level]}/${total}${gaps}` + colors.reset);
+    }
+  }
+  console.log();
+
   // Summary
   const totalErrors =
     report.referenceValidation.filter(i => i.type === 'error').length +
@@ -428,7 +539,8 @@ function printReport(report: ValidationReport): void {
     report.referenceValidation.filter(i => i.type === 'warning').length +
     report.orphanDetection.length +
     report.deadEndDetection.length +
-    report.reachabilityAnalysis.length;
+    report.reachabilityAnalysis.length +
+    report.adaptiveCoverage.length;
 
   console.log(colors.bold + 'Summary: ' + colors.reset +
     (totalErrors > 0 ? colors.red : totalWarnings > 0 ? colors.yellow : colors.green) +
@@ -450,10 +562,11 @@ function main() {
     orphanDetection: detectOrphans(contentGraph),
     deadEndDetection: detectDeadEnds(contentGraph),
     reachabilityAnalysis: analyzeReachability(contentGraph),
-    gatingValidation: validateGating(contentGraph)
+    gatingValidation: validateGating(contentGraph),
+    adaptiveCoverage: validateAdaptiveCoverage(contentGraph)
   };
 
-  printReport(report);
+  printReport(report, summarizeCoverage(contentGraph));
 
   // Exit with error code if there are errors in any check
   const hasErrors =

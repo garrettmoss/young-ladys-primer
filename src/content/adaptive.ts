@@ -140,9 +140,10 @@ function formatMarkdown(raw: string): string {
  * Pick the requested level, or the nearest defined level *below* it.
  * Never borrows upward: a Seed reader must not see Fruit text. Returns
  * undefined if nothing exists at or below the requested level — callers
- * show their placeholder so the gap is obvious.
+ * show their placeholder so the gap is obvious. Exported so the content
+ * validator applies the exact same rule.
  */
-function levelAtOrBelow<T>(
+export function levelAtOrBelow<T>(
   bag: Partial<Record<AdaptiveLevel, T>>,
   requested: AdaptiveLevel
 ): T | undefined {
