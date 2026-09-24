@@ -23,7 +23,7 @@ Powered by Claude AI.
 ## Features
 
 - **Interactive Storytelling**: Engaging narratives with branching paths that respond to reader choices.
-- **Reader Personalization**: The Primer adapts to know you by name and remembers your journey.
+- **Reader Personalization**: The Primer adapts to know you by name and age, and remembers your journey.
 - **Interactive Puzzles**: Hands-on challenges like molecular lock puzzles that teach through interaction.
 - **Educational Content**: Stories weave in lessons about science, technology, problem-solving, and wisdom.
 

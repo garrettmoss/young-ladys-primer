@@ -108,6 +108,8 @@ export const storyName = {
 **Adaptive Content:**
 Stories marked `adaptive: true` use the `adaptiveContent: { seed?, sprout?, bloom?, fruit? }` shape instead of the legacy single `content` string. Each node also carries a `beat` (one sentence: what happens) and `feeling` (one sentence: why it matters) that stay constant across levels. See [OVERHAUL-PLAN.md](OVERHAUL-PLAN.md) Phase 3 for the full model. Optional `minLevel` gates a node above a reader's tier; the renderer silently filters such choices.
 
+Every level is optional. A missing level falls back to the nearest level *below* the reader's, never above, for body, title, and choice text (see `src/content/adaptive.ts`). If nothing exists at or below, the page is unwritten for that reader: choices leading to it are greyed out as "(Coming soon)" (`isContentAvailable()` in `src/content/index.ts`), and if reached anyway it renders as "An unwritten page" with no forward choices.
+
 ### Content Registration
 All content is registered in `src/content/index.js`:
 ```javascript
@@ -266,8 +268,9 @@ graph TD
 - Central content registry
 - Exports `allContent` object and utility functions
 - `getContent(contentKey, context)` - fetches and processes content with ContentContext (works with all content types: stories, lessons, puzzles, settings, debug)
+- `isContentAvailable(contentKey, context)` - whether a choice leading there is clickable for this reader (exists, and for adaptive stories has prose at or below the reader's level)
 - `getAllContentKeys()` - returns all available content keys
-- Defines `ContentContext` interface for future-proof personalization
+- Re-exports `ContentContext` and other types from `src/content/types.ts`, and the adaptive engine from `src/content/adaptive.ts`
 
 ### `src/hooks/useContentNavigation.ts`
 - Manages current content state
