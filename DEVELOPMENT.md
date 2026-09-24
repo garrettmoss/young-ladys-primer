@@ -94,6 +94,8 @@ This project follows **semantic versioning (semver)**: MAJOR.MINOR.PATCH
 - Adding puzzles system = minor (1.1.0)
 - Major UI overhaul = major (2.0.0)
 
+**Git tags:** every version bump gets a matching tag (`v1.3.0`), patches included. Use `npm version minor -m "chore: bump version to %s"` (or `patch` / `major`) to bump, commit, and tag in one step.
+
 ## Code Documentation Standards
 
 This project maintains high documentation standards to ensure readability and maintainability. All code should be self-documenting through comprehensive comments and clear naming.
