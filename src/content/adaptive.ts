@@ -222,6 +222,20 @@ function pickRawBody(
 }
 
 /**
+ * Whether resolveBody would render real prose for this node at the given
+ * level, rather than the "hasn't grown yet" placeholder. Shares the
+ * at-or-below lookup with the resolvers, so "is it written?" and "what
+ * gets shown?" can't disagree.
+ */
+export function hasBodyAtOrBelow(
+  content: StoryContent,
+  level: AdaptiveLevel
+): boolean {
+  if (!content.adaptiveContent) return content.content !== undefined;
+  return levelAtOrBelow(content.adaptiveContent, level) !== undefined;
+}
+
+/**
  * Drop any choices whose target node has a minLevel above the reader's
  * current tier. The reader sees fewer doors, never a locked one — the
  * gated path simply isn't visible. Choices to keys that don't exist in

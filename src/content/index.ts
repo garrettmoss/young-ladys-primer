@@ -36,6 +36,7 @@ import { getStoryForContentKey } from './kingdoms';
 import type { ContentContext, ResolvedContent, StoryContent } from './types';
 import {
   filterChoices,
+  hasBodyAtOrBelow,
   resolveBody,
   resolveChoiceText,
   resolveTitle,
@@ -141,4 +142,20 @@ export const getContent = (contentKey: string, context: ContentContext): Resolve
  * Get all available content keys for debugging or content management
  * @returns Array of all content identifiers in the registry
  */
-export const getAllContentKeys = (): string[] => Object.keys(allContent);
+/**
+ * Whether a choice leading to `contentKey` should be clickable for this
+ * reader. The page must exist, and pages in adaptive stories must also
+ * have prose at or below the reader's level. Otherwise ChoiceButton greys
+ * the choice out as "(Coming soon)" instead of leading to an unwritten page.
+ */
+export const isContentAvailable = (contentKey: string, context: ContentContext): boolean => {
+  if (contentKey === 'settings') return true;
+
+  const content = allContent[contentKey];
+  if (!content) return false;
+
+  if (getStoryForContentKey(contentKey)?.adaptive !== true) return true;
+  return hasBodyAtOrBelow(content, context.currentLevel ?? 'fruit');
+};
+
+export const getAllContentKeys =(): string[] => Object.keys(allContent);
