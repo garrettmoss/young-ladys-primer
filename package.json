@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "export": "next build",
-    "deploy": "npm run export && gh-pages -d out --nojekyll",
+    "deploy": "npm run export && gh-pages -d out --nojekyll -m \"deploy: $(git describe --tags --always --dirty)\"",
     "start": "next start",
     "lint": "next lint",
     "validate-content": "tsx scripts/validate-story-graph.ts"
