@@ -40,6 +40,7 @@ import {
   resolveBody,
   resolveChoiceText,
   resolveTitle,
+  resolveUnwrittenPage,
 } from './adaptive';
 
 // === Re-exports (public API) ===
@@ -121,6 +122,10 @@ export const getContent = (contentKey: string, context: ContentContext): Resolve
 
   const story = getStoryForContentKey(contentKey);
   const useAdaptive = story?.adaptive === true;
+
+  if (useAdaptive && !hasBodyAtOrBelow(content, context.currentLevel ?? 'fruit')) {
+    return resolveUnwrittenPage();
+  }
 
   const filteredChoices = filterChoices(
     content.choices,

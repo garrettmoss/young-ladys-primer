@@ -7,7 +7,7 @@
  * registry and `getContent` orchestration are in `./index`.
  */
 
-import type { Choice, ContentContext, StoryContent } from './types';
+import type { Choice, ContentContext, ResolvedContent, StoryContent } from './types';
 
 // === Levels ===
 
@@ -233,6 +233,20 @@ export function hasBodyAtOrBelow(
 ): boolean {
   if (!content.adaptiveContent) return content.content !== undefined;
   return levelAtOrBelow(content.adaptiveContent, level) !== undefined;
+}
+
+/**
+ * The whole page shown when a reader reaches a node with no prose at or
+ * below their level (via dev tools or a saved position — normal play greys
+ * out the choice leading here). Replaces the node's own title too, and
+ * offers no forward choices; NavigationButtons still provides the way back.
+ */
+export function resolveUnwrittenPage(): ResolvedContent {
+  return {
+    title: MISSING_TITLE_FALLBACK,
+    content: formatMarkdown(MISSING_CONTENT_FALLBACK),
+    choices: [],
+  };
 }
 
 /**
